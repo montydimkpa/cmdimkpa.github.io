@@ -66,9 +66,9 @@ const asyncUpdate = async (scheduler) => {
   $('#asd_label').text(`${scheduler} Avg. Scheduler Delay: `);
   $('#plr_label').text(`${scheduler} Avg. Packet Loss Ratio: `);
   $('#thru_value').text(`${packets} packets (${throughput.toLocaleString()} bits)`);
-  $('#apd_value').text(`${average(APD).toFixed(2)}ms`);
-  $('#asd_value').text(`${average(ASD).toFixed(2)}ms`);
-  $('#plr_value').text(`${average(PLR).toFixed(2)}%`);
+  $('#apd_value').text(`${average(APD).toLocaleString()}ms`);
+  $('#asd_value').text(`${average(ASD).toLocaleString()}ms`);
+  $('#plr_value').text(`${average(PLR).toLocaleString()}%`);
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
