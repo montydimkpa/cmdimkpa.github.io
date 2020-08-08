@@ -10,7 +10,7 @@ const RelayOut = async (scheduler) => {
     let avgPacketDelay = QoS.map(entry => { return entry.total_packet_delay / entry.packets_received });
     let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
     let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
-    return [labels, QoS, avgPacketDelay, avgSchedulerDelay, avgRetransmissions]
+    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions]
   }).catch(error => {
     console.log(error)
   })
@@ -27,11 +27,13 @@ const resetNetwork = async () => {
 /* asynchronous update */
 const asyncUpdate = async (scheduler) => {
   // update chart
-  [labels, QoS, avgPacketDelay, avgSchedulerDelay, avgRetransmissions] = await RelayOut(scheduler);
+  [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions] = await RelayOut(scheduler);
   let myLabels = labels
   let APD = avgPacketDelay
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
+  $('#thru_label').text(`${scheduler} Throughput (packets): `);
+  $('#thru_value').text(`${packets}`);
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
