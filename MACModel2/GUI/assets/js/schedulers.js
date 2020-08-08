@@ -28,7 +28,7 @@ const resetNetwork = async () => {
 /* asynchronous update */
 const asyncUpdate = async (scheduler) => {
   // update chart
-  [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput] = await RelayOut(scheduler);
+  let [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput] = await RelayOut(scheduler);
   let myLabels = labels
   let APD = avgPacketDelay
   let ASD = avgSchedulerDelay
