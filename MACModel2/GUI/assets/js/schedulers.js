@@ -16,6 +16,14 @@ const RelayOut = async (scheduler) => {
   })
 }
 
+const resetNetwork = async () => {
+  await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Reset`).then(response => {
+    console.log(response)
+  }).catch(error => {
+    console.log(error)
+  })
+}
+
 /* asynchronous update */
 const asyncUpdate = async (scheduler) => {
   // update chart
