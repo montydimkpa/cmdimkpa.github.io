@@ -10,7 +10,8 @@ const RelayOut = async (scheduler) => {
     let avgPacketDelay = QoS.map(entry => { return entry.total_packet_delay / entry.packets_received });
     let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
     let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
-    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions]
+    let avgPacketSize = QoS.map(entry => { return entry.total_packet_size / entry.packets_received });
+    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, raw.size]
   }).catch(error => {
     console.log(error)
   })
@@ -27,25 +28,27 @@ const resetNetwork = async () => {
 /* asynchronous update */
 const asyncUpdate = async (scheduler) => {
   // update chart
-  [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions] = await RelayOut(scheduler);
+  [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput] = await RelayOut(scheduler);
   let myLabels = labels
   let APD = avgPacketDelay
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
+  let APS = avgPacketSize
   $('#thru_label').text(`${scheduler} Throughput (packets): `);
-  $('#thru_value').text(`${packets}`);
+  $('#thru_value').text(`${packets} (${throughput.toLocaleString()} bits)`);
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
       labels: myLabels,
-      datasets: [{
+      datasets: [
+        {
           data: APD,
-          label: "Average Packet Delay",
+          label: "Average Packet Delay (ms)",
           borderColor: "#3e95cd",
           fill: false
         }, {
           data: ASD,
-          label: "Average Scheduler Delay",
+          label: "Average Scheduler Delay (ms)",
           borderColor: "#8e5ea2",
           fill: false
         },
@@ -53,6 +56,12 @@ const asyncUpdate = async (scheduler) => {
           data: ART,
           label: "Average Retransmissions",
           borderColor: "#cd3e6b",
+          fill: false
+        },
+        {
+          data: APS,
+          label: "Average Packet Size (bits)",
+          borderColor: "#32a852",
           fill: false
         }
       ]
