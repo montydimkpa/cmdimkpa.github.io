@@ -32,20 +32,20 @@ const asyncUpdate = async (scheduler) => {
           data: APD,
           label: "Average Packet Delay",
           borderColor: "#3e95cd",
-          fill: false,
+          fill: true,
           type : 'bar'
         }, {
           data: ASD,
           label: "Average Scheduler Delay",
           borderColor: "#8e5ea2",
-          fill: false,
+          fill: true,
           type : 'bar'
         },
         {
           data: ART,
           label: "Average Retransmissions",
           borderColor: "#8e5ea2",
-          fill: false,
+          fill: true,
           type: 'bar'
         }
       ]
