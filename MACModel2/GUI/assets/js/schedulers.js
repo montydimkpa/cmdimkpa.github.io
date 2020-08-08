@@ -32,6 +32,18 @@ const RelayOut = async (scheduler) => {
   }
 }
 
+const average = (arr) => {
+  sum = 0
+  arr.forEach(el => {
+    sum += el;
+  })
+  try {
+    return sum / arr.length
+  } catch(err){
+    return 0
+  }
+}
+
 const resetNetwork = async () => {
   await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Reset`).then(response => {
     console.log(response)
@@ -50,7 +62,13 @@ const asyncUpdate = async (scheduler) => {
   let ART = avgRetransmissions
   let PLR = packetLossRatio
   $('#thru_label').text(`${scheduler} Throughput: `);
+  $('#apd_label').text(`${scheduler} Avg. Packet Delay: `);
+  $('#asd_label').text(`${scheduler} Avg. Scheduler Delay: `);
+  $('#plr_label').text(`${scheduler} Avg. Packet Loss Ratio: `);
   $('#thru_value').text(`${packets} packets (${throughput.toLocaleString()} bits)`);
+  $('#apd_value').text(`${average(APD).toFixed(2)}ms`);
+  $('#asd_value').text(`${average(ASD).toFixed(2)}ms`);
+  $('#plr_value').text(`${average(PLR).toFixed(2)}%`);
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
