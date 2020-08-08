@@ -1,0 +1,1310 @@
+<div style="font-family: 'Lucida Grande', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; font-size: 0.9em; overflow-x: hidden; overflow-y: auto; margin: 0px !important; padding: 5px 20px 26px !important; background-color: rgb(255, 255, 255);font-family: 'Hiragino Sans GB', 'Microsoft YaHei', STHeiti, SimSun, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif; padding: 20px;padding: 20px; color: rgb(34, 34, 34); font-size: 15px; font-family: 'Roboto Condensed', Tauri, 'Hiragino Sans GB', 'Microsoft YaHei', STHeiti, SimSun, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; background: rgb(255, 255, 255);"><h2 id="mac-model-2:-lte-mac-model-simulation-and-scheduler-comparison-project" style="clear: both;font-size: 1.8em; font-weight: bold; margin: 1.275em 0px 0.85em;margin-top: 0px;border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(230, 230, 230);"><a name="mac-model-2:-lte-mac-model-simulation-and-scheduler-comparison-project" href="#mac-model-2:-lte-mac-model-simulation-and-scheduler-comparison-project" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>MAC Model 2: LTE MAC Model Simulation and Scheduler Comparison Project</h2><p style="margin-top: 0px;margin: 1em 0px; word-wrap: break-word;">Authors: R. Ochi, C. Dimkpa<br style="clear: both;">Last Updated: August 6, 2020</p><p style="undefined; margin: 0px !important;margin: 1em 0px; word-wrap: break-word;"></p><ul>
+<li style="display: list-item; line-height: 1.4em;"><ul>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#mac-model-2:-lte-mac-model-simulation-and-scheduler-comparison-project" title="MAC Model 2: LTE MAC Model Simulation and Scheduler Comparison Project" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">MAC Model 2: LTE MAC Model Simulation and Scheduler Comparison Project</a>
+</span>
+<!--span class="number">
+0
+</span-->
+<ul>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#abstract" title="Abstract" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Abstract</a>
+</span>
+<!--span class="number">
+1
+</span-->
+</li>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#literature-review" title="Literature Review" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Literature Review</a>
+</span>
+<!--span class="number">
+2
+</span-->
+</li>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#network-models" title="Network Models" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Network Models</a>
+</span>
+<!--span class="number">
+3
+</span-->
+</li>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#lte-network-model" title="LTE Network Model" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">LTE Network Model</a>
+</span>
+<!--span class="number">
+4
+</span-->
+</li>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#network-services-model" title="Network Services Model" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Network Services Model</a>
+</span>
+<!--span class="number">
+5
+</span-->
+</li>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#online-interfaces" title="Online Interfaces" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Online Interfaces</a>
+</span>
+<!--span class="number">
+6
+</span-->
+<ul>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#netlog" title="Netlog" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Netlog</a>
+</span>
+<!--span class="number">
+7
+</span-->
+</li>
+<li style="display: list-item; line-height: 1.4em;"><span class="title">
+<a href="#scheduler-performance-comparison" title="Scheduler Performance Comparison" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);">Scheduler Performance Comparison</a>
+</span>
+<!--span class="number">
+8
+</span-->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+
+</ul>
+<p style="margin: 1em 0px; word-wrap: break-word;"></p><h3 id="abstract" style="clear: both;font-size: 1.6em; font-weight: bold; margin: 1.125em 0px 0.75em;"><a name="abstract" href="#abstract" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Abstract</h3><h3 id="literature-review" style="clear: both;font-size: 1.6em; font-weight: bold; margin: 1.125em 0px 0.75em;"><a name="literature-review" href="#literature-review" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Literature Review</h3><h3 id="network-models" style="clear: both;font-size: 1.6em; font-weight: bold; margin: 1.125em 0px 0.75em;"><a name="network-models" href="#network-models" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Network Models</h3><pre style="border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); overflow: auto; padding: 0.5em;"><code data-origin="<pre><code>Project: MAC Layer Model Development
+
+based on the paper:
+
+S. Louvros, A. C. Iossifides, K. Aggelis, A. Baltagiannis and G. Economou, &quot;A Semi-Analytical Macroscopic MAC Layer Model for LTE Uplink,&quot; 
+2012 5th International Conference on New Technologies, Mobility and Security (NTMS), Istanbul, 2012, pp. 1-5.
+
+1. Inputs/Constraints:
+
+    - MAC packet size (MAC PS)
+    - Number of retransmissions (N RET)
+    - Bit Error Rate (BER)
+    - Allocated resources with respect to [cell load] (LOAD)
+    - Delay budget requirements posed by QCI (DELAY)
+
+
+2. Outputs:
+
+    - Scheduling criteria: 
+
+        - QoS service profile
+        - CQI reports
+        - UE uplink buffer sizes
+
+
+
+3. Network Configuration:
+
+
+                                          |&amp;lt;------------------------------------------------------- eNodeB Radio Interface (RI) ------------------------------^^^^----------&amp;gt;|     
+                                          |                                                                           
+                                          |           |&amp;lt;----------------------------------------- MAC Layer ------------------------------------&amp;gt;| 
+             Air Interface (AI)           |___________|                                                               |
+                                          |           |MAC Packets =                                     |            |
+                                          |           |Roundup(M_I_var bits/(M_mac_payload bits +        |            |
+                                          |           |M_over_header bits))                              |____________|
+UE 1 -----------------------------------&amp;gt; |           |-------------------------------------------------&amp;gt;|            |
+      (TCP/UDP IP Packet, M_I_var bits)   |           |                                                  |    MAC     |
+                                          |           |MAC Packets =                                     |  Simulator |QoS profile  ___________
+                                          | Physical  |Roundup(M_I_var bits/(M_mac_payload bits +        |  ________  |----------&amp;gt;|    MAC      |
+                                          |  Uplink   |M_over_header bits))                              | | MAC PS | |CQI Reports                IP transmission data rate
+UE 2 -----------------------------------&amp;gt; |  Control  |-------------------------------------------------&amp;gt;|  ________  |----------&amp;gt;|   Scheduler |---------------------------&amp;gt;
+      (TCP/UDP IP Packet, M_I_var bits)   |  Channel  |                                                  | | N RET  | |UL Buf.Size
+                                          |  (PUCCH)  |MAC Packets =                                     |  ________  |----------&amp;gt;| ___________ |
+                                          |           |Roundup(M_I_var bits/(M_mac_payload bits +        | |  BER   | |          
+                                          |           |M_over_header bits))                              |  ________  |
+UE 3 -----------------------------------&amp;gt; |           |-------------------------------------------------&amp;gt;| |  LOAD  | |
+      (TCP/UDP IP Packet, M_I_var bits)   |___________|                                                  |  ________  | 
+                                          |           |                                                  | |  DELAY | |
+                                          |           |                                                  |____________|
+                                          |                                                              |            |
+                                                                                                         |
+
+4. Project Build Milestones
+
+(a) Air Interface components - UE registration, IP packet transmission
+(b) Physical Uplink Control Channel - MAC Packets Modulation from transmitted IP packet
+(c) MAC Simulator - MAC PS, N RET, BER, LOAD, DELAY (using equations in paper)
+(d) Scheduler Inputs - QoS service profile, CQI reports, UE Uplink Buffer Sizes
+</code></pre>" style="border: 0px; display: block;font-family: Consolas, Inconsolata, Courier, monospace; font-weight: bold; white-space: pre; margin: 0px;border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); padding: 0px 5px; margin: 0px 2px;font-size: 1em; letter-spacing: -1px; font-weight: bold;">Project: MAC Layer Model Development
+
+based on the paper:
+
+S. Louvros, A. C. Iossifides, K. Aggelis, A. Baltagiannis and G. Economou, "A Semi-Analytical Macroscopic MAC Layer Model for LTE Uplink," 
+2012 5th International Conference on New Technologies, Mobility and Security (NTMS), Istanbul, 2012, pp. 1-5.
+
+1. Inputs/Constraints:
+
+    - MAC packet size (MAC PS)
+    - Number of retransmissions (N RET)
+    - Bit Error Rate (BER)
+    - Allocated resources with respect to [cell load] (LOAD)
+    - Delay budget requirements posed by QCI (DELAY)
+
+
+2. Outputs:
+
+    - Scheduling criteria: 
+
+        - QoS service profile
+        - CQI reports
+        - UE uplink buffer sizes
+
+
+
+3. Network Configuration:
+
+
+                                          |&lt;------------------------------------------------------- eNodeB Radio Interface (RI) ------------------------------^^^^----------&gt;|     
+                                          |                                                                           
+                                          |           |&lt;----------------------------------------- MAC Layer ------------------------------------&gt;| 
+             Air Interface (AI)           |___________|                                                               |
+                                          |           |MAC Packets =                                     |            |
+                                          |           |Roundup(M_I_var bits/(M_mac_payload bits +        |            |
+                                          |           |M_over_header bits))                              |____________|
+UE 1 -----------------------------------&gt; |           |-------------------------------------------------&gt;|            |
+      (TCP/UDP IP Packet, M_I_var bits)   |           |                                                  |    MAC     |
+                                          |           |MAC Packets =                                     |  Simulator |QoS profile  ___________
+                                          | Physical  |Roundup(M_I_var bits/(M_mac_payload bits +        |  ________  |----------&gt;|    MAC      |
+                                          |  Uplink   |M_over_header bits))                              | | MAC PS | |CQI Reports                IP transmission data rate
+UE 2 -----------------------------------&gt; |  Control  |-------------------------------------------------&gt;|  ________  |----------&gt;|   Scheduler |---------------------------&gt;
+      (TCP/UDP IP Packet, M_I_var bits)   |  Channel  |                                                  | | N RET  | |UL Buf.Size
+                                          |  (PUCCH)  |MAC Packets =                                     |  ________  |----------&gt;| ___________ |
+                                          |           |Roundup(M_I_var bits/(M_mac_payload bits +        | |  BER   | |          
+                                          |           |M_over_header bits))                              |  ________  |
+UE 3 -----------------------------------&gt; |           |-------------------------------------------------&gt;| |  LOAD  | |
+      (TCP/UDP IP Packet, M_I_var bits)   |___________|                                                  |  ________  | 
+                                          |           |                                                  | |  DELAY | |
+                                          |           |                                                  |____________|
+                                          |                                                              |            |
+                                                                                                         |
+
+4. Project Build Milestones
+
+(a) Air Interface components - UE registration, IP packet transmission
+(b) Physical Uplink Control Channel - MAC Packets Modulation from transmitted IP packet
+(c) MAC Simulator - MAC PS, N RET, BER, LOAD, DELAY (using equations in paper)
+(d) Scheduler Inputs - QoS service profile, CQI reports, UE Uplink Buffer Sizes
+</code></pre><h3 id="lte-network-model" style="clear: both;font-size: 1.6em; font-weight: bold; margin: 1.125em 0px 0.75em;"><a name="lte-network-model" href="#lte-network-model" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>LTE Network Model</h3><p style="margin-top: 0px;margin: 1em 0px; word-wrap: break-word;"><img src="https://raw.githubusercontent.com/cmdimkpa/PubImages/master/lte-network-server.png" alt="LTE Network Console" style="max-width: 100%;"></p><pre style="border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); overflow: auto; padding: 0.5em;display: block; overflow-x: auto; padding: 0.5em; color: rgb(101, 123, 131); background: rgb(253, 246, 227);"><code class="python" data-origin="<pre><code class=&quot;python&quot;>#============== Python3 Flask Model of LTE Sub Network ==============
+
+#   Version: 1.00
+#   Author: Monty Dimkpa
+
+#====================================================================
+
+
+#-------------- Importing required Python libraries --------------
+
+from flask import Flask, request, render_template
+from flask_cors import CORS
+import sys
+import os
+import json
+from random import random
+import datetime
+from hashlib import md5
+
+app = Flask(__name__)
+cors = CORS(app, resources={r&quot;/*&quot;: {&quot;origins&quot;: &quot;*&quot;}})
+
+global server_host, server_port, scheduler_events, empty_retry_limit, MAC_packet_size, transmission_bit_limit_per_tti,\
+       BER_baseline, retransmission_limit, packet_duplication, effective_delay_budget, min_IP_packet_size, max_IP_packet_size,\
+       Transmission, NETWORK_DATA
+
+#-------------- Network Initialization Parameters --------------
+
+server_host = &quot;localhost&quot;
+server_port = 5000
+scheduler_events = 0
+empty_retry_limit = 50
+NETWORK_DATA = {}
+
+#-------------- LTE Network Constants ------
+
+# Transmission Bandwidth = 20MHz
+# Number of RBs = 100 blocks
+# RB Frequency = 180KHz
+# 180 bits per block each TTI (1ms) x 100 blocks = 18000 bits per TTI (1ms)
+# Number of sub-carriers = 12
+MAC_packet_size = int(18000/12) # max bits per TTI divided by number of sub-carriers
+transmission_bit_limit_per_tti = 18000
+BER_baseline = 0.2 # Network Bit Error Rate baseline
+retransmission_limit = 6 # Network packet retransmission limit
+packet_duplication = 4 # Network packet duplication
+effective_delay_budget = 300 # effective packet delay budget of 300ms for LTE
+min_IP_packet_size = 500
+max_IP_packet_size = 2000
+
+#-------------- Base Classes --------------
+
+def now(): return datetime.datetime.today()
+
+def ms_elapsed(t): return int(1000*(now() - t).total_seconds())
+
+def Id():
+    hasher = md5(); hasher.update(str(now()).encode())
+    return hasher.hexdigest()
+
+def load_error_multiplier():
+    # higher packet delays in the PUCCH signal higher cell loads and a higher BER
+    try:
+        QueuedMACPackets = [loggable for loggable in read_netbuffer(&quot;PhysicalUplinkControlChannel&quot;, &quot;QueuedMACPackets&quot;)]
+        n_packets = len(QueuedMACPackets)
+        total_delay = 0
+        for packet in QueuedMACPackets:
+            total_delay += packet.header[0]
+        avg_delay = total_delay/n_packets
+        return avg_delay/effective_delay_budget
+    except Exception as e:
+        print(&quot;Error @ load_multiplier : %s&quot; % str(e))
+        return 1
+
+def is_transcoding_error(noise_level):
+    # cell loading increases the bit error rate
+    return noise_level &amp;lt; BER_baseline*load_error_multiplier()
+
+class IP_Packet:
+    # This class creates an IP Packet
+    def __init__(self, sessionId, size, source, time):
+        self.sessionId = sessionId
+        self.header = [size, source, time, 0, 0]
+        self.payload_bits = &quot;&quot;.join([str(int(random()*2)) for i in range(size)]).encode()  # initial random bits in IP packet
+    def loggable(self):
+        return self
+
+def MAC2IPSession(MAC_packet):
+    # this function converts a MAC packet back to an IP session for retransmission
+    session_time = now()
+    IP_packet = IP_Packet(MAC_packet.sessionId, MAC_packet.header[8], MAC_packet.header[1], session_time)
+    IP_packet.header[3] += MAC_packet.header[0]  # add retransmission delay
+    IP_packet.header[4] = MAC_packet.header[4]  # update retransmissions
+    IP_packet.payload_bits = MAC_packet.header[3]
+    return [MAC_packet.header[1], session_time, IP_packet.sessionId, 1, duplicate([IP_packet.loggable()], packet_duplication)]
+
+class MAC_Packet:
+    # this class creates a MAC packet
+    def __init__(self, sessionId, trans_bits, source, delay, source_bits, retransmissions, packetId, packet_index, n_mac_packets, size):
+        self.sessionId = sessionId
+        self.header = [delay, source, now(), source_bits, retransmissions, packetId, packet_index, n_mac_packets, size]
+        self.payload_bits = trans_bits
+    def loggable(self):
+        return self
+
+def transcode_bits(bits, plan):
+    # this is the bit transcoding function that copies bits from an IP packet stream into a new MAC packet
+    noise_level = random()*random()  # fixed random noise level during transcoding
+    field = [x for x in bits.decode()]
+    bands = []
+    for size in plan:
+        source = []; trans = []
+        for i in range(size):
+            bit = field.pop(0) # preserve bit order
+            source.append(bit)
+            # bit error will occur if cell load increases baseline BER above current noise level
+            if is_transcoding_error(noise_level):
+                trans.append(str(abs(int(float(bit)-1))))
+            else:
+                trans.append(bit)
+        bands.append([&quot;&quot;.join(source).encode(), &quot;&quot;.join(trans).encode()])
+    return bands
+
+def transcoding_plan(x, b):
+    # function for creating a plan to split a bit stream into smaller streams that are not greater than the MAC packet size
+    divs = x // b
+    rem = x % b
+    if divs:
+        if rem:
+            return [b for i in range(divs)]+[rem]
+        else:
+            return [b for i in range(divs)]
+    else:
+        return [x]
+
+def packet_size():
+    # returns an initial random size for an IP packet
+    return int(min_IP_packet_size + random()*(max_IP_packet_size - min_IP_packet_size))
+
+def duplicate(array, n):
+    # function to duplicate the IP packets n times given the original array
+    container = []
+    for i in range(n):
+        container+=array
+    return container
+
+def UESession(ip_address, n_packets):
+    # authenticates a UE and creates a session to handle the IP packet uplink
+    sessionId = Id()
+    session_time = now()
+    return [ip_address, session_time, sessionId, n_packets, duplicate([IP_Packet(sessionId, packet_size(), ip_address, session_time).loggable() for i in range(n_packets)], packet_duplication)]
+
+def NetworkDataManager(netbuffer_host_dir):
+    global NETWORK_DATA
+    NETWORK_DATA[netbuffer_host_dir] = {}
+    return NETWORK_DATA[netbuffer_host_dir]
+
+def register_new_netbuffer(netbuffer_host_dir, netbuffer_type):
+    global NETWORK_DATA
+    NETWORK_DATA[netbuffer_host_dir][netbuffer_type] = None;
+
+def write_netbuffer(netbuffer_host_dir, netbuffer_type, data):
+    global NETWORK_DATA
+    if netbuffer_type not in NETWORK_DATA[netbuffer_host_dir]:
+        register_new_netbuffer(netbuffer_host_dir, netbuffer_type)
+    NETWORK_DATA[netbuffer_host_dir][netbuffer_type] = data;
+    return data
+
+def read_netbuffer(netbuffer_host_dir, netbuffer_type):
+    try:
+        if netbuffer_type in NETWORK_DATA[netbuffer_host_dir]:
+            return NETWORK_DATA[netbuffer_host_dir][netbuffer_type]
+        else:
+            return None
+    except:
+        return None
+
+def log(sessionId, request, response):
+    # this is the logging function that produces color-coded records of events that occur in the network
+    def format():
+        colorMap = {
+            &quot;IP_PACKETS_RECEIVED&quot;: &quot;yellow&quot;,
+            &quot;MAC_PACKETS_MODULATED&quot;: &quot;cyan&quot;,
+            &quot;RETRANSMITTED_PACKET&quot;: &quot;orange&quot;,
+            &quot;QUEUED_PACKET&quot;: &quot;green&quot;,
+            &quot;REJECTED_PACKET&quot;: &quot;red&quot;,
+            &quot;SORTED_PACKET&quot;: &quot;pink&quot;,
+            &quot;SCHEDULER_EMPTY_STATE&quot; : &quot;yellow&quot;,
+            &quot;SCHEDULER_ALLOCATED_STATE&quot; : &quot;cyan&quot;,
+            &quot;SCHEDULED_PACKETS&quot; : &quot;orange&quot;
+        }
+        return str(now()), sessionId, colorMap[request], request, response
+    Log = read_netbuffer(&quot;NetLog&quot;, &quot;log&quot;)
+    if Log:
+        Log.append(format())
+    else:
+        Log = [format()]
+    write_netbuffer(&quot;NetLog&quot;, &quot;log&quot;, Log)
+    return None
+
+#-------------- Component Data Models --------------
+
+AirInterface = NetworkDataManager(&quot;AirInterface&quot;) # Handles initial packets entering the network
+PhysicalUplinkControlChannel = NetworkDataManager(&quot;PhysicalUplinkControlChannel&quot;) # Modulates IP packets to MAC packets
+MAC = NetworkDataManager(&quot;MAC&quot;) # validates packets and handles retransmissions or queueing of verified packets
+Scheduler = NetworkDataManager(&quot;Scheduler&quot;) # sorts verified packets and schedules transmission of packets
+Transmission = {
+    &quot;RR&quot; : { &quot;locked&quot; : None, &quot;packets&quot; : [], &quot;empty_retries&quot; : 0,  &quot;data&quot; : [] },
+    &quot;PF&quot; : { &quot;locked&quot; : None, &quot;packets&quot; : [], &quot;empty_retries&quot; : 0,  &quot;data&quot; : [] },
+    &quot;NV&quot; : { &quot;locked&quot; : None, &quot;packets&quot; : [], &quot;empty_retries&quot; : 0,  &quot;data&quot; : [] }
+}
+def transmit(locked, scheduler, packet):
+    # transmits and terminates scheduled packets
+    global Transmission
+    scheduler_delay = ms_elapsed(packet.header[-1]);
+    if (len(Transmission[scheduler][&quot;data&quot;]) == 0):
+        Transmission[scheduler][&quot;data&quot;].append({
+            &quot;sessionId&quot; : locked,
+            &quot;QoS&quot; : {
+                 &quot;packets_received&quot; : 1,
+                 &quot;total_packet_delay&quot; : packet.header[0],
+                 &quot;total_retransmissions&quot; : packet.header[4],
+                 &quot;total_scheduler_delay&quot; : scheduler_delay
+            }
+        })
+    else:
+        if (Transmission[scheduler][&quot;data&quot;][-1][&quot;sessionId&quot;] == locked):
+            Transmission[scheduler][&quot;data&quot;][-1][&quot;QoS&quot;][&quot;packets_received&quot;]+=1
+            Transmission[scheduler][&quot;data&quot;][-1][&quot;QoS&quot;][&quot;total_packet_delay&quot;]+=packet.header[0]
+            Transmission[scheduler][&quot;data&quot;][-1][&quot;QoS&quot;][&quot;total_retransmissions&quot;]+=packet.header[4]
+            Transmission[scheduler][&quot;data&quot;][-1][&quot;QoS&quot;][&quot;total_scheduler_delay&quot;]+=scheduler_delay
+        else:
+            Transmission[scheduler][&quot;data&quot;].append({
+                &quot;sessionId&quot; : locked,
+                &quot;QoS&quot; : {
+                     &quot;packets_received&quot; : 1,
+                     &quot;total_packet_delay&quot; : packet.header[0],
+                     &quot;total_retransmissions&quot; : packet.header[4],
+                     &quot;total_scheduler_delay&quot; : scheduler_delay
+                }
+            })
+    # release scheduler if max packets transmitted
+    max_packets = packet.header[7]
+    if Transmission[scheduler][&quot;data&quot;][-1][&quot;QoS&quot;][&quot;packets_received&quot;] == max_packets:
+        Transmission[scheduler][&quot;locked&quot;] = None
+        Transmission[scheduler][&quot;packets&quot;] = []
+        Transmission[scheduler][&quot;empty_retries&quot;] = 0
+    return 200
+
+NetLog = NetworkDataManager(&quot;NetLog&quot;) # records events in the network
+
+#-------------- Network Endpoints --------------
+
+# transmission API
+@app.route(&quot;/SubNetworkLTE/Transmission/API&quot;)
+def TransmissionData():
+    return json.dumps(Transmission)
+
+# schedule packets
+@app.route(&quot;/SubNetworkLTE/Scheduler/Schedule&quot;)
+def SchedulePackets():
+    global Transmission, scheduler_events
+    def RR(locked, packets):
+        # check size constraint
+        total_size = sum([packet.header[-2] for packet in packets]);
+        if (total_size &amp;lt;= transmission_bit_limit_per_tti):
+            # send all packets
+            group = packets; group_size = total_size
+            process = [transmit(locked, &quot;RR&quot;, packet) for packet in group];
+            packets = []
+        else:
+            # audit and send on FIFO basis
+            group = []; group_size = 0
+            while (group_size &amp;lt;= transmission_bit_limit_per_tti):
+                packet = packets[-1]
+                group_size+=packet.header[-2]
+                group.append(packets.pop())
+            # send group
+            process = [transmit(locked, &quot;RR&quot;, packet) for packet in group];
+        # update transmission
+        Transmission[&quot;RR&quot;][&quot;locked&quot;] = locked
+        Transmission[&quot;RR&quot;][&quot;packets&quot;] = packets
+        log(locked, &quot;SCHEDULED_PACKETS&quot;, &quot;%s packets with total size: %s bits were scheduled by: %s&quot; % (len(group), group_size, &quot;RR&quot;))
+        return &quot;%s: %s&quot; % (200, &quot;Packets were scheduled (%s bits)&quot; % group_size)
+    def isolate_free_MAC_packets(isolated=None):
+        SortedPackets = read_netbuffer(&quot;Scheduler&quot;, &quot;SortedPackets&quot;);
+        if not isolated:
+            packets = None;
+            for sessionId in SortedPackets:
+                if not SortedPackets[sessionId][&quot;busy&quot;]:
+                    isolated = sessionId
+                    SortedPackets[sessionId][&quot;busy&quot;] = True;  # lock this queue
+                    break;
+        try:
+            # detach packets
+            packets = SortedPackets[isolated][&quot;packets&quot;]
+            SortedPackets[isolated][&quot;packets&quot;] = []
+        except:
+            pass
+        # update SortedPackets
+        write_netbuffer(&quot;Scheduler&quot;, &quot;SortedPackets&quot;, SortedPackets);
+        return isolated, packets
+    try:
+        scheduler_events+=1
+        schedulers = [&quot;RR&quot;] #, &quot;PF&quot;, &quot;NV&quot;
+        scheduler = schedulers[scheduler_events % len(schedulers)]
+        # allocation
+        locked = Transmission[scheduler][&quot;locked&quot;];
+        packets = Transmission[scheduler][&quot;packets&quot;];
+        if (len(packets) == 0 and locked):
+            # empty session
+            Transmission[scheduler][&quot;empty_retries&quot;]+=1
+            # are we over the limit? if yes, reset
+            if (Transmission[scheduler][&quot;empty_retries&quot;] &amp;gt; empty_retry_limit):
+                Transmission[scheduler][&quot;locked&quot;] = None
+                Transmission[scheduler][&quot;packets&quot;] = []
+                Transmission[scheduler][&quot;empty_retries&quot;] = 0
+            log(locked, &quot;SCHEDULER_EMPTY_STATE&quot;, &quot;Scheduler: %s returned empty state with: %s retries&quot; % (scheduler, Transmission[scheduler][&quot;empty_retries&quot;]))
+            return &quot;%s: %s&quot; % (204, &quot;Scheduler : %s empty state&quot; % scheduler)
+        elif (len(packets) &amp;gt; 0 and locked):
+            # continue existing work
+            pass
+        else:
+            # new session
+            locked, packets = isolate_free_MAC_packets(locked);
+            # register on Transmission
+            Transmission[scheduler][&quot;locked&quot;] = locked;
+            Transmission[scheduler][&quot;packets&quot;] = packets;
+            log(locked, &quot;SCHEDULER_ALLOCATED_STATE&quot;, &quot;Scheduler: %s has been allocated %s packets&quot; % (scheduler, len(packets)))
+        if (scheduler == &quot;RR&quot;):
+            return RR(locked, packets)
+    except Exception as e:
+        print(&quot;Error @ scheduler : %s&quot; % str(e))
+        return &quot;%s: %s&quot; % (400, str(e))
+
+# scheduler comparison GUI
+@app.route(&quot;/SubNetworkLTE/Schedulers/GUI&quot;)
+def SchedulersGUI():
+    return render_template(&quot;schedulers.html&quot;)
+
+# simulation agent firing mechanism for returning activity logs
+@app.route(&quot;/SubNetworkLTE/NetLog&quot;)
+def ShowActivity():
+    Log = read_netbuffer(&quot;NetLog&quot;, &quot;log&quot;)
+    if Log:
+        html = '&amp;lt;html&amp;gt;&amp;lt;meta http-equiv=&quot;refresh&quot; content=&quot;5&quot;&amp;gt;&amp;lt;body bgcolor=&quot;black&quot;&amp;gt;&amp;lt;div style=&quot;color: white; font-family: consolas; font-size:12;&quot;&amp;gt;%s&amp;lt;/div&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;'
+        spool = &quot;&quot;; count = -1
+        for log in Log[::-1]:
+            count+=1
+            spool += '&amp;lt;p&amp;gt;&amp;lt;b&amp;gt;%s --&amp;gt; &amp;lt;/b&amp;gt;[%s] &amp;lt;span style=&quot;color: %s;&quot;&amp;gt;[%s]&amp;lt;/span&amp;gt; [%s]' % log + ' (#%s)&amp;lt;/p&amp;gt;' % str(len(Log) - count)
+        return html % spool
+    else:
+        return &quot;%s: %s&quot; % (404, &quot;No activity logs found&quot;)
+
+# simulation agent firing mechanism for sorting verified packets
+@app.route(&quot;/SubNetworkLTE/Scheduler/Sorter&quot;)
+def SortPackets():
+    try:
+        TransmissionQueue = read_netbuffer(&quot;MAC&quot;, &quot;TransmissionQueue&quot;)
+        packet = TransmissionQueue.pop()  # release a MAC packet
+        # add scheduler start
+        packet.header.append(now())
+        write_netbuffer(&quot;MAC&quot;, &quot;TransmissionQueue&quot;, TransmissionQueue)
+        sessionId = packet.sessionId
+        SortedPackets = read_netbuffer(&quot;Scheduler&quot;, &quot;SortedPackets&quot;)
+        if SortedPackets:
+            if sessionId in SortedPackets:
+                SortedPackets[sessionId][&quot;packets&quot;].insert(0, packet.loggable())
+            else:
+                SortedPackets[sessionId] = { &quot;busy&quot; : False, &quot;packets&quot; : [packet.loggable()] }
+        else:
+            SortedPackets = {sessionId: { &quot;busy&quot; : False, &quot;packets&quot; : [packet.loggable()] }}
+        write_netbuffer(&quot;Scheduler&quot;, &quot;SortedPackets&quot;, SortedPackets)
+        log(sessionId, &quot;SORTED_PACKET&quot;, &quot;1 packet with id: %s was sorted (%s bits)&quot; % (packet.header[5], packet.header[8]))
+        return &quot;%s: %s&quot; % (201, &quot;Packet was sorted (%s bits)&quot; % packet.header[8])
+    except Exception as e:
+        print(&quot;Error @ sorter : %s&quot; % str(e))
+        return &quot;%s: %s&quot; % (404, &quot;No packet found&quot;)
+
+# simulation agent firing mechanism for validating packet integrity
+@app.route(&quot;/SubNetworkLTE/MAC/Profiler&quot;)
+def ProfilePackets():
+    def retransmit(packet):
+        # check if retransmission_limit reached
+        if packet.header[4] + 1 &amp;gt; retransmission_limit:
+            # reject this MAC packet
+            RejectedPackets = read_netbuffer(&quot;MAC&quot;, &quot;RejectedPackets&quot;)
+            if RejectedPackets:
+                RejectedPackets.append(packet.loggable())
+            else:
+                RejectedPackets = [packet.loggable()]
+            write_netbuffer(&quot;MAC&quot;, &quot;RejectedPackets&quot;, RejectedPackets)
+            log(packet.sessionId, &quot;REJECTED_PACKET&quot;, &quot;1 packet with id: %s was rejected (%s bits)&quot; % (packet.header[5], packet.header[8]))
+            return &quot;%s: %s&quot; % (204, &quot;Packet was rejected (%s bits)&quot; % packet.header[8])
+        else:
+            packet.header[4]+=1
+            retransmitted_session = MAC2IPSession(packet) # convert MAC packet back to IP session
+            UERegister = read_netbuffer(&quot;AirInterface&quot;, &quot;UERegister&quot;)
+            if UERegister:
+                UERegister.append(retransmitted_session)  # lower priority for unvalidated retransmitted packets
+            else:
+                UERegister = [retransmitted_session]
+            write_netbuffer(&quot;AirInterface&quot;, &quot;UERegister&quot;, UERegister) # retransmit IP session
+            log(packet.sessionId, &quot;RETRANSMITTED_PACKET&quot;, &quot;1 packet with id: %s was retransmitted (%s bits)&quot; % (packet.header[5], packet.header[8]))
+            return &quot;%s: %s&quot; % (200, &quot;Packet was retransmitted (%s bits)&quot; % packet.header[8])
+    def queue(packet):
+        TransmissionQueue = read_netbuffer(&quot;MAC&quot;, &quot;TransmissionQueue&quot;)
+        if TransmissionQueue:
+            TransmissionQueue.insert(0, packet.loggable())  # FIFO
+        else:
+            TransmissionQueue = [packet.loggable()]
+        write_netbuffer(&quot;MAC&quot;, &quot;TransmissionQueue&quot;, TransmissionQueue) # queue this transmittable MAC packet
+        log(packet.sessionId, &quot;QUEUED_PACKET&quot;, &quot;1 packet with id: %s was queued (%s bits)&quot; % (packet.header[5], packet.header[8]))
+        return &quot;%s: %s&quot; % (201, &quot;Packet was queued (%s bits)&quot; % packet.header[8])
+    packet = None
+    try:
+        QueuedMACPackets = read_netbuffer(&quot;PhysicalUplinkControlChannel&quot;, &quot;QueuedMACPackets&quot;)
+        packet = QueuedMACPackets.pop() # release a MAC packet
+        write_netbuffer(&quot;PhysicalUplinkControlChannel&quot;, &quot;QueuedMACPackets&quot;, QueuedMACPackets)
+        # test MAC packet for errors, handle contextually
+        if packet.payload_bits == packet.header[3]:
+            return queue(packet)
+        else:
+            return retransmit(packet)
+    except Exception as e:
+        print(&quot;Error @ profiler : %s&quot; % str(e))
+        return &quot;%s: %s&quot; % (404, &quot;No packet found&quot;)
+
+# simulation agent firing mechanism for transcoding IP packets to MAC packets
+@app.route(&quot;/SubNetworkLTE/PhysicalUplinkControlChannel/Modulation&quot;)
+def ModulatePackets():
+    session = None
+    UERegister = read_netbuffer(&quot;AirInterface&quot;, &quot;UERegister&quot;)
+    if UERegister:
+        session = UERegister.pop()
+        write_netbuffer(&quot;AirInterface&quot;, &quot;UERegister&quot;, UERegister)
+        ip_address, session_time, sessionId, n_packets, ip_packets_loggable = session
+        ip_packets = [log for log in ip_packets_loggable]
+        # Packet Modulation
+        delay = ms_elapsed(session_time); modulated = 0
+        for packet in ip_packets:
+            delay+=packet.header[3]  # add retransmission delay
+            mod_started = now()
+            MAC_packets = []
+            packetId = Id()
+            field = transcode_bits(packet.payload_bits, transcoding_plan(packet.header[0], MAC_packet_size))
+            packet_index = -1
+            for band in field:
+                packet_index+=1
+                source_bits, trans_bits = band
+                mod_delay = ms_elapsed(mod_started); delay+=mod_delay # add modulation delay
+                # FIFO Queue, preserve retransmissions
+                MAC_packets.insert(0, MAC_Packet(sessionId, trans_bits, ip_address, delay, source_bits, packet.header[4], packetId, packet_index, len(field), len(trans_bits)).loggable())
+            modulated+=len(MAC_packets)
+            QueuedMACPackets = read_netbuffer(&quot;PhysicalUplinkControlChannel&quot;, &quot;QueuedMACPackets&quot;)
+            if QueuedMACPackets:
+                QueuedMACPackets = MAC_packets + QueuedMACPackets # ensure FIFO
+            else:
+                QueuedMACPackets = MAC_packets
+            write_netbuffer(&quot;PhysicalUplinkControlChannel&quot;, &quot;QueuedMACPackets&quot;, QueuedMACPackets)
+            log(sessionId, &quot;MAC_PACKETS_MODULATED&quot;, &quot;%s MAC packets from session %s delayed %sms&quot; % (len(MAC_packets), sessionId, mod_delay))
+        return &quot;%s: %s&quot; % (200, &quot;Successfully modulated %s packets&quot; % modulated)
+    else:
+        return &quot;%s: %s&quot; % (404, &quot;No session found&quot;)
+
+# simulation agent firing mechanism for authenticating UE sessions and receiving IP packets
+@app.route(&quot;/SubNetworkLTE/AirInterface/UERegistration/&amp;lt;path:n_packets&amp;gt;&quot;)
+def UERegistration(n_packets):
+    ip_address = request.remote_addr
+    try:
+        session = UESession(ip_address, int(n_packets))
+    except Exception as e:
+        print(&quot;Error @ create_session : %s&quot; % str(e))
+        return &quot;%s: %s&quot; % (400, &quot;Error creating session: packet_size not specified&quot;)
+    UERegister = read_netbuffer(&quot;AirInterface&quot;, &quot;UERegister&quot;)
+    if UERegister:
+        UERegister.insert(0, session)  #FIFO Queue
+    else:
+        UERegister = [session]
+    write_netbuffer(&quot;AirInterface&quot;, &quot;UERegister&quot;, UERegister)
+    log(session[2], &quot;IP_PACKETS_RECEIVED&quot;, 'UE at &amp;lt;span style=&quot;color: cyan;&quot;&amp;gt;%s&amp;lt;/span&amp;gt; sent %s IP packets of %s bits' % (ip_address, n_packets, sum([loggable.header[0] for loggable in session[4]])))
+    return &quot;%s: %s&quot; % (200, &quot;Successfully registered %s packets&quot; % n_packets)
+
+if __name__ == &quot;__main__&quot;:
+    app.run(host=server_host, port=server_port, threaded=True)
+</code></pre>" style="border: 0px; display: block;font-family: Consolas, Inconsolata, Courier, monospace; font-weight: bold; white-space: pre; margin: 0px;border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); padding: 0px 5px; margin: 0px 2px;font-size: 1em; letter-spacing: -1px; font-weight: bold;"><span class="hljs-comment" style="color: rgb(147, 161, 161);">#============== Python3 Flask Model of LTE Sub Network ==============</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#   Version: 1.00</span>
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#   Author: Monty Dimkpa</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#====================================================================</span>
+
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#-------------- Importing required Python libraries --------------</span>
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">from</span> flask <span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> Flask, request, render_template
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">from</span> flask_cors <span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> CORS
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> sys
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> os
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> json
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">from</span> random <span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> random
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> datetime
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">from</span> hashlib <span class="hljs-keyword" style="color: rgb(133, 153, 0);">import</span> md5
+
+app = Flask(__name__)
+cors = CORS(app, resources={<span class="hljs-string" style="color: rgb(42, 161, 152);">r"/*"</span>: {<span class="hljs-string" style="color: rgb(42, 161, 152);">"origins"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"*"</span>}})
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">global</span> server_host, server_port, scheduler_events, empty_retry_limit, MAC_packet_size, transmission_bit_limit_per_tti,\
+       BER_baseline, retransmission_limit, packet_duplication, effective_delay_budget, min_IP_packet_size, max_IP_packet_size,\
+       Transmission, NETWORK_DATA
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#-------------- Network Initialization Parameters --------------</span>
+
+server_host = <span class="hljs-string" style="color: rgb(42, 161, 152);">"localhost"</span>
+server_port = <span class="hljs-number" style="color: rgb(42, 161, 152);">5000</span>
+scheduler_events = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>
+empty_retry_limit = <span class="hljs-number" style="color: rgb(42, 161, 152);">50</span>
+NETWORK_DATA = {}
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#-------------- LTE Network Constants ------</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># Transmission Bandwidth = 20MHz</span>
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># Number of RBs = 100 blocks</span>
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># RB Frequency = 180KHz</span>
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># 180 bits per block each TTI (1ms) x 100 blocks = 18000 bits per TTI (1ms)</span>
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># Number of sub-carriers = 12</span>
+MAC_packet_size = int(<span class="hljs-number" style="color: rgb(42, 161, 152);">18000</span>/<span class="hljs-number" style="color: rgb(42, 161, 152);">12</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># max bits per TTI divided by number of sub-carriers</span>
+transmission_bit_limit_per_tti = <span class="hljs-number" style="color: rgb(42, 161, 152);">18000</span>
+BER_baseline = <span class="hljs-number" style="color: rgb(42, 161, 152);">0.2</span> <span class="hljs-comment" style="color: rgb(147, 161, 161);"># Network Bit Error Rate baseline</span>
+retransmission_limit = <span class="hljs-number" style="color: rgb(42, 161, 152);">6</span> <span class="hljs-comment" style="color: rgb(147, 161, 161);"># Network packet retransmission limit</span>
+packet_duplication = <span class="hljs-number" style="color: rgb(42, 161, 152);">4</span> <span class="hljs-comment" style="color: rgb(147, 161, 161);"># Network packet duplication</span>
+effective_delay_budget = <span class="hljs-number" style="color: rgb(42, 161, 152);">300</span> <span class="hljs-comment" style="color: rgb(147, 161, 161);"># effective packet delay budget of 300ms for LTE</span>
+min_IP_packet_size = <span class="hljs-number" style="color: rgb(42, 161, 152);">500</span>
+max_IP_packet_size = <span class="hljs-number" style="color: rgb(42, 161, 152);">2000</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#-------------- Base Classes --------------</span>
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">now</span><span class="hljs-params">()</span>:</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> datetime.datetime.today()
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">ms_elapsed</span><span class="hljs-params">(t)</span>:</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> int(<span class="hljs-number" style="color: rgb(42, 161, 152);">1000</span>*(now() - t).total_seconds())
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">Id</span><span class="hljs-params">()</span>:</span>
+    hasher = md5(); hasher.update(str(now()).encode())
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> hasher.hexdigest()
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">load_error_multiplier</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># higher packet delays in the PUCCH signal higher cell loads and a higher BER</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+        QueuedMACPackets = [loggable <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> loggable <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"PhysicalUplinkControlChannel"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"QueuedMACPackets"</span>)]
+        n_packets = len(QueuedMACPackets)
+        total_delay = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> packet <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> QueuedMACPackets:
+            total_delay += packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>]
+        avg_delay = total_delay/n_packets
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> avg_delay/effective_delay_budget
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span> Exception <span class="hljs-keyword" style="color: rgb(133, 153, 0);">as</span> e:
+        print(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Error @ load_multiplier : %s"</span> % str(e))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">is_transcoding_error</span><span class="hljs-params">(noise_level)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># cell loading increases the bit error rate</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> noise_level &lt; BER_baseline*load_error_multiplier()
+
+<span class="hljs-class"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">class</span> <span class="hljs-title" style="color: rgb(38, 139, 210);color: rgb(181, 137, 0);">IP_Packet</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># This class creates an IP Packet</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">__init__</span><span class="hljs-params">(self, sessionId, size, source, time)</span>:</span>
+        self.sessionId = sessionId
+        self.header = [size, source, time, <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>, <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>]
+        self.payload_bits = <span class="hljs-string" style="color: rgb(42, 161, 152);">""</span>.join([str(int(random()*<span class="hljs-number" style="color: rgb(42, 161, 152);">2</span>)) <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> i <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> range(size)]).encode()  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># initial random bits in IP packet</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">loggable</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> self
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">MAC2IPSession</span><span class="hljs-params">(MAC_packet)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># this function converts a MAC packet back to an IP session for retransmission</span>
+    session_time = now()
+    IP_packet = IP_Packet(MAC_packet.sessionId, MAC_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>], MAC_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>], session_time)
+    IP_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">3</span>] += MAC_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>]  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># add retransmission delay</span>
+    IP_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>] = MAC_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>]  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># update retransmissions</span>
+    IP_packet.payload_bits = MAC_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">3</span>]
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> [MAC_packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>], session_time, IP_packet.sessionId, <span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>, duplicate([IP_packet.loggable()], packet_duplication)]
+
+<span class="hljs-class"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">class</span> <span class="hljs-title" style="color: rgb(38, 139, 210);color: rgb(181, 137, 0);">MAC_Packet</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># this class creates a MAC packet</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">__init__</span><span class="hljs-params">(self, sessionId, trans_bits, source, delay, source_bits, retransmissions, packetId, packet_index, n_mac_packets, size)</span>:</span>
+        self.sessionId = sessionId
+        self.header = [delay, source, now(), source_bits, retransmissions, packetId, packet_index, n_mac_packets, size]
+        self.payload_bits = trans_bits
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">loggable</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> self
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">transcode_bits</span><span class="hljs-params">(bits, plan)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># this is the bit transcoding function that copies bits from an IP packet stream into a new MAC packet</span>
+    noise_level = random()*random()  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># fixed random noise level during transcoding</span>
+    field = [x <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> x <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> bits.decode()]
+    bands = []
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> size <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> plan:
+        source = []; trans = []
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> i <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> range(size):
+            bit = field.pop(<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># preserve bit order</span>
+            source.append(bit)
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># bit error will occur if cell load increases baseline BER above current noise level</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> is_transcoding_error(noise_level):
+                trans.append(str(abs(int(float(bit)-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>))))
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+                trans.append(bit)
+        bands.append([<span class="hljs-string" style="color: rgb(42, 161, 152);">""</span>.join(source).encode(), <span class="hljs-string" style="color: rgb(42, 161, 152);">""</span>.join(trans).encode()])
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> bands
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">transcoding_plan</span><span class="hljs-params">(x, b)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># function for creating a plan to split a bit stream into smaller streams that are not greater than the MAC packet size</span>
+    divs = x // b
+    rem = x % b
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> divs:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> rem:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> [b <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> i <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> range(divs)]+[rem]
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> [b <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> i <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> range(divs)]
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> [x]
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">packet_size</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># returns an initial random size for an IP packet</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> int(min_IP_packet_size + random()*(max_IP_packet_size - min_IP_packet_size))
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">duplicate</span><span class="hljs-params">(array, n)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># function to duplicate the IP packets n times given the original array</span>
+    container = []
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> i <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> range(n):
+        container+=array
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> container
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">UESession</span><span class="hljs-params">(ip_address, n_packets)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># authenticates a UE and creates a session to handle the IP packet uplink</span>
+    sessionId = Id()
+    session_time = now()
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> [ip_address, session_time, sessionId, n_packets, duplicate([IP_Packet(sessionId, packet_size(), ip_address, session_time).loggable() <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> i <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> range(n_packets)], packet_duplication)]
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">NetworkDataManager</span><span class="hljs-params">(netbuffer_host_dir)</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">global</span> NETWORK_DATA
+    NETWORK_DATA[netbuffer_host_dir] = {}
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> NETWORK_DATA[netbuffer_host_dir]
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">register_new_netbuffer</span><span class="hljs-params">(netbuffer_host_dir, netbuffer_type)</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">global</span> NETWORK_DATA
+    NETWORK_DATA[netbuffer_host_dir][netbuffer_type] = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>;
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">write_netbuffer</span><span class="hljs-params">(netbuffer_host_dir, netbuffer_type, data)</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">global</span> NETWORK_DATA
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> netbuffer_type <span class="hljs-keyword" style="color: rgb(133, 153, 0);">not</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> NETWORK_DATA[netbuffer_host_dir]:
+        register_new_netbuffer(netbuffer_host_dir, netbuffer_type)
+    NETWORK_DATA[netbuffer_host_dir][netbuffer_type] = data;
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> data
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">read_netbuffer</span><span class="hljs-params">(netbuffer_host_dir, netbuffer_type)</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> netbuffer_type <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> NETWORK_DATA[netbuffer_host_dir]:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> NETWORK_DATA[netbuffer_host_dir][netbuffer_type]
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span>:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">log</span><span class="hljs-params">(sessionId, request, response)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># this is the logging function that produces color-coded records of events that occur in the network</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">format</span><span class="hljs-params">()</span>:</span>
+        colorMap = {
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"IP_PACKETS_RECEIVED"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"yellow"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC_PACKETS_MODULATED"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"cyan"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"RETRANSMITTED_PACKET"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"orange"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"QUEUED_PACKET"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"green"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"REJECTED_PACKET"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"red"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"SORTED_PACKET"</span>: <span class="hljs-string" style="color: rgb(42, 161, 152);">"pink"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"SCHEDULER_EMPTY_STATE"</span> : <span class="hljs-string" style="color: rgb(42, 161, 152);">"yellow"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"SCHEDULER_ALLOCATED_STATE"</span> : <span class="hljs-string" style="color: rgb(42, 161, 152);">"cyan"</span>,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"SCHEDULED_PACKETS"</span> : <span class="hljs-string" style="color: rgb(42, 161, 152);">"orange"</span>
+        }
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> str(now()), sessionId, colorMap[request], request, response
+    Log = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"NetLog"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"log"</span>)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> Log:
+        Log.append(format())
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+        Log = [format()]
+    write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"NetLog"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"log"</span>, Log)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#-------------- Component Data Models --------------</span>
+
+AirInterface = NetworkDataManager(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># Handles initial packets entering the network</span>
+PhysicalUplinkControlChannel = NetworkDataManager(<span class="hljs-string" style="color: rgb(42, 161, 152);">"PhysicalUplinkControlChannel"</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># Modulates IP packets to MAC packets</span>
+MAC = NetworkDataManager(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># validates packets and handles retransmissions or queueing of verified packets</span>
+Scheduler = NetworkDataManager(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler"</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># sorts verified packets and schedules transmission of packets</span>
+Transmission = {
+    <span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span> : { <span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span> : <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span> : [], <span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span> : <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>,  <span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span> : [] },
+    <span class="hljs-string" style="color: rgb(42, 161, 152);">"PF"</span> : { <span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span> : <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span> : [], <span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span> : <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>,  <span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span> : [] },
+    <span class="hljs-string" style="color: rgb(42, 161, 152);">"NV"</span> : { <span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span> : <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span> : [], <span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span> : <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>,  <span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span> : [] }
+}
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">transmit</span><span class="hljs-params">(locked, scheduler, packet)</span>:</span>
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># transmits and terminates scheduled packets</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">global</span> Transmission
+    scheduler_delay = ms_elapsed(packet.header[-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>]);
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> (len(Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>]) == <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>):
+        Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>].append({
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"sessionId"</span> : locked,
+            <span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span> : {
+                 <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets_received"</span> : <span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>,
+                 <span class="hljs-string" style="color: rgb(42, 161, 152);">"total_packet_delay"</span> : packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>],
+                 <span class="hljs-string" style="color: rgb(42, 161, 152);">"total_retransmissions"</span> : packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>],
+                 <span class="hljs-string" style="color: rgb(42, 161, 152);">"total_scheduler_delay"</span> : scheduler_delay
+            }
+        })
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> (Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>][-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"sessionId"</span>] == locked):
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>][-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets_received"</span>]+=<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>][-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"total_packet_delay"</span>]+=packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>]
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>][-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"total_retransmissions"</span>]+=packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>]
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>][-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"total_scheduler_delay"</span>]+=scheduler_delay
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>].append({
+                <span class="hljs-string" style="color: rgb(42, 161, 152);">"sessionId"</span> : locked,
+                <span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span> : {
+                     <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets_received"</span> : <span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>,
+                     <span class="hljs-string" style="color: rgb(42, 161, 152);">"total_packet_delay"</span> : packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>],
+                     <span class="hljs-string" style="color: rgb(42, 161, 152);">"total_retransmissions"</span> : packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>],
+                     <span class="hljs-string" style="color: rgb(42, 161, 152);">"total_scheduler_delay"</span> : scheduler_delay
+                }
+            })
+    <span class="hljs-comment" style="color: rgb(147, 161, 161);"># release scheduler if max packets transmitted</span>
+    max_packets = packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">7</span>]
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"data"</span>][-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"QoS"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets_received"</span>] == max_packets:
+        Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span>] = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+        Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>] = []
+        Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span>] = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-number" style="color: rgb(42, 161, 152);">200</span>
+
+NetLog = NetworkDataManager(<span class="hljs-string" style="color: rgb(42, 161, 152);">"NetLog"</span>) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># records events in the network</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">#-------------- Network Endpoints --------------</span>
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># transmission API</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/Transmission/API")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">TransmissionData</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> json.dumps(Transmission)
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># schedule packets</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/Scheduler/Schedule")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">SchedulePackets</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">global</span> Transmission, scheduler_events
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">RR</span><span class="hljs-params">(locked, packets)</span>:</span>
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># check size constraint</span>
+        total_size = sum([packet.header[-<span class="hljs-number" style="color: rgb(42, 161, 152);">2</span>] <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> packet <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> packets]);
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> (total_size &lt;= transmission_bit_limit_per_tti):
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># send all packets</span>
+            group = packets; group_size = total_size
+            process = [transmit(locked, <span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>, packet) <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> packet <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> group];
+            packets = []
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># audit and send on FIFO basis</span>
+            group = []; group_size = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">while</span> (group_size &lt;= transmission_bit_limit_per_tti):
+                packet = packets[-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>]
+                group_size+=packet.header[-<span class="hljs-number" style="color: rgb(42, 161, 152);">2</span>]
+                group.append(packets.pop())
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># send group</span>
+            process = [transmit(locked, <span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>, packet) <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> packet <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> group];
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># update transmission</span>
+        Transmission[<span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span>] = locked
+        Transmission[<span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>] = packets
+        log(locked, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SCHEDULED_PACKETS"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s packets with total size: %s bits were scheduled by: %s"</span> % (len(group), group_size, <span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">200</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Packets were scheduled (%s bits)"</span> % group_size)
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">isolate_free_MAC_packets</span><span class="hljs-params">(isolated=None)</span>:</span>
+        SortedPackets = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SortedPackets"</span>);
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">not</span> isolated:
+            packets = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>;
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> sessionId <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> SortedPackets:
+                <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">not</span> SortedPackets[sessionId][<span class="hljs-string" style="color: rgb(42, 161, 152);">"busy"</span>]:
+                    isolated = sessionId
+                    SortedPackets[sessionId][<span class="hljs-string" style="color: rgb(42, 161, 152);">"busy"</span>] = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">True</span>;  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># lock this queue</span>
+                    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">break</span>;
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># detach packets</span>
+            packets = SortedPackets[isolated][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>]
+            SortedPackets[isolated][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>] = []
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span>:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">pass</span>
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># update SortedPackets</span>
+        write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SortedPackets"</span>, SortedPackets);
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> isolated, packets
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+        scheduler_events+=<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+        schedulers = [<span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>] <span class="hljs-comment" style="color: rgb(147, 161, 161);">#, "PF", "NV"</span>
+        scheduler = schedulers[scheduler_events % len(schedulers)]
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># allocation</span>
+        locked = Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span>];
+        packets = Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>];
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> (len(packets) == <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">and</span> locked):
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># empty session</span>
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span>]+=<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># are we over the limit? if yes, reset</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> (Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span>] &gt; empty_retry_limit):
+                Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span>] = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+                Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>] = []
+                Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span>] = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>
+            log(locked, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SCHEDULER_EMPTY_STATE"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler: %s returned empty state with: %s retries"</span> % (scheduler, Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"empty_retries"</span>]))
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">204</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler : %s empty state"</span> % scheduler)
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">elif</span> (len(packets) &gt; <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span> <span class="hljs-keyword" style="color: rgb(133, 153, 0);">and</span> locked):
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># continue existing work</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">pass</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># new session</span>
+            locked, packets = isolate_free_MAC_packets(locked);
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># register on Transmission</span>
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"locked"</span>] = locked;
+            Transmission[scheduler][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>] = packets;
+            log(locked, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SCHEDULER_ALLOCATED_STATE"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler: %s has been allocated %s packets"</span> % (scheduler, len(packets)))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> (scheduler == <span class="hljs-string" style="color: rgb(42, 161, 152);">"RR"</span>):
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> RR(locked, packets)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span> Exception <span class="hljs-keyword" style="color: rgb(133, 153, 0);">as</span> e:
+        print(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Error @ scheduler : %s"</span> % str(e))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">400</span>, str(e))
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># scheduler comparison GUI</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/Schedulers/GUI")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">SchedulersGUI</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> render_template(<span class="hljs-string" style="color: rgb(42, 161, 152);">"schedulers.html"</span>)
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># simulation agent firing mechanism for returning activity logs</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/NetLog")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">ShowActivity</span><span class="hljs-params">()</span>:</span>
+    Log = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"NetLog"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"log"</span>)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> Log:
+        html = <span class="hljs-string" style="color: rgb(42, 161, 152);">'&lt;html&gt;&lt;meta http-equiv="refresh" content="5"&gt;&lt;body bgcolor="black"&gt;&lt;div style="color: white; font-family: consolas; font-size:12;"&gt;%s&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'</span>
+        spool = <span class="hljs-string" style="color: rgb(42, 161, 152);">""</span>; count = -<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> log <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> Log[::-<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>]:
+            count+=<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+            spool += <span class="hljs-string" style="color: rgb(42, 161, 152);">'&lt;p&gt;&lt;b&gt;%s --&gt; &lt;/b&gt;[%s] &lt;span style="color: %s;"&gt;[%s]&lt;/span&gt; [%s]'</span> % log + <span class="hljs-string" style="color: rgb(42, 161, 152);">' (#%s)&lt;/p&gt;'</span> % str(len(Log) - count)
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> html % spool
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">404</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"No activity logs found"</span>)
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># simulation agent firing mechanism for sorting verified packets</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/Scheduler/Sorter")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">SortPackets</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+        TransmissionQueue = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"TransmissionQueue"</span>)
+        packet = TransmissionQueue.pop()  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># release a MAC packet</span>
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># add scheduler start</span>
+        packet.header.append(now())
+        write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"TransmissionQueue"</span>, TransmissionQueue)
+        sessionId = packet.sessionId
+        SortedPackets = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SortedPackets"</span>)
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> SortedPackets:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> sessionId <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> SortedPackets:
+                SortedPackets[sessionId][<span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span>].insert(<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>, packet.loggable())
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+                SortedPackets[sessionId] = { <span class="hljs-string" style="color: rgb(42, 161, 152);">"busy"</span> : <span class="hljs-keyword" style="color: rgb(133, 153, 0);">False</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span> : [packet.loggable()] }
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            SortedPackets = {sessionId: { <span class="hljs-string" style="color: rgb(42, 161, 152);">"busy"</span> : <span class="hljs-keyword" style="color: rgb(133, 153, 0);">False</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"packets"</span> : [packet.loggable()] }}
+        write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Scheduler"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SortedPackets"</span>, SortedPackets)
+        log(sessionId, <span class="hljs-string" style="color: rgb(42, 161, 152);">"SORTED_PACKET"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"1 packet with id: %s was sorted (%s bits)"</span> % (packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">5</span>], packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>]))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">201</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Packet was sorted (%s bits)"</span> % packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>])
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span> Exception <span class="hljs-keyword" style="color: rgb(133, 153, 0);">as</span> e:
+        print(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Error @ sorter : %s"</span> % str(e))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">404</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"No packet found"</span>)
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># simulation agent firing mechanism for validating packet integrity</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/MAC/Profiler")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">ProfilePackets</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">retransmit</span><span class="hljs-params">(packet)</span>:</span>
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># check if retransmission_limit reached</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>] + <span class="hljs-number" style="color: rgb(42, 161, 152);">1</span> &gt; retransmission_limit:
+            <span class="hljs-comment" style="color: rgb(147, 161, 161);"># reject this MAC packet</span>
+            RejectedPackets = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"RejectedPackets"</span>)
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> RejectedPackets:
+                RejectedPackets.append(packet.loggable())
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+                RejectedPackets = [packet.loggable()]
+            write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"RejectedPackets"</span>, RejectedPackets)
+            log(packet.sessionId, <span class="hljs-string" style="color: rgb(42, 161, 152);">"REJECTED_PACKET"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"1 packet with id: %s was rejected (%s bits)"</span> % (packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">5</span>], packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>]))
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">204</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Packet was rejected (%s bits)"</span> % packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>])
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>]+=<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+            retransmitted_session = MAC2IPSession(packet) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># convert MAC packet back to IP session</span>
+            UERegister = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"UERegister"</span>)
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> UERegister:
+                UERegister.append(retransmitted_session)  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># lower priority for unvalidated retransmitted packets</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+                UERegister = [retransmitted_session]
+            write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"UERegister"</span>, UERegister) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># retransmit IP session</span>
+            log(packet.sessionId, <span class="hljs-string" style="color: rgb(42, 161, 152);">"RETRANSMITTED_PACKET"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"1 packet with id: %s was retransmitted (%s bits)"</span> % (packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">5</span>], packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>]))
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">200</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Packet was retransmitted (%s bits)"</span> % packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>])
+    <span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">queue</span><span class="hljs-params">(packet)</span>:</span>
+        TransmissionQueue = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"TransmissionQueue"</span>)
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> TransmissionQueue:
+            TransmissionQueue.insert(<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>, packet.loggable())  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># FIFO</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            TransmissionQueue = [packet.loggable()]
+        write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"TransmissionQueue"</span>, TransmissionQueue) <span class="hljs-comment" style="color: rgb(147, 161, 161);"># queue this transmittable MAC packet</span>
+        log(packet.sessionId, <span class="hljs-string" style="color: rgb(42, 161, 152);">"QUEUED_PACKET"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"1 packet with id: %s was queued (%s bits)"</span> % (packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">5</span>], packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>]))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">201</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Packet was queued (%s bits)"</span> % packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">8</span>])
+    packet = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+        QueuedMACPackets = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"PhysicalUplinkControlChannel"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"QueuedMACPackets"</span>)
+        packet = QueuedMACPackets.pop() <span class="hljs-comment" style="color: rgb(147, 161, 161);"># release a MAC packet</span>
+        write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"PhysicalUplinkControlChannel"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"QueuedMACPackets"</span>, QueuedMACPackets)
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># test MAC packet for errors, handle contextually</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> packet.payload_bits == packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">3</span>]:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> queue(packet)
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> retransmit(packet)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span> Exception <span class="hljs-keyword" style="color: rgb(133, 153, 0);">as</span> e:
+        print(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Error @ profiler : %s"</span> % str(e))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">404</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"No packet found"</span>)
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># simulation agent firing mechanism for transcoding IP packets to MAC packets</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/PhysicalUplinkControlChannel/Modulation")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">ModulatePackets</span><span class="hljs-params">()</span>:</span>
+    session = <span class="hljs-keyword" style="color: rgb(133, 153, 0);">None</span>
+    UERegister = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"UERegister"</span>)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> UERegister:
+        session = UERegister.pop()
+        write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"UERegister"</span>, UERegister)
+        ip_address, session_time, sessionId, n_packets, ip_packets_loggable = session
+        ip_packets = [log <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> log <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> ip_packets_loggable]
+        <span class="hljs-comment" style="color: rgb(147, 161, 161);"># Packet Modulation</span>
+        delay = ms_elapsed(session_time); modulated = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> packet <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> ip_packets:
+            delay+=packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">3</span>]  <span class="hljs-comment" style="color: rgb(147, 161, 161);"># add retransmission delay</span>
+            mod_started = now()
+            MAC_packets = []
+            packetId = Id()
+            field = transcode_bits(packet.payload_bits, transcoding_plan(packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>], MAC_packet_size))
+            packet_index = -<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> band <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> field:
+                packet_index+=<span class="hljs-number" style="color: rgb(42, 161, 152);">1</span>
+                source_bits, trans_bits = band
+                mod_delay = ms_elapsed(mod_started); delay+=mod_delay <span class="hljs-comment" style="color: rgb(147, 161, 161);"># add modulation delay</span>
+                <span class="hljs-comment" style="color: rgb(147, 161, 161);"># FIFO Queue, preserve retransmissions</span>
+                MAC_packets.insert(<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>, MAC_Packet(sessionId, trans_bits, ip_address, delay, source_bits, packet.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>], packetId, packet_index, len(field), len(trans_bits)).loggable())
+            modulated+=len(MAC_packets)
+            QueuedMACPackets = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"PhysicalUplinkControlChannel"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"QueuedMACPackets"</span>)
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> QueuedMACPackets:
+                QueuedMACPackets = MAC_packets + QueuedMACPackets <span class="hljs-comment" style="color: rgb(147, 161, 161);"># ensure FIFO</span>
+            <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+                QueuedMACPackets = MAC_packets
+            write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"PhysicalUplinkControlChannel"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"QueuedMACPackets"</span>, QueuedMACPackets)
+            log(sessionId, <span class="hljs-string" style="color: rgb(42, 161, 152);">"MAC_PACKETS_MODULATED"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s MAC packets from session %s delayed %sms"</span> % (len(MAC_packets), sessionId, mod_delay))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">200</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Successfully modulated %s packets"</span> % modulated)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">404</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"No session found"</span>)
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);"># simulation agent firing mechanism for authenticating UE sessions and receiving IP packets</span>
+<span class="hljs-decorator" style="color: rgb(38, 139, 210);">@app.route("/SubNetworkLTE/AirInterface/UERegistration/&lt;path:n_packets&gt;")</span>
+<span class="hljs-function"><span class="hljs-keyword" style="color: rgb(133, 153, 0);">def</span> <span class="hljs-title" style="color: rgb(38, 139, 210);">UERegistration</span><span class="hljs-params">(n_packets)</span>:</span>
+    ip_address = request.remote_addr
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">try</span>:
+        session = UESession(ip_address, int(n_packets))
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">except</span> Exception <span class="hljs-keyword" style="color: rgb(133, 153, 0);">as</span> e:
+        print(<span class="hljs-string" style="color: rgb(42, 161, 152);">"Error @ create_session : %s"</span> % str(e))
+        <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">400</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Error creating session: packet_size not specified"</span>)
+    UERegister = read_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"UERegister"</span>)
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> UERegister:
+        UERegister.insert(<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>, session)  <span class="hljs-comment" style="color: rgb(147, 161, 161);">#FIFO Queue</span>
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">else</span>:
+        UERegister = [session]
+    write_netbuffer(<span class="hljs-string" style="color: rgb(42, 161, 152);">"AirInterface"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"UERegister"</span>, UERegister)
+    log(session[<span class="hljs-number" style="color: rgb(42, 161, 152);">2</span>], <span class="hljs-string" style="color: rgb(42, 161, 152);">"IP_PACKETS_RECEIVED"</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">'UE at &lt;span style="color: cyan;"&gt;%s&lt;/span&gt; sent %s IP packets of %s bits'</span> % (ip_address, n_packets, sum([loggable.header[<span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>] <span class="hljs-keyword" style="color: rgb(133, 153, 0);">for</span> loggable <span class="hljs-keyword" style="color: rgb(133, 153, 0);">in</span> session[<span class="hljs-number" style="color: rgb(42, 161, 152);">4</span>]])))
+    <span class="hljs-keyword" style="color: rgb(133, 153, 0);">return</span> <span class="hljs-string" style="color: rgb(42, 161, 152);">"%s: %s"</span> % (<span class="hljs-number" style="color: rgb(42, 161, 152);">200</span>, <span class="hljs-string" style="color: rgb(42, 161, 152);">"Successfully registered %s packets"</span> % n_packets)
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">if</span> __name__ == <span class="hljs-string" style="color: rgb(42, 161, 152);">"__main__"</span>:
+    app.run(host=server_host, port=server_port, threaded=<span class="hljs-keyword" style="color: rgb(133, 153, 0);">True</span>)
+</code></pre><h3 id="network-services-model" style="clear: both;font-size: 1.6em; font-weight: bold; margin: 1.125em 0px 0.75em;"><a name="network-services-model" href="#network-services-model" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Network Services Model</h3><p style="margin-top: 0px;margin: 1em 0px; word-wrap: break-word;"><img src="https://raw.githubusercontent.com/cmdimkpa/PubImages/master/lte-network-services.png" alt="LTE Network Services Console" style="max-width: 100%;"></p><pre style="border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); overflow: auto; padding: 0.5em;display: block; overflow-x: auto; padding: 0.5em; color: rgb(101, 123, 131); background: rgb(253, 246, 227);"><code class="javascript" data-origin="<pre><code class=&quot;javascript&quot;>// MACMODEL 2 - Network Services Controller
+
+const axios = require('axios');
+
+// Network service settings
+
+let burstSize = 10;
+let burstInterval = 1000;
+let modulationInterval = 2000;
+let profilerInterval = 5000;
+let sorterInterval = 6000;
+let schedulerInterval = 7000;
+
+// event counters
+
+let send_events = 0;
+let mod_events = 0;
+let prof_events = 0;
+let srt_events = 0;
+let sch_events = 0;
+
+const sendPackets = async () =&amp;gt; {
+    send_events++;
+    await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/AirInterface/UERegistration/${burstSize}`).then(response =&amp;gt; {
+        console.log(`SEND_PACKETS: ${response.data} (${send_events})`)
+    }).catch(err =&amp;gt; {
+        console.log(err)
+    })
+}
+
+const modulatePackets = async () =&amp;gt; {
+    mod_events++;
+    await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/PhysicalUplinkControlChannel/Modulation`).then(response =&amp;gt; {
+        console.log(`MODULATE_PACKETS: ${response.data} (${mod_events})`)
+    }).catch(err =&amp;gt; {
+        console.log(err)
+    })
+}
+
+const profilePackets = async () =&amp;gt; {
+    prof_events++;
+    await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/MAC/Profiler`).then(response =&amp;gt; {
+        console.log(`PROFILE_PACKETS: ${response.data} (${prof_events})`)
+    }).catch(err =&amp;gt; {
+        console.log(err)
+    })
+}
+
+const sortPackets = async () =&amp;gt; {
+    srt_events++;
+    await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Scheduler/Sorter`).then(response =&amp;gt; {
+        console.log(`SORT_PACKETS: ${response.data} (${srt_events})`)
+    }).catch(err =&amp;gt; {
+        console.log(err)
+    })
+}
+
+const schedulePackets = async () =&amp;gt; {
+    sch_events++;
+    await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Scheduler/Schedule`).then(response =&amp;gt; {
+        console.log(`SCHEDULE_PACKETS: ${response.data} (${sch_events})`)
+    }).catch(err =&amp;gt; {
+        console.log(err)
+    })
+}
+
+
+// run all network services
+
+let emitter = setInterval(sendPackets, burstInterval);
+let modulator = setInterval(modulatePackets, modulationInterval);
+let profiler = setInterval(profilePackets, profilerInterval);
+let sorter = setInterval(sortPackets, sorterInterval);
+let scheduler = setInterval(schedulePackets, schedulerInterval);
+</code></pre>" style="border: 0px; display: block;font-family: Consolas, Inconsolata, Courier, monospace; font-weight: bold; white-space: pre; margin: 0px;border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); padding: 0px 5px; margin: 0px 2px;font-size: 1em; letter-spacing: -1px; font-weight: bold;"><span class="hljs-comment" style="color: rgb(147, 161, 161);">// MACMODEL 2 - Network Services Controller</span>
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">const</span> axios = <span class="hljs-built_in" style="color: rgb(38, 139, 210);">require</span>(<span class="hljs-string" style="color: rgb(42, 161, 152);">'axios'</span>);
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">// Network service settings</span>
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> burstSize = <span class="hljs-number" style="color: rgb(42, 161, 152);">10</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> burstInterval = <span class="hljs-number" style="color: rgb(42, 161, 152);">1000</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> modulationInterval = <span class="hljs-number" style="color: rgb(42, 161, 152);">2000</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> profilerInterval = <span class="hljs-number" style="color: rgb(42, 161, 152);">5000</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> sorterInterval = <span class="hljs-number" style="color: rgb(42, 161, 152);">6000</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> schedulerInterval = <span class="hljs-number" style="color: rgb(42, 161, 152);">7000</span>;
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">// event counters</span>
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> send_events = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> mod_events = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> prof_events = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> srt_events = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>;
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> sch_events = <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>;
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">const</span> sendPackets = async () =&gt; {
+    send_events++;
+    await axios.get(`https:<span class="hljs-comment" style="color: rgb(147, 161, 161);">//sub-network-lte.herokuapp.com/SubNetworkLTE/AirInterface/UERegistration/${burstSize}`).then(response =&gt; {</span>
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(`SEND_PACKETS: ${response.data} (${send_events})`)
+    }).catch(err =&gt; {
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(err)
+    })
+}
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">const</span> modulatePackets = async () =&gt; {
+    mod_events++;
+    await axios.get(`https:<span class="hljs-comment" style="color: rgb(147, 161, 161);">//sub-network-lte.herokuapp.com/SubNetworkLTE/PhysicalUplinkControlChannel/Modulation`).then(response =&gt; {</span>
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(`MODULATE_PACKETS: ${response.data} (${mod_events})`)
+    }).catch(err =&gt; {
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(err)
+    })
+}
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">const</span> profilePackets = async () =&gt; {
+    prof_events++;
+    await axios.get(`https:<span class="hljs-comment" style="color: rgb(147, 161, 161);">//sub-network-lte.herokuapp.com/SubNetworkLTE/MAC/Profiler`).then(response =&gt; {</span>
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(`PROFILE_PACKETS: ${response.data} (${prof_events})`)
+    }).catch(err =&gt; {
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(err)
+    })
+}
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">const</span> sortPackets = async () =&gt; {
+    srt_events++;
+    await axios.get(`https:<span class="hljs-comment" style="color: rgb(147, 161, 161);">//sub-network-lte.herokuapp.com/SubNetworkLTE/Scheduler/Sorter`).then(response =&gt; {</span>
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(`SORT_PACKETS: ${response.data} (${srt_events})`)
+    }).catch(err =&gt; {
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(err)
+    })
+}
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">const</span> schedulePackets = async () =&gt; {
+    sch_events++;
+    await axios.get(`https:<span class="hljs-comment" style="color: rgb(147, 161, 161);">//sub-network-lte.herokuapp.com/SubNetworkLTE/Scheduler/Schedule`).then(response =&gt; {</span>
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(`SCHEDULE_PACKETS: ${response.data} (${sch_events})`)
+    }).catch(err =&gt; {
+        <span class="hljs-built_in" style="color: rgb(38, 139, 210);">console</span>.log(err)
+    })
+}
+
+
+<span class="hljs-comment" style="color: rgb(147, 161, 161);">// run all network services</span>
+
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> emitter = setInterval(sendPackets, burstInterval);
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> modulator = setInterval(modulatePackets, modulationInterval);
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> profiler = setInterval(profilePackets, profilerInterval);
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> sorter = setInterval(sortPackets, sorterInterval);
+<span class="hljs-keyword" style="color: rgb(133, 153, 0);">let</span> scheduler = setInterval(schedulePackets, schedulerInterval);
+</code></pre><h3 id="online-interfaces" style="clear: both;font-size: 1.6em; font-weight: bold; margin: 1.125em 0px 0.75em;"><a name="online-interfaces" href="#online-interfaces" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Online Interfaces</h3><h4 id="netlog" style="clear: both;font-size: 1.4em; font-weight: bold; margin: 0.99em 0px 0.66em;"><a name="netlog" href="#netlog" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Netlog</h4><iframe src="https://sub-network-lte.herokuapp.com/SubNetworkLTE/NetLog" height="600" width="800" title="Network Log" style="border: 0px;"></iframe><h4 id="scheduler-performance-comparison" style="clear: both;font-size: 1.4em; font-weight: bold; margin: 0.99em 0px 0.66em;"><a name="scheduler-performance-comparison" href="#scheduler-performance-comparison" style="text-decoration: none; vertical-align: baseline;color: rgb(50, 105, 160);"></a>Scheduler Performance Comparison</h4><iframe src="https://cmdimkpa.github.io/MACModel2/GUI/schedulers-comparison.html" height="600" width="800" title="Scheduler Comparison" style="border: 0px;"></iframe></div>
