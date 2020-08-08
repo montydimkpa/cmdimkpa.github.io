@@ -1,7 +1,16 @@
 // client library for Scheduler comparison application
 
+$('#thru_label').text(`${scheduler} Throughput: `);
+$('#apd_label').text(`${scheduler} Avg. Packet Delay: `);
+$('#asd_label').text(`${scheduler} Avg. Scheduler Delay: `);
+$('#plr_label').text(`${scheduler} Avg. Packet Loss Ratio: `);
+
 /* Get Scheduler Data from MACModel2 API  */
 const RelayOut = async (scheduler) => {
+  $('#thru_value').text(`computing...`);
+  $('#apd_value').text(`computing...`);
+  $('#asd_value').text(`computing...`);
+  $('#plr_value').text(`computing...`);
   try {
     var resps = [];
     for (var i = 0; i < 5; i++) {
@@ -61,10 +70,6 @@ const asyncUpdate = async (scheduler) => {
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
   let PLR = packetLossRatio
-  $('#thru_label').text(`${scheduler} Throughput: `);
-  $('#apd_label').text(`${scheduler} Avg. Packet Delay: `);
-  $('#asd_label').text(`${scheduler} Avg. Scheduler Delay: `);
-  $('#plr_label').text(`${scheduler} Avg. Packet Loss Ratio: `);
   $('#thru_value').text(`${packets} packets (${throughput.toLocaleString()} bits)`);
   $('#apd_value').text(`${average(APD).toLocaleString()}ms`);
   $('#asd_value').text(`${average(ASD).toLocaleString()}ms`);
