@@ -25,6 +25,7 @@ const asyncUpdate = async (scheduler) => {
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
   new Chart(document.getElementById("line-chart"), {
+    type: 'line',
     data: {
       labels: myLabels,
       datasets: [{
