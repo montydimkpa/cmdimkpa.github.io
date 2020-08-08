@@ -25,28 +25,25 @@ const asyncUpdate = async (scheduler) => {
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
   new Chart(document.getElementById("line-chart"), {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: myLabels,
       datasets: [{
           data: APD,
           label: "Average Packet Delay",
-          fillColor: "#3e95cd",
-          fill: true,
-          type : 'bar'
+          borderColor: "#3e95cd",
+          fill: false
         }, {
           data: ASD,
           label: "Average Scheduler Delay",
-          fillColor: "#8e5ea2",
-          fill: true,
-          type : 'bar'
+          borderColor: "#8e5ea2",
+          fill: false
         },
         {
           data: ART,
           label: "Average Retransmissions",
-          fillColor: "#8e5ea2",
-          fill: true,
-          type: 'bar'
+          borderColor: "#cd3e6b",
+          fill: false
         }
       ]
     },
