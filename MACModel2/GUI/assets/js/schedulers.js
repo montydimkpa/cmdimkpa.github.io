@@ -35,8 +35,8 @@ const asyncUpdate = async (scheduler) => {
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
   let APS = avgPacketSize
-  $('#thru_label').text(`${scheduler} Throughput (packets): `);
-  $('#thru_value').text(`${packets} (${throughput.toLocaleString()} bits)`);
+  $('#thru_label').text(`${scheduler} Throughput: `);
+  $('#thru_value').text(`${packets} packets (${throughput.toLocaleString()} bits)`);
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
