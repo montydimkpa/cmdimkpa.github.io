@@ -2,30 +2,34 @@
 
 /* Get Scheduler Data from MACModel2 API  */
 const RelayOut = async (scheduler) => {
-  var resps = [];
-  for (var i=0;i<5;i++){
-    resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
-      return response
-    }).catch(error => { })
-    resps.push(resp)
-  }
-  var highest = 0; var response;
-  resps.forEach(resp => {
-    if (resp.data.data[scheduler].size > highest){
-      highest = resp.data.data[scheduler].size;
-      response = resp;
+  try {
+    var resps = [];
+    for (var i = 0; i < 5; i++) {
+      resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
+        return response
+      }).catch(error => { })
+      resps.push(resp)
     }
-  })
-  let raw = response.data.data[scheduler].data; // raw scheduler data
-  let throughput = response.data.data[scheduler].size;
-  // perform needed transformations
-  let labels = raw.map(entry => { return entry.sessionId });
-  let QoS = raw.map(entry => { return entry.QoS });
-  let avgPacketDelay = QoS.map(entry => { return entry.total_packet_delay / entry.packets_received });
-  let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
-  let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
-  let avgPacketSize = QoS.map(entry => { return entry.total_packet_size / entry.packets_received });
-  return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput]
+    var highest = 0; var response;
+    resps.forEach(resp => {
+      if (resp.data.data[scheduler].size > highest) {
+        highest = resp.data.data[scheduler].size;
+        response = resp;
+      }
+    })
+    let raw = response.data.data[scheduler].data; // raw scheduler data
+    let throughput = response.data.data[scheduler].size;
+    // perform needed transformations
+    let labels = raw.map(entry => { return entry.sessionId });
+    let QoS = raw.map(entry => { return entry.QoS });
+    let avgPacketDelay = QoS.map(entry => { return entry.total_packet_delay / entry.packets_received });
+    let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
+    let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
+    let avgPacketSize = QoS.map(entry => { return entry.total_packet_size / entry.packets_received });
+    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput]
+  } catch(err){
+    return await RelayOut(scheduler)
+  }
 }
 
 const resetNetwork = async () => {
