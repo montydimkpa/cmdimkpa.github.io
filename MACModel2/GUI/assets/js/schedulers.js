@@ -25,8 +25,8 @@ const RelayOut = async (scheduler) => {
     let avgPacketDelay = QoS.map(entry => { return entry.total_packet_delay / entry.packets_received });
     let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
     let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
-    let avgPacketSize = QoS.map(entry => { return entry.total_packet_size / entry.packets_received });
-    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput]
+    let packetLossRatio = QoS.map(entry => { return (entry.lost_packets * 100) / (entry.lost_packets + entry.packets_received) });
+    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput]
   } catch(err){
     return await RelayOut(scheduler)
   }
@@ -43,12 +43,12 @@ const resetNetwork = async () => {
 /* asynchronous update */
 const asyncUpdate = async (scheduler) => {
   // update chart
-  [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, avgPacketSize, throughput] = await RelayOut(scheduler);
+  [labels, packets, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput] = await RelayOut(scheduler);
   let myLabels = labels
   let APD = avgPacketDelay
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
-  let APS = avgPacketSize
+  let PLR = packetLossRatio
   $('#thru_label').text(`${scheduler} Throughput: `);
   $('#thru_value').text(`${packets} packets (${throughput.toLocaleString()} bits)`);
   new Chart(document.getElementById("line-chart"), {
@@ -74,8 +74,8 @@ const asyncUpdate = async (scheduler) => {
           fill: false
         },
         {
-          data: APS,
-          label: "Average Packet Size (bits)",
+          data: PLR,
+          label: "Packet Loss Ratio (%)",
           borderColor: "#32a852",
           fill: false
         }
