@@ -1,6 +1,6 @@
 // client library for Scheduler comparison application
 
-const last_n = 200;
+const last_n = 100;
 
 /* Get Scheduler Data from MACModel2 API  */
 const RelayOut = async (scheduler) => {
