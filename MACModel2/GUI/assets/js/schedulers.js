@@ -31,7 +31,7 @@ const RelayOut = async (scheduler) => {
     })
     let raw = response.data.data[scheduler].data; // raw scheduler data
     let throughput = response.data.data[scheduler].size;
-    let pending = TransmissionQueue.length;
+    let pending = TransmissionQueue.data.data.length;
     // perform needed transformations
     let labels = raw.map(entry => { return entry.sessionId });
     let QoS = raw.map(entry => { return entry.QoS });
@@ -74,7 +74,7 @@ const asyncUpdate = async (scheduler) => {
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
   let PLR = packetLossRatio
-  $('#thru_value').text(`${packets.toLocaleString()} packets (of ${(pending + packets.toLocaleString())}) (${throughput.toLocaleString()} bits) (${((100*packets)/(pending + packets)).toLocaleString()}%)`);
+  $('#thru_value').text(`${packets.toLocaleString()} packets (of ${(pending + packets).toLocaleString()}) (${throughput.toLocaleString()} bits) (${((100*packets)/(pending + packets)).toLocaleString()}%)`);
   $('#apd_value').text(`${average(APD).toLocaleString()}ms`);
   $('#asd_value').text(`${average(ASD).toLocaleString()}ms`);
   $('#plr_value').text(`${average(PLR).toLocaleString()}%`);
