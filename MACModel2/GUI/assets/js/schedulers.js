@@ -17,21 +17,21 @@ const RelayOut = async (scheduler) => {
       resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
         return response
       }).catch(error => { })
-      resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/QueuedMACPackets`).then(response => {
+      resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Pending`).then(response => {
         return response
       }).catch(error => { })
       resps.push([resp, resp2])
     }
-    var highest = 0; var response; var QueuedMACPackets;
+    var highest = 0; var response; var Pending;
     resps.forEach(resp => {
       if (resp[0].data.data[scheduler].size > highest) {
         highest = resp[0].data.data[scheduler].size;
-        [response, QueuedMACPackets] = resp;
+        [response, Pending] = resp;
       }
     })
     let raw = response.data.data[scheduler].data; // raw scheduler data
     let throughput = response.data.data[scheduler].size;
-    let pending = QueuedMACPackets.data.data.length;
+    let pending = Pending.data.data;
     // perform needed transformations
     let labels = raw.map(entry => { return entry.sessionId });
     let QoS = raw.map(entry => { return entry.QoS });
