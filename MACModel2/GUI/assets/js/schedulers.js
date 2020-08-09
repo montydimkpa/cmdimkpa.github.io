@@ -31,7 +31,7 @@ const RelayOut = async (scheduler) => {
     })
     let raw = response.data.data[scheduler].data; // raw scheduler data
     let throughput = response.data.data[scheduler].size;
-    let pending = Pending.data.data;
+    let pending = Pending.data.data / 3; // distribute load evenly over the three schedulers
     // perform needed transformations
     let labels = raw.map(entry => { return entry.sessionId });
     let QoS = raw.map(entry => { return entry.QoS });
