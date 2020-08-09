@@ -74,7 +74,8 @@ const asyncUpdate = async (scheduler) => {
   let ASD = avgSchedulerDelay
   let ART = avgRetransmissions
   let PLR = packetLossRatio
-  $('#thru_value').text(`${packets.toLocaleString()} packets (of ${(pending + packets).toLocaleString()}) (${throughput.toLocaleString()} bits) (${((100*packets)/(pending + packets)).toLocaleString()}%)`);
+  //$('#thru_value').text(`${packets.toLocaleString()} packets (of ${(pending + packets).toLocaleString()}) (${throughput.toLocaleString()} bits) (${((100*packets)/(pending + packets)).toLocaleString()}%)`);
+  $('#thru_value').text(`${packets.toLocaleString()} packets (${throughput.toLocaleString()} bits)`);
   $('#apd_value').text(`${average(APD).toLocaleString()}ms`);
   $('#asd_value').text(`${average(ASD).toLocaleString()}ms`);
   $('#plr_value').text(`${average(PLR).toLocaleString()}%`);
