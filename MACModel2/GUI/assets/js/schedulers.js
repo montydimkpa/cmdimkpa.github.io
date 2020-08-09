@@ -12,8 +12,7 @@ const RelayOut = async (scheduler) => {
   $('#plr_value').text(`computing...`);
   try {
     var resps = [];
-    // best of three
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 10; i++) {
       resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
         return response
       }).catch(error => { })
