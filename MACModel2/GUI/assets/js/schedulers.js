@@ -78,7 +78,7 @@ const asyncUpdate = async (scheduler) => {
   new Chart(document.getElementById("line-chart"), {
     type: 'line',
     data: {
-      labels: myLabels,
+      labels: myLabels.slice(myLabels.length - last_n, ),
       datasets: [
         {
           data: APD.slice(APD.length - last_n, ),
