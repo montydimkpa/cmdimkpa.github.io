@@ -1,5 +1,7 @@
 // client library for Scheduler comparison application
 
+const last_n = 200;
+
 /* Get Scheduler Data from MACModel2 API  */
 const RelayOut = async (scheduler) => {
   $('#thru_label').text(`${scheduler} Throughput: `);
@@ -79,24 +81,24 @@ const asyncUpdate = async (scheduler) => {
       labels: myLabels,
       datasets: [
         {
-          data: APD,
+          data: APD.slice(APD.length - last_n, ),
           label: "Average Packet Delay (ms)",
           borderColor: "#3e95cd",
           fill: false
         }, {
-          data: ASD,
+          data: ASD.slice(ASD.length - last_n,),
           label: "Average Scheduler Delay (ms)",
           borderColor: "#8e5ea2",
           fill: false
         },
         {
-          data: ART,
+          data: ART.slice(ART.length - last_n,),
           label: "Average Retransmissions",
           borderColor: "#cd3e6b",
           fill: false
         },
         {
-          data: PLR,
+          data: PLR.slice(PLR.length - last_n,),
           label: "Packet Loss Ratio (%)",
           borderColor: "#32a852",
           fill: false
