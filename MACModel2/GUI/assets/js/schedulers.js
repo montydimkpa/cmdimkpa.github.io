@@ -54,6 +54,7 @@ const RelayOut = async (scheduler) => {
     let packetLossRatio = lost_packets.map(entry => { return (entry.lost * 100) / (entry.lost + QoS[labels.indexOf(entry.sessionId)].packets_received) });
     return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput]
   } catch(err){
+    console.log(err)
     return await RelayOut(scheduler)
   }
 }
