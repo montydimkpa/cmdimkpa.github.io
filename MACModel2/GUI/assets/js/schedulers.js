@@ -14,7 +14,7 @@ const RelayOut = async (scheduler) => {
   $('#plr_value').text(`computing...`);
   try {
     var resps = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 5; i++) {
       resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
         return response
       }).catch(error => { })
@@ -53,7 +53,11 @@ const RelayOut = async (scheduler) => {
     let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
     let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
     let packetLossRatio = lost_packets.map(entry => { return (entry.lost * 100) / (entry.lost + QoS[labels.indexOf(entry.sessionId)].packets_received) });
-    return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput]
+    if (packetLossRatio === 0){
+      return await RelayOut(scheduler)
+    } else {
+      return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput]
+    }
   } catch(err){
     console.log(err)
     return await RelayOut(scheduler)
