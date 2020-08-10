@@ -12,7 +12,7 @@ const RelayOut = async (scheduler) => {
   $('#apd_value').text(`computing...`);
   $('#asd_value').text(`computing...`);
   $('#plr_value').text(`computing...`);
-  let resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/RejectedPackets`).then(response => {
+  let resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Rejected`).then(response => {
     return response
   }).catch(error => { })
   try {
