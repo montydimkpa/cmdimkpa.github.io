@@ -204,9 +204,9 @@ def CQI_Prioritization(packets, default=True):
     def calc_CQI(packet):
         # logarithm of CQI
         if default:
-            cqi = log10(zero2one(packet["header"][8])) + log10(zero2one(safely_divide(effective_delay_budget, packet["header"][0]))) + log10(zero2one(safely_divide(packet["header"][4], retransmission_limit)))
+            cqi = log10(zero2one(packet["header"][8])) + log10(zero2one(safely_divide(effective_delay_budget, packet["header"][0]))) + log10(zero2one(1 - packet["header"][4]/retransmission_limit))
         else:
-            cqi = log10(zero2one(packet["header"][8])) - log10(zero2one(safely_divide(effective_delay_budget, packet["header"][0]))) - log10(zero2one(safely_divide(packet["header"][4], retransmission_limit)))
+            cqi = log10(zero2one(packet["header"][8])) - log10(zero2one(safely_divide(effective_delay_budget, packet["header"][0]))) - log10(zero2one(1 - packet["header"][4]/retransmission_limit))
         return cqi 
     CQIs = [calc_CQI(packet) for packet in packets];
     CQIs_ = [calc_CQI(packet) for packet in packets];
@@ -312,7 +312,8 @@ def InspectData(section):
         "RejectedPackets" : read_netbuffer("MAC", "RejectedPackets"),
         "SortedPackets" : read_netbuffer("Scheduler", "SortedPackets"),
         "Transmission" : Transmission,
-        "Pending": len(read_netbuffer("PhysicalUplinkControlChannel", "QueuedMACPackets"))
+        "Pending": len(read_netbuffer("PhysicalUplinkControlChannel", "QueuedMACPackets")),
+        "Rejected": [packet["sessionId"] for packet in read_netbuffer("MAC", "RejectedPackets")]
     }
     if section == "all":
         selection = payload
