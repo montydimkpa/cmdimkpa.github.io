@@ -18,24 +18,40 @@ const RelayOut = async (scheduler) => {
       resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
         return response
       }).catch(error => { })
-      resps.push(resp)
+      resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/RejectedPackets`).then(response => {
+        return response
+      }).catch(error => { })
+      resps.push([resp, resp2])
     }
-    var highest = 0; var response;
+    var highest = 0; var response; var rejected;
     resps.forEach(resp => {
-      if (resp.data.data[scheduler].size > highest) {
-        highest = resp.data.data[scheduler].size;
-        response = resp;
+      if (resp[0].data.data[scheduler].size > highest) {
+        highest = resp[0].data.data[scheduler].size;
+        [response, rejected] = resp;
       }
     })
+    // perform needed transformations
     let raw = response.data.data[scheduler].data; // raw scheduler data
     let throughput = response.data.data[scheduler].size;
-    // perform needed transformations
     let labels = raw.map(entry => { return entry.sessionId });
+    let lost_packets = [];
+    labels.forEach(sessionId => {
+      lost = 0;
+      rejected.data.data.forEach(lost_packet => {
+        if (lost_packet.sessionId === sessionId){
+          lost++;
+        }
+      })
+      lost_packets.push({
+        lost : lost,
+        sessionId : sessionId
+      });
+    })
     let QoS = raw.map(entry => { return entry.QoS });
     let avgPacketDelay = QoS.map(entry => { return entry.total_packet_delay / entry.packets_received });
     let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
     let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
-    let packetLossRatio = QoS.map(entry => { return (entry.lost_packets * 100) / (entry.lost_packets + entry.packets_received) });
+    let packetLossRatio = lost_packets.map(entry => { return (entry.lost * 100) / (entry.lost + QoS[labels.indexOf(entry.sessionId)].packets_received) });
     return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput]
   } catch(err){
     return await RelayOut(scheduler)
