@@ -68,7 +68,7 @@ def Id():
 
 def is_transcoding_error(noise_level):
     # generate transcoding error
-    return noise_level < BER_baseline
+    return noise_level > BER_baseline
 
 def IP_Packet(sessionId, size, source, time):
     # This function returns an IP Packet
