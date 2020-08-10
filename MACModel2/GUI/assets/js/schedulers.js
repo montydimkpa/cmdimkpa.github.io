@@ -53,7 +53,7 @@ const RelayOut = async (scheduler) => {
     let avgSchedulerDelay = QoS.map(entry => { return entry.total_scheduler_delay / entry.packets_received });
     let avgRetransmissions = QoS.map(entry => { return entry.total_retransmissions / entry.packets_received });
     let packetLossRatio = lost_packets.map(entry => { return (entry.lost * 100) / (entry.lost + QoS[labels.indexOf(entry.sessionId)].packets_received) });
-    if (packetLossRatio === 0){
+    if (average(packetLossRatio) < 1){
       return await RelayOut(scheduler)
     } else {
       return [labels, raw.length, avgPacketDelay, avgSchedulerDelay, avgRetransmissions, packetLossRatio, throughput]
