@@ -38,7 +38,7 @@ const RelayOut = async (scheduler) => {
     labels.forEach(sessionId => {
       lost = 0;
       rejected.data.data.forEach(lost_packet => {
-        if (lost_packet.sessionId === sessionId){
+        if (lost_packet === sessionId){
           lost++;
         }
       })
