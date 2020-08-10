@@ -12,13 +12,13 @@ const RelayOut = async (scheduler) => {
   $('#apd_value').text(`computing...`);
   $('#asd_value').text(`computing...`);
   $('#plr_value').text(`computing...`);
+  let resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/RejectedPackets`).then(response => {
+    return response
+  }).catch(error => { })
   try {
     var resps = [];
     for (var i = 0; i < 10; i++) {
       resp = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/Transmission`).then(response => {
-        return response
-      }).catch(error => { })
-      resp2 = await axios.get(`https://sub-network-lte.herokuapp.com/SubNetworkLTE/Internal/Inspect/RejectedPackets`).then(response => {
         return response
       }).catch(error => { })
       resps.push([resp, resp2])
