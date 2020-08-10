@@ -188,9 +188,12 @@ def safely_divide(a, b):
     except:
         return 1
 
-def zero2one(x):
+def limit_of_zero(x, override=False):
     if x == 0:
-        return 1
+        if not override:
+            return 1
+        else:
+            return -1
     else:
         return x
 
@@ -199,14 +202,13 @@ def CQI_Prioritization(packets, default=True):
         Factors considered include: packet size, packet delay and retransmissions. 
         Emphasis is on maximizing throughput by sending the highest quality packets.
         Larger packets with smaller delays and lower retransmission rates are prioritized. 
-        Formula used: CQI = log10(packet_size) + log10(packet_delay_budget/packet_delay) + log10(retransmissions/max_retransmissions)
     '''
     def calc_CQI(packet):
         # logarithm of CQI
         if default:
-            cqi = log10(zero2one(packet["header"][8])) + log10(zero2one(safely_divide(effective_delay_budget, packet["header"][0]))) + log10(zero2one(1 - packet["header"][4]/retransmission_limit))
+            cqi = log10(limit_of_zero(packet["header"][8])) + log10(limit_of_zero(safely_divide(effective_delay_budget, packet["header"][0]))) + log10(limit_of_zero((1 - packet["header"][4]/retransmission_limit), True))
         else:
-            cqi = log10(zero2one(packet["header"][8])) - log10(zero2one(safely_divide(effective_delay_budget, packet["header"][0]))) - log10(zero2one(1 - packet["header"][4]/retransmission_limit))
+            cqi = log10(limit_of_zero(packet["header"][8])) - log10(limit_of_zero(safely_divide(effective_delay_budget, packet["header"][0]))) - log10(limit_of_zero((1 - packet["header"][4]/retransmission_limit), True))
         return cqi 
     CQIs = [calc_CQI(packet) for packet in packets];
     CQIs_ = [calc_CQI(packet) for packet in packets];
