@@ -23,10 +23,11 @@ const RelayOut = async (scheduler) => {
       }).catch(error => { })
       resps.push([resp, resp2])
     }
-    var highest = 0; var response; var rejected;
+    var highest = 0; var highest2 = 0; var response; var rejected;
     resps.forEach(resp => {
-      if (resp[0].data.data[scheduler].size > highest) {
+      if (resp[0].data.data[scheduler].size > highest && resp[1].data.data.length > highest2) {
         highest = resp[0].data.data[scheduler].size;
+        highest2 = resp[1].data.data.length;
         [response, rejected] = resp;
       }
     })
