@@ -15,7 +15,7 @@ import os
 import json
 from random import random
 import datetime
-from hashlib import md5
+from hashlib import md5, sha256
 from math import log10
 
 app = Flask(__name__)
@@ -62,8 +62,13 @@ def now(): return datetime.datetime.today()
 
 def ms_elapsed(t): return int(1000*(now() - t).total_seconds())
 
-def Id():
-    hasher = md5(); hasher.update(str(now()).encode('utf-8'))
+def Id(subject=None, upgrade=False):
+    hasher = md5(); 
+    if upgrade:
+        hasher = sha256()
+    if not subject:
+        subject = now()
+    hasher.update(str(subject).encode('utf-8'))
     return hasher.hexdigest()
 
 def is_transcoding_error(noise_level):
@@ -87,11 +92,11 @@ def MAC2IPSession(MAC_packet):
     IP_packet["payload_bits"] = MAC_packet["header"][3]
     return [MAC_packet["header"][1], session_time, IP_packet["sessionId"], 1, duplicate([IP_packet], packet_duplication)]
 
-def MAC_Packet(sessionId, trans_bits, source, delay, source_bits, retransmissions, packetId, packet_index, n_mac_packets, size):
+def MAC_Packet(sessionId, trans_bits, source, delay, source_bits_hash, retransmissions, packetId, packet_index, n_mac_packets, size):
     # this function returns a MAC packet
     return {
         "sessionId" : sessionId,
-        "header" : [delay, source, now(), source_bits, retransmissions, packetId, packet_index, n_mac_packets, size],
+        "header" : [delay, source, now(), source_bits_hash, retransmissions, packetId, packet_index, n_mac_packets, size],
         "payload_bits" : trans_bits
     }
 
@@ -516,7 +521,7 @@ def ProfilePackets():
         packet = QueuedMACPackets.pop() # release a MAC packet
         write_netbuffer("PhysicalUplinkControlChannel", "QueuedMACPackets", QueuedMACPackets)
         # test MAC packet for errors, handle contextually
-        if packet["payload_bits"] == packet["header"][3]:
+        if Id(packet["payload_bits"], True) == packet["header"][3]:
             return queue(packet)
         else:
             return retransmit(packet)
@@ -548,7 +553,7 @@ def ModulatePackets():
                 source_bits, trans_bits = band
                 mod_delay = ms_elapsed(mod_started); delay+=mod_delay # add modulation delay
                 # FIFO Queue, preserve retransmissions
-                MAC_packets.insert(0, MAC_Packet(sessionId, trans_bits, ip_address, delay, source_bits, packet["header"][4], packetId, packet_index, len(field), len(trans_bits)))
+                MAC_packets.insert(0, MAC_Packet(sessionId, trans_bits, ip_address, delay, Id(source_bits, True), packet["header"][4], packetId, packet_index, len(field), len(trans_bits)))
             modulated+=len(MAC_packets)
             QueuedMACPackets = read_netbuffer("PhysicalUplinkControlChannel", "QueuedMACPackets")
             if QueuedMACPackets:
