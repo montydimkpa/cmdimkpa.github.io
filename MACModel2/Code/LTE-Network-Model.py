@@ -89,7 +89,6 @@ def MAC2IPSession(MAC_packet):
     IP_packet = IP_Packet(MAC_packet["sessionId"], MAC_packet["header"][8], MAC_packet["header"][1], session_time)
     IP_packet["header"][3] += MAC_packet["header"][0]  # add retransmission delay
     IP_packet["header"][4] = MAC_packet["header"][4]  # update retransmissions
-    IP_packet["payload_bits"] = MAC_packet["header"][3]
     return [MAC_packet["header"][1], session_time, IP_packet["sessionId"], 1, duplicate([IP_packet], packet_duplication)]
 
 def MAC_Packet(sessionId, trans_bits, source, delay, source_bits_hash, retransmissions, packetId, packet_index, n_mac_packets, size):
