@@ -131,7 +131,9 @@
                   lastMessage = messages[messages.length - 1];
               }
           }
-          processMessages()
+          processMessages().then(resp => {
+              query_in_progress = false;
+          })
       }
       $(document).ready(() => {
           let updater = setInterval(globalUpdate, 1000);
