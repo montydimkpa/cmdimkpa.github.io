@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -75,7 +76,8 @@
   </body>
   <script>
       const setETLMethod = async () => {
-          alert(document.getElementById("etl-type").value == 'Presto')
+          use_presto = document.getElementById("etl-type").innerHTML === 'Presto'
+          alert(use_presto)
       }
       const transmit = async () => {
           // notify
