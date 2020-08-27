@@ -100,8 +100,9 @@
               obj = [];
           }
           pretty = JSON.stringify(obj, undefined, 4);
+          let elapsed = message ? message.elapsed : 0
           document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
-          document.getElementById('elapsed').value = query_in_progress ? 'waiting...' : `${1000 * parseFloat(message.elapsed)} ms`;
+          document.getElementById('elapsed').value = query_in_progress ? 'waiting...' : `${1000 * parseFloat(elapsed)} ms`;
           // fetch PrestoDBTest-Outgoing messages
           let interval = 1000;
           var lastMessage;
