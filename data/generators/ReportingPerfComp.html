@@ -62,6 +62,7 @@
             <input id="reset" type="button" value="Reset Chart" class="btn btn-default">
           </span>
         </div>
+        <span><b>VM query lasted: </b><span id="elapsed"></span></span>
         <div class="output">
           <textarea id="output" placeholder="Output" cols=50 rows=10></textarea>
         </div>
@@ -113,6 +114,7 @@
               // write to output
               pretty = JSON.stringify(message, undefined, 4);
               document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
+              document.getElementById('elapsed').value = query_in_progress ? 'waiting...' : message.elapsed;
               // add to chart data
           }
           const processMessages = async () => {
