@@ -64,10 +64,10 @@
           </span>
         </div>
         <div>
-            <p id="elapsed">
+            <span>
                 <b>VM query lasted: </b>
-                Idle
-            </p>
+                <p id="elapsed">Idle</p>
+            </span>
         </div>
         <div class="output">
           <textarea id="output" placeholder="Output" cols=50 rows=10></textarea>
@@ -138,10 +138,9 @@
                   }
                   lastMessage = messages[messages.length - 1];
               }
-          }
-          processMessages().then(resp => {
               query_in_progress = false;
-          })
+          }
+          processMessages()
       }
       $(document).ready(() => {
           let updater = setInterval(globalUpdate, 1000);
