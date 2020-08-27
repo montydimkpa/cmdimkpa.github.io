@@ -101,7 +101,8 @@
                   tablename: 'PrestoDBTest-Outgoing',
                   constraints: {
                       __created_at__: [Date.now() - 2 * interval, Date.now()]
-                  }
+                  },
+                  restrict : ["result", "elapsed"]
               }).then(resp => {
                   return resp.data.data
               }).catch(err => {
