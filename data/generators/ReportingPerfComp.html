@@ -62,7 +62,7 @@
         <div class="submit">
           <span>
             <input style="background-color: green; color: yellow;" id="execute" type="button" value="Execute Query on VM" class="btn btn-default" onclick="transmit()">
-            <input id="reset" type="button" value="Reset Chart" class="btn btn-default">
+            <input id="reset" type="button" value="Reset Chart" class="btn btn-default" onclick="reset_chart()">
           </span>
         </div>
         <p><b>VM query lasted: </b><span id="runtime">Idle</span></p>
@@ -72,11 +72,13 @@
       </div>
     </div>
     <div id="footer">&copy; 2020 Monty Dimkpa</div>
+    <div id="sidebar">
+        <canvas id="line-chart" width="500" height="450"></canvas>
+    </div>
   </body>
   <script>
       const setETLMethod = async () => {
           use_presto = document.getElementById("etl-type").value == 'presto'
-          alert(use_presto)
       }
       const transmit = async () => {
           // notify
@@ -90,6 +92,14 @@
               }
           }).then(resp => {}).catch(err => {})
       }
+      const update_chart = async () => {
+
+      }
+      const reset_chart = async () => {
+          python_times = []
+          presto_times = []
+          update_chart()
+      }
       const globalUpdate = async () => {
           // prettify JSON output
           var ugly = document.getElementById('output').value;
@@ -100,9 +110,15 @@
               obj = [];
           }
           pretty = JSON.stringify(obj, undefined, 4);
-          let elapsed = message ? message.elapsed : 0
+          let elapsed = message ? 1000 * parseFloat(message.elapsed) : 0
           document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
-          document.getElementById('runtime').innerHTML = query_in_progress ? 'waiting...' : `${1000 * parseFloat(elapsed)} ms`;
+          document.getElementById('runtime').innerHTML = query_in_progress ? 'waiting...' : `${elapsed} ms`;
+          if (use_presto){
+              presto_times.push(elapsed)
+          } else {
+              python_times.push(elapsed)
+          }
+          update_chart()
           // fetch PrestoDBTest-Outgoing messages
           let interval = 1000;
           var lastMessage;
