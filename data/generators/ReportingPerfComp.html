@@ -27,7 +27,8 @@
       <script>
           var use_presto = false;
           var query_in_progress = false;
-          var pretty;
+          var pretty,
+              message;
       </script>
       <div id="main">
         <h3>
@@ -117,7 +118,7 @@
                   return []
               })
           }
-          const process = async (message) => {
+          const process = async () => {
               // write to output
               pretty = JSON.stringify(message, undefined, 4);
               document.getElementById('output').value = pretty;
@@ -127,18 +128,18 @@
               let messages = await fetchMessages();
               if (messages.length > 0) {
                   for (var i = 0; i < messages.length; i++) {
-                      let message = messages[i];
+                      message = messages[i];
                       if (lastMessage) {
                           if (message.__created_at__ > lastMessage.__created_at__) {
-                              process(message);
+                              process();
                           }
                       } else {
-                          process(message);
+                          process();
                       }
                   }
+                  query_in_progress = false;
                   lastMessage = messages[messages.length - 1];
               }
-              query_in_progress = false;
           }
           processMessages()
       }
