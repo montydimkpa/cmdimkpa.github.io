@@ -37,10 +37,10 @@ const processRequests = async () => {
             let request = requests[i];
             if (lastJob){
                 if (request.__created_at__ > lastJob.__created_at__) {
-                    await consume(request);
+                    consume(request);
                 }
             } else {
-                await consume(request);
+                consume(request);
             }
         }
         lastJob = requests[requests.length - 1];
