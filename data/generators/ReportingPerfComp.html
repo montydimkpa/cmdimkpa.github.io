@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -79,7 +80,7 @@
           // notify
           query_in_progress = true;
           // send SQL query to Virtual Machine
-          await axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
+          axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
               tablename: 'PrestoDBTest-Incoming',
               data: {
                   use_presto : use_presto,
@@ -97,7 +98,8 @@
               obj = [];
           }
           var pretty = JSON.stringify(obj, undefined, 4);
-          document.getElementById('output').value = pretty;
+          document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
+          document.getElementById('elapsed').value = query_in_progress ? 'waiting...' : `${1000 * parseFloat(message.elapsed)} ms`;
           // fetch PrestoDBTest-Outgoing messages
           let interval = 1000;
           var lastMessage;
@@ -117,8 +119,7 @@
           const process = async (message) => {
               // write to output
               pretty = JSON.stringify(message, undefined, 4);
-              document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
-              document.getElementById('elapsed').value = query_in_progress ? 'waiting...' : message.elapsed;
+              document.getElementById('output').value = pretty;
               // add to chart data
           }
           const processMessages = async () => {
