@@ -21,8 +21,8 @@ const fetchRequests = async () => {
 }
 
 const consume = async (job) => {
-    axios.post(`http://localhost:2727/PrestoDBTest/api/v1/runJob?usePresto=${job.use_presto}`, {
-        task : job.sql_query
+    axios.post('http://localhost:2727/PrestoDBTest/api/v1/runJob', {
+        job : job
     }).then(resp => {
         console.log(resp)
     }).catch(err => {
