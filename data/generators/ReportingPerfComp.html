@@ -80,7 +80,7 @@
           // notify
           query_in_progress = true;
           // send SQL query to Virtual Machine
-          axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
+          await axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
               tablename: 'PrestoDBTest-Incoming',
               data: {
                   use_presto : use_presto,
