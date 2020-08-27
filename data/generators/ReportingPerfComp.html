@@ -27,6 +27,7 @@
       <script>
           var use_presto = false;
           var query_in_progress = false;
+          var pretty;
       </script>
       <div id="main">
         <h3>
@@ -63,10 +64,10 @@
           </span>
         </div>
         <div>
-            <span>
+            <p id="elapsed">
                 <b>VM query lasted: </b>
-                <span id="elapsed">Idle</span>
-            </span>
+                Idle
+            </p>
         </div>
         <div class="output">
           <textarea id="output" placeholder="Output" cols=50 rows=10></textarea>
@@ -97,7 +98,7 @@
           } catch(err){
               obj = [];
           }
-          var pretty = JSON.stringify(obj, undefined, 4);
+          pretty = JSON.stringify(obj, undefined, 4);
           document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
           document.getElementById('elapsed').value = query_in_progress ? 'waiting...' : `${1000 * parseFloat(message.elapsed)} ms`;
           // fetch PrestoDBTest-Outgoing messages
