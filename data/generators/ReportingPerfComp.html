@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <meta name="description" content="SHA256 online hash function">
+    <meta name="description" content="Reporting Performance Comparison Tool">
     <title>Reporting Performance Comparison Tool
     </title>
     <link rel="stylesheet" href="https://cmdimkpa.github.io/data/generators/main.css">
@@ -26,6 +26,7 @@
         </ul>
       <script>
           var use_presto = false;
+          var query_in_progress = false;
       </script>
       <div id="main">
         <h3>
@@ -71,7 +72,7 @@
   <script>
       const transmit = async () => {
           // notify
-          document.getElementById('output').value = '["Running Remote Query..."]'
+          query_in_progress = true;
           // send SQL query to Virtual Machine
           axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
               tablename: 'PrestoDBTest-Incoming',
@@ -110,7 +111,7 @@
           const process = async (message) => {
               // write to output
               pretty = JSON.stringify(message, undefined, 4);
-              document.getElementById('output').value = pretty;
+              document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
               // add to chart data
           }
           const processMessages = async () => {
