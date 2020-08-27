@@ -70,6 +70,8 @@
   </body>
   <script>
       const transmit = async () => {
+          // notify
+          document.getElementById('output').value = '["Running Remote Query..."]'
           // send SQL query to Virtual Machine
           axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
               tablename: 'PrestoDBTest-Incoming',
