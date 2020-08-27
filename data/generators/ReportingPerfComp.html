@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="SHA256 online hash function">
+    <title>Reporting Performance Comparison Tool
+    </title>
+    <link rel="stylesheet" href="https://cmdimkpa.github.io/data/generators/main.css">
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="header">
+      <h2><a href="#">Reporting Performance Comparison Tool</a></h2>
+    </div>
+    <div id="body">
+        <ul style="color: green;">
+            <li>
+                Microsoft SQL Server is widely used by our clients, and any demonstrable advantage in terms of <b>reducing
+                man-hours spent</b> on spooling reports creates opportunities to add value. This cloud application evaluates <b>PrestoDB</b>
+                as a potential time-saving solution for our clients.
+            </li>
+        </ul>
+      <script>
+          var use_presto = false;
+      </script>
+      <div id="main">
+        <h3>
+            Microsoft SQL Server running on a Virtual Machine (Google Cloud)
+        </h3>
+        <div class="input">
+            <div class="option-block">
+                <label for="input-type">Select Report Type</label>
+                <select id="input-type">
+                    <option value="top10c">Top 10 Customers</option>
+                    <option value="top10p">Top 10 Products</option>
+                    <option value="tsy">Total Sales (Youth Segment)</option>
+                    <option value="tsm">Total Sales (Middle Age Segment)</option>
+                    <option value="tse">Total Sales (Elderly Segment)</option>
+                </select>
+            </div>
+        </div>
+        <div class="description">OR Type your SQL Query Below
+        </div>
+        <div class="input">
+          <textarea id="input" placeholder="Input"></textarea>
+          <div class="option-block">
+            <label for="input-type">ETL Type</label>
+            <select id="input-type">
+              <option value="direct">Direct</option>
+              <option value="presto">PrestoDB</option>
+            </select>
+          </div>
+        </div>
+        <div class="submit">
+          <span>
+            <input style="background-color: green; color: yellow;" id="execute" type="button" value="Execute Query on VM" class="btn btn-default" onclick="transmit()">
+            <input id="reset" type="button" value="Reset Chart" class="btn btn-default">
+          </span>
+        </div>
+        <div class="output">
+          <textarea id="output" placeholder="Output" cols=50 rows=10></textarea>
+        </div>
+      </div>
+    </div>
+    <div id="footer">&copy; 2020 Monty Dimkpa</div>
+  </body>
+  <script>
+      const transmit = async () => {
+          // send SQL query to Virtual Machine
+          axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
+              tablename: 'PrestoDBTest-Incoming',
+              data: {
+                  use_presto : use_presto,
+                  sql_query : document.getElementById('input').value
+              }
+          }).then(resp => {}).catch(err => {})
+      }
+      const globalUpdate = async () => {
+          // prettify JSON output
+          var ugly = document.getElementById('output').value;
+          var obj;
+          try {
+              obj = JSON.parse(ugly);
+          } catch(err){
+              obj = [];
+          }
+          var pretty = JSON.stringify(obj, undefined, 4);
+          document.getElementById('output').value = pretty;
+          // fetch PrestoDBTest-Outgoing messages
+          let interval = 1000;
+          var lastMessage;
+          const fetchMessages = async () => {
+              return await axios.post(`https://ods-gateway.herokuapp.com/ods/fetch_records`, {
+                  tablename: 'PrestoDBTest-Outgoing',
+                  constraints: {
+                      __created_at__: [Date.now() - 2 * interval, Date.now()]
+                  }
+              }).then(resp => {
+                  return resp.data.data
+              }).catch(err => {
+                  return []
+              })
+          }
+          const process = async (message) => {
+              // write to output
+              pretty = JSON.stringify(message, undefined, 4);
+              document.getElementById('output').value = pretty;
+              // add to chart data
+          }
+          const processMessages = async () => {
+              let messages = await fetchMessages();
+              if (messages.length > 0) {
+                  for (var i = 0; i < messages.length; i++) {
+                      let message = messages[i];
+                      if (lastMessage) {
+                          if (message.__created_at__ > lastMessage.__created_at__) {
+                              process(message);
+                          }
+                      } else {
+                          process(message);
+                      }
+                  }
+                  lastMessage = messages[messages.length - 1];
+              }
+          }
+          processMessages()
+      }
+      $(document).ready(() => {
+          let updater = setInterval(globalUpdate, 1000);
+      })
+  </script>
+</html>
