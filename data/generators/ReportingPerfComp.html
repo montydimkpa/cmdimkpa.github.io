@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -32,6 +33,13 @@
               elapsed;
           var python_times = []
           var presto_times = []
+          var report_sql = {
+                top10c : "SELECT 22",
+                top10p : "SELECT 6",
+                tsy : "",
+                tsm : "",
+                tse : ""
+            }
       </script>
       <div id="main">
         <h3>
@@ -40,7 +48,7 @@
         <div class="input">
             <div class="option-block">
                 <label for="input-type">Select Report Type</label>
-                <select id="report-type">
+                <select id="report-type" onchange="querySelected()">
                     <option value="top10c">Top 10 Customers</option>
                     <option value="top10p">Top 10 Products</option>
                     <option value="tsy">Total Sales (Youth Segment)</option>
@@ -75,7 +83,7 @@
     <div id="sidebar">
         <div>
             <h3>Speed Comparison Chart</h3>
-            <canvas id="line-chart" width="200%" height="200%"></canvas>
+            <canvas id="line-chart" width="150%" height="200%"></canvas>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -86,6 +94,10 @@
       const setETLMethod = async () => {
           use_presto = document.getElementById("etl-type").value == 'presto'
       }
+      const querySelected = async () => {
+            let sql = report_sql[document.getElementById("report-type").value];
+            document.getElementById('input').value = sql;
+        }
       const transmit = async () => {
           // notify
           query_in_progress = true;
