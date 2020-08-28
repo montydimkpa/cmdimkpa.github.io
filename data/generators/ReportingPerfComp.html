@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -34,7 +35,7 @@
           var pretty,
               message,
               elapsed;
-          var python_times = []
+          var conventional_times = []
           var presto_times = []
           var report_sql = {
                 top10c : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT TOP 10 Users.username, Users.age, customer_sales.sales FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id ORDER BY customer_sales.sales DESC",
@@ -124,14 +125,14 @@
           return labels
       }
       const update_chart = async () => {
-        let limit = Math.min(python_times.length, presto_times.length);
+        let limit = Math.min(conventional_times.length, presto_times.length);
         new Chart(document.getElementById("line-chart"), {
               type: 'line',
               data: {
                   labels: num_labels(limit, 'run'),
                   datasets: [
                       {
-                          data: python_times.slice(0, limit),
+                          data: conventional_times.slice(0, limit),
                           label: "Conventional (ms)",
                           borderColor: "#3e95cd",
                           fill: false
@@ -154,7 +155,7 @@
       }
       const reset_chart = async () => {
           events = 0
-          python_times = []
+          conventional_times = []
           presto_times = []
           update_chart()
       }
@@ -200,7 +201,7 @@
               if (use_presto) {
                   presto_times.push(elapsed)
               } else {
-                  python_times.push(elapsed)
+                  conventional_times.push(elapsed)
               }
           }
           const processMessages = async () => {
