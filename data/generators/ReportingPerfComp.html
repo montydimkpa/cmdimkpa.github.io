@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -25,25 +26,7 @@
             </li>
         </ul>
       <script>
-          var query_started;
-          var query_lasted = 0;
-          var events = 0;
-          var pulse = 5;
-          var use_presto = false;
-          var query_in_progress = false;
-          var pretty,
-              message,
-              elapsed;
-          var conventional_times = []
-          var presto_times = []
-          var report_sql = {
-                top10c : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT TOP 10 Users.username, Users.age, customer_sales.sales FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id ORDER BY customer_sales.sales DESC",
-                top10p : "WITH product_movement as (SELECT DISTINCT(product_id) as product_id, COUNT(*) as movement FROM Transactions GROUP BY product_id) SELECT TOP 10 Products.productname, product_movement.movement FROM product_movement, Products WHERE product_movement.product_id = Products.product_id ORDER BY product_movement.movement DESC",
-                tsy : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age < 40",
-                tsm : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age BETWEEN 40 and 50",
-                tse : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age > 50",
-                info1 : ""
-            }
+          var query_started, pretty, message, elapsed, query_lasted = 0, events = 0, pulse = 5, use_presto = !1, query_in_progress = !1, conventional_times = [], presto_times = [], report_sql = { top10c: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT TOP 10 Users.username, Users.age, customer_sales.sales FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id ORDER BY customer_sales.sales DESC", top10p: "WITH product_movement as (SELECT DISTINCT(product_id) as product_id, COUNT(*) as movement FROM Transactions GROUP BY product_id) SELECT TOP 10 Products.productname, product_movement.movement FROM product_movement, Products WHERE product_movement.product_id = Products.product_id ORDER BY product_movement.movement DESC", tsy: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age < 40", tsm: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age BETWEEN 40 and 50", tse: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age > 50", info1: "" };
       </script>
       <div id="main">
         <h3>
