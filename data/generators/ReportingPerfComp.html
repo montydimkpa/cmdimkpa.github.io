@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
@@ -11,73 +12,78 @@
     <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
     <script src="https://cmdimkpa.github.io/MACModel2/GUI/assets/js/Chart.min.js" charset="utf-8"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="header">
-      <h2><a href="#">Reporting Performance Comparison Tool</a></h2>
+        <h2><a href="#">Reporting Performance Comparison Tool</a></h2>
     </div>
     <div id="body">
         <ul style="color: green;">
             <li>
-                Microsoft SQL Server is widely used by our clients, and any demonstrable advantage in terms of <b>reducing
-                man-hours spent</b> on spooling reports creates opportunities to add value. This cloud application evaluates <b>Presto</b>
+                Microsoft SQL Server is widely used by our clients, and any demonstrable advantage in terms of
+                <b>reducing
+                    man-hours spent</b> on spooling reports creates opportunities to add value. This cloud application
+                evaluates <b>Presto</b>
                 as a potential time-saving solution for our clients.
             </li>
         </ul>
-      <script>
-          var query_started, pretty, message, elapsed, query_lasted = 0, events = 0, pulse = 5, use_presto = !1, query_in_progress = !1, conventional_times = [], presto_times = [], report_sql = { top10c: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT TOP 10 Users.username, Users.age, customer_sales.sales FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id ORDER BY customer_sales.sales DESC", top10p: "WITH product_movement as (SELECT DISTINCT(product_id) as product_id, COUNT(*) as movement FROM Transactions GROUP BY product_id) SELECT TOP 10 Products.productname, product_movement.movement FROM product_movement, Products WHERE product_movement.product_id = Products.product_id ORDER BY product_movement.movement DESC", tsy: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age < 40", tsm: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age BETWEEN 40 and 50", tse: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age > 50", info1: "" };
-      </script>
-      <div id="main">
-        <h3>
-            Microsoft SQL Server running on a Virtual Machine (Google Cloud)
-        </h3>
-        <div class="input">
-            <div class="option-block">
-                <label for="input-type">Select Report Type</label>
-                <select id="report-type" onchange="querySelected()">
-                    <option value="info1">Click to Select</option>
-                    <option value="top10c">Top 10 Customers</option>
-                    <option value="top10p">Top 10 Products</option>
-                    <option value="tsy">Total Sales (Youth Segment)</option>
-                    <option value="tsm">Total Sales (Middle Age Segment)</option>
-                    <option value="tse">Total Sales (Elderly Segment)</option>
-                </select>
+        <script>
+           var query_started, pretty, message, elapsed, query_lasted = 0, events = 0, pulse = 5, use_presto = !1, query_in_progress = !1, conventional_times = [], presto_times = [], report_sql = { top10c: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT TOP 10 Users.username, Users.age, customer_sales.sales FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id ORDER BY customer_sales.sales DESC", top10p: "WITH product_movement as (SELECT DISTINCT(product_id) as product_id, COUNT(*) as movement FROM Transactions GROUP BY product_id) SELECT TOP 10 Products.productname, product_movement.movement FROM product_movement, Products WHERE product_movement.product_id = Products.product_id ORDER BY product_movement.movement DESC", tsy: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age < 40", tsm: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age BETWEEN 40 and 50", tse: "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age > 50", info1: "" };
+        </script>
+        <div id="main">
+            <h3>
+                Microsoft SQL Server running on a Virtual Machine (Google Cloud)
+            </h3>
+            <div class="input">
+                <div class="option-block">
+                    <label for="input-type">Select Report Type</label>
+                    <select id="report-type" onchange="querySelected()">
+                        <option value="info1">Click to Select</option>
+                        <option value="top10c">Top 10 Customers</option>
+                        <option value="top10p">Top 10 Products</option>
+                        <option value="tsy">Total Sales (Youth Segment)</option>
+                        <option value="tsm">Total Sales (Middle Age Segment)</option>
+                        <option value="tse">Total Sales (Elderly Segment)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="description">OR Type your SQL Query Below
+            </div>
+            <div class="input">
+                <textarea id="input" placeholder="Input"></textarea>
+                <div class="option-block">
+                    <label for="input-type">ETL Type</label>
+                    <select id="etl-type" onchange="setETLMethod()">
+                        <option value="Conventional">Conventional</option>
+                        <option value="presto">Presto</option>
+                    </select>
+                </div>
+            </div>
+            <div class="submit">
+                <span>
+                    <input style="background-color: green; color: yellow;" id="execute" type="button"
+                        value="Execute Query on VM" class="btn btn-default" onclick="transmit()">
+                    <input id="reset" type="button" value="Reset Chart" class="btn btn-default" onclick="reset_chart()">
+                </span>
+            </div>
+            <p><b>VM query lasted: </b><span id="runtime">Idle</span></p>
+            <div class="output">
+                <textarea id="output" placeholder="Output" cols=50 rows=10></textarea>
             </div>
         </div>
-        <div class="description">OR Type your SQL Query Below
+        <div id="sidebar">
+            <div>
+                <h3>Speed Comparison Chart</h3>
+                <canvas id="line-chart" width="150%" height="200%"></canvas>
+            </div>
+            <div class="clearfix"></div>
         </div>
-        <div class="input">
-          <textarea id="input" placeholder="Input"></textarea>
-          <div class="option-block">
-            <label for="input-type">ETL Type</label>
-            <select id="etl-type" onchange="setETLMethod()">
-              <option value="Conventional">Conventional</option>
-              <option value="presto">Presto</option>
-            </select>
-          </div>
-        </div>
-        <div class="submit">
-          <span>
-            <input style="background-color: green; color: yellow;" id="execute" type="button" value="Execute Query on VM" class="btn btn-default" onclick="transmit()">
-            <input id="reset" type="button" value="Reset Chart" class="btn btn-default" onclick="reset_chart()">
-          </span>
-        </div>
-        <p><b>VM query lasted: </b><span id="runtime">Idle</span></p>
-        <div class="output">
-          <textarea id="output" placeholder="Output" cols=50 rows=10></textarea>
-        </div>
-      </div>
-    <div id="sidebar">
-        <div>
-            <h3>Speed Comparison Chart</h3>
-            <canvas id="line-chart" width="150%" height="200%"></canvas>
-        </div>
-        <div class="clearfix"></div>
-    </div>
     </div>
     <div id="footer">&copy; 2020 Monty Dimkpa</div>
-  </body>
-  <script>
-      const setETLMethod = async () => { use_presto = "presto" == document.getElementById("etl-type").value }, querySelected = async () => { let e = report_sql[document.getElementById("report-type").value]; document.getElementById("input").value = e }, transmit = async () => { query_in_progress = !0, query_started = Date.now(), axios.post("https://ods-gateway.herokuapp.com/ods/new_record", { tablename: "PrestoDBTest-Incoming", data: { use_presto: use_presto, sql_query: document.getElementById("input").value } }).then(e => { }).catch(e => { }) }, num_labels = (e, t = null) => { let a = []; for (var s = 0; s < e; s++)a.push(`${t || ""}${s}`); return a }, update_chart = async () => { let e = Math.min(conventional_times.length, presto_times.length); new Chart(document.getElementById("line-chart"), { type: "line", data: { labels: num_labels(e, "run"), datasets: [{ data: conventional_times.slice(0, e), label: "Conventional (ms)", borderColor: "#3e95cd", fill: !1 }, { data: presto_times.slice(0, e), label: "Presto (ms)", borderColor: "#8e5ea2", fill: !1 }] }, options: { title: { display: !0, text: "ETL Times" } } }) }, reset_chart = async () => { events = 0, conventional_times = [], presto_times = [], update_chart() }, globalUpdate = async () => { events++; var e, t = document.getElementById("output").value; try { e = JSON.parse(t) } catch (t) { e = [] } pretty = JSON.stringify(e, void 0, 4), elapsed = message ? 1e3 * parseFloat(message.elapsed) + query_lasted : query_lasted, document.getElementById("output").value = query_in_progress ? '["Running Remote Query..."]' : pretty, document.getElementById("runtime").innerHTML = query_in_progress ? "waiting..." : `${elapsed} ms`, events % pulse == 0 && update_chart(); var a; const s = async () => { pretty = JSON.stringify(message, void 0, 4), document.getElementById("output").value = pretty, elapsed = 1e3 * message.elapsed + query_lasted, use_presto ? presto_times.push(elapsed) : conventional_times.push(elapsed), query_lasted = 0, elapsed = 0 }; (async () => { let e = await (async () => await axios.post("https://ods-gateway.herokuapp.com/ods/fetch_records", { tablename: "PrestoDBTest-Outgoing", constraints: { __created_at__: [Date.now() - 2e3, Date.now()] }, restrict: ["result", "elapsed"] }).then(e => e.data.data).catch(e => []))(); if (e.length > 0) { for (var t = 0; t < e.length; t++)message = e[t], a ? message.__created_at__ > a.__created_at__ && s() : s(); query_in_progress = !1; try { query_lasted = Date.now() - query_started } catch (e) { query_lasted = 0 } a = e[e.length - 1] } })() }; $(document).ready(() => { setInterval(globalUpdate, 1e3) });
-  </script>
+</body>
+<script>
+    const setETLMethod = async () => { use_presto = "presto" == document.getElementById("etl-type").value }, querySelected = async () => { let e = report_sql[document.getElementById("report-type").value]; document.getElementById("input").value = e }, transmit = async () => { query_in_progress = !0, query_started = Date.now(), axios.post("https://ods-gateway.herokuapp.com/ods/new_record", { tablename: "PrestoDBTest-Incoming", data: { use_presto: use_presto, sql_query: document.getElementById("input").value } }).then(e => { }).catch(e => { }) }, num_labels = (e, t = null) => { let a = []; for (var s = 0; s < e; s++)a.push(`${t || ""}${s}`); return a }, update_chart = async () => { let e = Math.min(conventional_times.length, presto_times.length); new Chart(document.getElementById("line-chart"), { type: "line", data: { labels: num_labels(e, "run"), datasets: [{ data: conventional_times.slice(0, e), label: "Conventional (ms)", borderColor: "#3e95cd", fill: !1 }, { data: presto_times.slice(0, e), label: "Presto (ms)", borderColor: "#8e5ea2", fill: !1 }] }, options: { title: { display: !0, text: "ETL Times" } } }) }, reset_chart = async () => { events = 0, conventional_times = [], presto_times = [], update_chart() }, globalUpdate = async () => { events++; var e, t = document.getElementById("output").value; try { e = JSON.parse(t) } catch (t) { e = [] } pretty = JSON.stringify(e, void 0, 4), elapsed = message ? 1e3 * parseFloat(message.elapsed) + query_lasted : query_lasted, document.getElementById("output").value = query_in_progress ? '["Running Remote Query..."]' : pretty, document.getElementById("runtime").innerHTML = query_in_progress ? "waiting..." : `${elapsed} ms`, events % pulse == 0 && update_chart(); var a; const s = async () => { pretty = JSON.stringify(message, void 0, 4), document.getElementById("output").value = pretty, elapsed = 1e3 * message.elapsed + query_lasted, use_presto ? presto_times.push(elapsed) : conventional_times.push(elapsed), query_lasted = 0, elapsed = 0 }; (async () => { let e = await (async () => await axios.post("https://ods-gateway.herokuapp.com/ods/fetch_records", { tablename: "PrestoDBTest-Outgoing", constraints: { __created_at__: [Date.now() - 2e3, Date.now()] }, restrict: ["result", "elapsed"] }).then(e => e.data.data).catch(e => []))(); if (e.length > 0) { for (var t = 0; t < e.length; t++)message = e[t], a ? message.__created_at__ > a.__created_at__ && s() : s(); query_in_progress = !1, a = e[e.length - 1] } })() }; $(document).ready(() => { setInterval(globalUpdate, 1e3) });
+</script>
+
 </html>
