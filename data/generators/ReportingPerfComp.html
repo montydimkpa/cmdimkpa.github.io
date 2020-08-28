@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -25,6 +26,8 @@
             </li>
         </ul>
       <script>
+          var events = 0;
+          var pulse = 5;
           var use_presto = false;
           var query_in_progress = false;
           var pretty,
@@ -114,7 +117,7 @@
       const num_labels = (num, prefix=null) => {
           let labels = []
           for (var i=0;i<num;i++){
-              labels.push(`${prefix ? prefix : ''}${i+1}`)
+              labels.push(`${prefix ? prefix : ''}${i}`)
           }
           return labels
       }
@@ -148,11 +151,13 @@
           });
       }
       const reset_chart = async () => {
+          events = 0
           python_times = []
           presto_times = []
           update_chart()
       }
       const globalUpdate = async () => {
+          events++
           // prettify JSON output
           var ugly = document.getElementById('output').value;
           var obj;
@@ -165,7 +170,9 @@
           elapsed = message ? 1000 * parseFloat(message.elapsed) : 0
           document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
           document.getElementById('runtime').innerHTML = query_in_progress ? 'waiting...' : `${elapsed} ms`;
-          update_chart()
+          if (events % pulse === 0){
+              update_chart()
+          }
           // fetch PrestoDBTest-Outgoing messages
           let interval = 1000;
           var lastMessage;
