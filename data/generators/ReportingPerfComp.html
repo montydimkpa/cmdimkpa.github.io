@@ -38,9 +38,9 @@
           var report_sql = {
                 top10c : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT TOP 10 Users.username, Users.age, customer_sales.sales FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id ORDER BY customer_sales.sales DESC",
                 top10p : "WITH product_movement as (SELECT DISTINCT(product_id) as product_id, COUNT(*) as movement FROM Transactions GROUP BY product_id) SELECT TOP 10 Products.productname, product_movement.movement FROM product_movement, Products WHERE product_movement.product_id = Products.product_id ORDER BY product_movement.movement DESC",
-                tsy : "",
-                tsm : "",
-                tse : "",
+                tsy : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age < 40",
+                tsm : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age BETWEEN 40 and 50",
+                tse : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM Transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, Users WHERE customer_sales.user_id = Users.user_id AND Users.age > 50",
                 info1 : ""
             }
       </script>
