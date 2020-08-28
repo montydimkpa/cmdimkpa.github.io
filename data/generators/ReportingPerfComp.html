@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -37,7 +38,8 @@
                 top10p : "SELECT 6",
                 tsy : "",
                 tsm : "",
-                tse : ""
+                tse : "",
+                info1 : ""
             }
       </script>
       <div id="main">
@@ -48,6 +50,7 @@
             <div class="option-block">
                 <label for="input-type">Select Report Type</label>
                 <select id="report-type" onchange="querySelected()">
+                    <option value="info1">Click to Select</option>
                     <option value="top10c">Top 10 Customers</option>
                     <option value="top10p">Top 10 Products</option>
                     <option value="tsy">Total Sales (Youth Segment)</option>
