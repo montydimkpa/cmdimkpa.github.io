@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -75,7 +76,7 @@
     <div id="sidebar">
         <div>
             <h3>Speed Comparison Chart</h3>
-            <canvas id="line-chart" width="150%" height="200%"></canvas>
+            <canvas id="line-chart" width="200%" height="200%"></canvas>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -174,7 +175,7 @@
               pretty = JSON.stringify(message, undefined, 4);
               document.getElementById('output').value = pretty;
               // add to chart data
-              elapsed = message.elapsed;
+              elapsed = 1000 * message.elapsed;
               if (use_presto) {
                   presto_times.push(elapsed)
               } else {
