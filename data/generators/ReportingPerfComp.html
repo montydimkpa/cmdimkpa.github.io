@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -74,7 +75,7 @@
     <div id="sidebar">
         <div>
             <h3>Speed Comparison Chart</h3>
-            <canvas id="line-chart"></canvas>
+            <canvas id="line-chart" width="150%" height="200%"></canvas>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -97,10 +98,10 @@
               }
           }).then(resp => {}).catch(err => {})
       }
-      const num_labels = (num) => {
+      const num_labels = (num, prefix=null) => {
           let labels = []
           for (var i=0;i<num;i++){
-              labels.push(i.toString())
+              labels.push(`${prefix ? prefix : ''}${i}`)
           }
           return labels
       }
@@ -109,7 +110,7 @@
         new Chart(document.getElementById("line-chart"), {
               type: 'line',
               data: {
-                  labels: num_labels(limit),
+                  labels: num_labels(limit, 'run'),
                   datasets: [
                       {
                           data: python_times.slice(0, limit),
