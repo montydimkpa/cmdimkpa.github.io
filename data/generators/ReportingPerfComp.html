@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -28,7 +29,8 @@
           var use_presto = false;
           var query_in_progress = false;
           var pretty,
-              message;
+              message,
+              elapsed;
           var python_times = []
           var presto_times = []
       </script>
@@ -74,7 +76,7 @@
     <div id="sidebar">
         <div>
             <h3>Speed Comparison Chart</h3>
-            <canvas id="line-chart" width="300%" height="200%"></canvas>
+            <canvas id="line-chart" width="150%" height="200%"></canvas>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -148,16 +150,9 @@
               obj = [];
           }
           pretty = JSON.stringify(obj, undefined, 4);
-          let elapsed = message ? 1000 * parseFloat(message.elapsed) : 0
+          elapsed = message ? 1000 * parseFloat(message.elapsed) : 0
           document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
           document.getElementById('runtime').innerHTML = query_in_progress ? 'waiting...' : `${elapsed} ms`;
-          if (elapsed > 0){
-              if (use_presto) {
-                  presto_times.push(elapsed)
-              } else {
-                  python_times.push(elapsed)
-              }
-          }
           update_chart()
           // fetch PrestoDBTest-Outgoing messages
           let interval = 1000;
@@ -180,6 +175,12 @@
               pretty = JSON.stringify(message, undefined, 4);
               document.getElementById('output').value = pretty;
               // add to chart data
+              elapsed = message.elapsed;
+              if (use_presto) {
+                  presto_times.push(elapsed)
+              } else {
+                  python_times.push(elapsed)
+              }
           }
           const processMessages = async () => {
               let messages = await fetchMessages();
