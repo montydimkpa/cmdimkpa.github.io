@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -25,6 +26,8 @@
             </li>
         </ul>
       <script>
+          var query_started;
+          var query_lasted = 0;
           var events = 0;
           var pulse = 5;
           var use_presto = false;
@@ -67,7 +70,7 @@
           <div class="option-block">
             <label for="input-type">ETL Type</label>
             <select id="etl-type" onchange="setETLMethod()">
-              <option value="python">Python</option>
+              <option value="Conventional">Conventional</option>
               <option value="presto">Presto</option>
             </select>
           </div>
@@ -104,6 +107,7 @@
       const transmit = async () => {
           // notify
           query_in_progress = true;
+          query_started = Date.now()
           // send SQL query to Virtual Machine
           axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
               tablename: 'PrestoDBTest-Incoming',
@@ -129,7 +133,7 @@
                   datasets: [
                       {
                           data: python_times.slice(0, limit),
-                          label: "Python (ms)",
+                          label: "Conventional (ms)",
                           borderColor: "#3e95cd",
                           fill: false
                       }, 
@@ -166,7 +170,7 @@
               obj = [];
           }
           pretty = JSON.stringify(obj, undefined, 4);
-          elapsed = message ? 1000 * parseFloat(message.elapsed) : 0
+          elapsed = message ? (1000 * parseFloat(message.elapsed)) + query_lasted : query_lasted
           document.getElementById('output').value = query_in_progress ? '["Running Remote Query..."]' : pretty;
           document.getElementById('runtime').innerHTML = query_in_progress ? 'waiting...' : `${elapsed} ms`;
           if (events % pulse === 0){
@@ -193,7 +197,7 @@
               pretty = JSON.stringify(message, undefined, 4);
               document.getElementById('output').value = pretty;
               // add to chart data
-              elapsed = 1000 * message.elapsed;
+              elapsed = (1000 * message.elapsed) + query_lasted;
               if (use_presto) {
                   presto_times.push(elapsed)
               } else {
@@ -214,6 +218,11 @@
                       }
                   }
                   query_in_progress = false;
+                  try {
+                      query_lasted = Date.now() - query_started
+                  } catch(err){
+                      query_lasted = 0
+                  }
                   lastMessage = messages[messages.length - 1];
               }
           }
