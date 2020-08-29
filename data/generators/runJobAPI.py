@@ -26,7 +26,7 @@ def elapsed_seconds(t):
 def runJob(job):
     try:
         sql_query = job["sql_query"]
-        if not job["use_presto"]:
+        if job["use_presto"]:
             conn = pymssql.connect(user="SA",password="Photon86$",host="localhost",database="presto_db_test")
         else:
             conn = prestodb.dbapi.connect(host='localhost',port=8080,user='SA',catalog='sqlserver',schema='dbo')
@@ -34,7 +34,7 @@ def runJob(job):
         cur.execute('USE presto_db_test')
         cur.execute(sql_query)
         result = cur.fetchall()
-        if not job["use_presto"]:
+        if job["use_presto"]:
             result = [str(x) for x in result]
         del conn
         del cur
