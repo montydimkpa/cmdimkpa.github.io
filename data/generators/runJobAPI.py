@@ -6,8 +6,9 @@ import requests as http
 import pymssql
 import datetime
 import json
+import prestodb
 
-global false, true, null, conn, cursor
+global false, true, null, conn, cur
 
 false = False
 true = True
@@ -24,20 +25,20 @@ def elapsed_seconds(t):
 
 def runJob(job):
     try:
-        conn = pymssql.connect(user="SA",password="Photon86$",host="localhost",database="PrestoDBTest")
-        cursor = conn.cursor()
-        cursor.execute('USE PrestoDBTest;')
+        sql_query = job["sql_query"]
         if not job["use_presto"]:
-            sql_query = job["sql_query"]
-            if sql_query[-1] != ';':
-                sql_query+=';'
-            print(sql_query)
-            cursor.execute(sql_query)
-            return [str(x) for x in cursor.fetchall()]
+            conn = pymssql.connect(user="SA",password="Photon86$",host="localhost",database="presto_db_test")
         else:
-            return []
+            conn = prestodb.dbapi.connect(host='localhost',port=8080,user='SA',catalog='sqlserver',schema='dbo')
+        cur = conn.cursor()
+        cur.execute('USE presto_db_test')
+        cur.execute(sql_query)
+        result = cur.fetchall()
+        if not job["use_presto"]:
+            result = [str(x) for x in result]
         del conn
-        del cursor
+        del cur
+        return result
     except Exception as err:
         print(str(err))
         return []
