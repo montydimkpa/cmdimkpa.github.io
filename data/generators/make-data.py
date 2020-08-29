@@ -94,15 +94,15 @@ else:
 HOME+=slash
 
 create_table_queries = {
-    "users": "CREATE TABLE Users (user_id VARCHAR(10) PRIMARY KEY, username VARCHAR(100) NOT NULL, age INTEGER NOT NULL);",
-    "products" : "CREATE TABLE Products (product_id VARCHAR(20) PRIMARY KEY, productname VARCHAR(200) NOT NULL, price FLOAT(24) NOT NULL);",
-    "transactions": "CREATE TABLE Transactions (purchase_date DATETIME NOT NULL, customer_id VARCHAR(10) NOT NULL, product_id VARCHAR(20) NOT NULL, price FLOAT(24) NOT NULL);"
+    "users": "CREATE TABLE users (user_id VARCHAR(10) PRIMARY KEY, username VARCHAR(100) NOT NULL, age INTEGER NOT NULL);",
+    "products" : "CREATE TABLE products (product_id VARCHAR(20) PRIMARY KEY, productname VARCHAR(200) NOT NULL, price FLOAT(24) NOT NULL);",
+    "transactions": "CREATE TABLE transactions (purchase_date DATETIME NOT NULL, customer_id VARCHAR(10) NOT NULL, product_id VARCHAR(20) NOT NULL, price FLOAT(24) NOT NULL);"
 }
 
 insert_table_queries = {
-    "users": "INSERT INTO Users VALUES ('%s', '%s', %s);",
-    "products" : "INSERT INTO Products VALUES ('%s', '%s', %s);",
-    "transactions": "INSERT INTO Transactions VALUES ('%s', '%s', '%s', %s);"
+    "users": "INSERT INTO users VALUES ('%s', '%s', %s);",
+    "products" : "INSERT INTO products VALUES ('%s', '%s', %s);",
+    "transactions": "INSERT INTO transactions VALUES ('%s', '%s', '%s', %s);"
 }
 
 myHeaders = {
@@ -111,7 +111,7 @@ myHeaders = {
     "transactions" : ["purchase_date", "customer_id", "product_id", "price"]
 }
 
-conn = pymssql.connect(user="SA",password="Photon86$",host="localhost",database="PrestoDBTest")
+conn = pymssql.connect(user="SA",password="Photon86$",host="localhost",database="presto_db_test")
 cursor = conn.cursor()
 
 def random_from(array):
@@ -144,7 +144,7 @@ def write2csv(collection, filename):
 
 
 def write2table(collection, table):
-    cursor.execute("DROP TABLE %s" % table.title()); conn.commit()
+    cursor.execute("DROP TABLE %s" % table); conn.commit()
     cursor.execute(create_table_queries[table]); conn.commit()
     for entry in collection:
         sql = insert_table_queries[table] % tuple(
