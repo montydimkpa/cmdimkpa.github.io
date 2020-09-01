@@ -106,7 +106,8 @@ const checkUserAuthenticated = async () => {
     return go;
 }
 
-const toggleVisibility = () => {
+const toggleVisibility = (e) => {
+    e.preventDefault()
     if (pwdFieldExposed){
         document.getElementById("password").type = "password";
         document.getElementById("toggle").value = "show";
