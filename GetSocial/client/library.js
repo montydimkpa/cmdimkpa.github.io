@@ -106,7 +106,8 @@ const checkUserAuthenticated = async () => {
 }
 
 const LoginRegisterForm = async () => {
-    console.log("login/register")
+    // waitscreen
+    $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center">`)
 }
 
 const globalUpdate = async () => {
