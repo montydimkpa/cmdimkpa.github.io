@@ -76,7 +76,7 @@ const processMessages = async () => {
 
 const UIMessageHandler = (messages) => {
     // handle new incoming messages
-    console.log("yeah")
+    console.log(messages)
 }
 
 const globalUpdate = async () => {
