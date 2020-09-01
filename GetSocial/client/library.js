@@ -4,7 +4,6 @@
 
 // settings
 const QueueType = "Incoming";
-const dbGateway = "https://ods-gateway.herokuapp.com/ods";
 const throttlingFactor = 2;
 const interval = 5000;
 const expiryInterval = 3600000;
@@ -14,6 +13,19 @@ var lastMessage,
     avatar_b64;
 
 moniker = "salamander"
+
+var event_counter = 0;
+
+const dbGateway = () => {
+    // basic load balancer over multiple gateways
+    event_counter++
+    let gateways = [
+        "https://ods-gateway2.herokuapp.com/ods",
+        "https://ods-gateway3.herokuapp.com/ods",
+        "https://ods-gateway4.herokuapp.com/ods"
+    ];
+    return gateways[event_counter % gateways.length];
+}
 
 const fetchMessages = async (queue, user, expiredOnly = false) => {
     var constraints;
@@ -32,7 +44,7 @@ const fetchMessages = async (queue, user, expiredOnly = false) => {
         // include only this user's messages in Incoming mode
         constraints["to"] = user;
     }
-    return await axios.post(`${dbGateway}/fetch_records`,
+    return await axios.post(`${dbGateway()}/fetch_records`,
         {
             tablename: `PC${queue}MessageQueue`,
             constraints: constraints
