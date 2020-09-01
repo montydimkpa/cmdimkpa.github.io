@@ -13,6 +13,8 @@ var lastMessage,
     moniker,
     avatar_b64;
 
+moniker = "salamander"
+
 const fetchMessages = async (queue, user, expiredOnly = false) => {
     var constraints;
     if (expiredOnly) {
