@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        html {
+           font-family: Arial, Helvetica, sans-serif;
+       }
+
+        body {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .container {
+            border: 2px solid #dedede;
+            background-color: #c1b4f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .darker {
+            border-color: #ccc;
+            background-color: rgb(245, 151, 225);
+        }
+
+        .container::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .container img {
+            float: left;
+            max-width: 60px;
+            width: 100%;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .container img.right {
+            float: right;
+            margin-left: 20px;
+            margin-right: 0;
+        }
+
+        .time-right {
+            float: right;
+            color: #aaa;
+        }
+
+        .time-left {
+            float: left;
+            color: #999;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
+    <script src="https://cmdimkpa.github.io/GetSocial/client/library.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <title>GetSocial - Demo Chat Application</title>
+    <link rel="icon" type="image/ico" href="https://cmdimkpa.github.io/GetSocial/client/favicon.ico">
+</head>
+
+<body>
+    <div style="width:800px;">
+        <div style="width:300px; float:left;">
+            <img src="https://cmdimkpa.github.io/GetSocial/client/logo.png" alt="GetSocial-logo" width="50">
+            <h2><b>GetSocial</b></h2>
+        </div>
+        <div style="width:300px; float:right;">
+            <p>Hello</p>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <div>
+        <!--  Message Space  -->
+        <img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center">
+    </div>
+    <script>
+        $(document).ready(function () {
+            // global update 
+            let update = setInterval(globalUpdate, interval);
+        });
+    </script>
+</body>
+</html>
