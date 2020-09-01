@@ -6,7 +6,7 @@
 const QueueType = "Incoming";
 const dbGateway = "https://ods-gateway.herokuapp.com/ods";
 const throttlingFactor = 2;
-const interval = 1000;
+const interval = 5000;
 const expiryInterval = 3600000;
 const throttle = throttlingFactor * interval;
 var lastMessage,
