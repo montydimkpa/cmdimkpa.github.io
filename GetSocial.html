@@ -64,10 +64,20 @@
             margin-right: auto;
             width: 50%;
         }
+        .blink_me {
+            animation: blinker 2s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+            opacity: 0;
+        }
+}
     </style>
-    <script src="https://cmdimkpa.github.io/GetSocial/client/library.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cmdimkpa.github.io/GetSocial/client/library.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@latest/dist/browser-image-compression.js"></script>
     <title>GetSocial - Demo Chat Application</title>
     <link rel="icon" type="image/ico" href="https://cmdimkpa.github.io/GetSocial/client/favicon.ico">
 </head>
@@ -75,17 +85,17 @@
 <body>
     <div style="width:800px;">
         <div style="width:300px; float:left;">
+            <br/>
             <img src="https://cmdimkpa.github.io/GetSocial/client/logo.png" alt="GetSocial-logo" width="50">
             <h2><b>GetSocial</b></h2>
         </div>
         <div style="width:300px; float:right;">
-            <p>Hello</p>
+            <p id="attention" class="blink_me"></p>
         </div>
     </div>
     <div style="clear: both;"></div>
-    <div>
+    <div id="console">
         <!--  Message Space  -->
-        <img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center">
     </div>
     <script>
         $(document).ready(function () {
