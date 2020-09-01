@@ -16,6 +16,7 @@ var lastMessage,
     avatar_b64;
 
 var event_counter = 0;
+var pwdFieldExposed = false;
 
 const dbGateway = () => {
     // basic load balancer over multiple gateways
@@ -103,6 +104,17 @@ const checkUserAuthenticated = async () => {
         }
     }
     return go;
+}
+
+const toggleVisibility = () => {
+    if (pwdFieldExposed){
+        document.getElementById("password").type = "password";
+        document.getElementById("toggle").value = "show";
+    } else {
+        document.getElementById("password").type = "text";
+        document.getElementById("toggle").value = "hide";
+    }
+    pwdFieldExposed = !pwdFieldExposed;
 }
 
 const LoginRegisterForm = async () => {
