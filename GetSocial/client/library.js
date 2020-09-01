@@ -106,6 +106,29 @@ const checkUserAuthenticated = async () => {
     return go;
 }
 
+const moniker_exists = async (try_moniker) => {
+    let resp = await axios.post(`${dbGateway()}/fetch_records`,
+        {
+            tablename: `GetSocialUser`,
+            constraints: { moniker : try_moniker },
+            strict : true
+        })
+        .then(resp => { return resp.data.data })
+        .catch(err => { return [] })
+    return resp.length > 0
+}
+
+const registerUser = async (event) => {
+    event.preventDefault()
+    let try_moniker = document.getElementById("moniker").value;
+    let password = document.getElementById("password").value;
+    if (await moniker_exists(try_moniker)){
+        // moniker exists
+        $('#userError').text("This moniker already exists")
+        $('.alert').show()
+    } else {}
+}
+
 const toggleVisibility = (e) => {
     e.preventDefault()
     if (pwdFieldExposed){
@@ -120,6 +143,7 @@ const toggleVisibility = (e) => {
 
 const LoginRegisterForm = async () => {
     // waitscreen
+    $('.alert').hide()
     $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
     $('#attention').text(`Please login or register below`)
     $('#login_register_form').html(`<label for="moniker"><b>moniker  </b></label><input type="text" id="moniker" name="moniker" autofocus><br><br><label for="password"><b>password  </b></label><input type="password" id="password" name="password"><input id="toggle" type="submit" onclick="toggleVisibility(event)" value="show"><br><br><input type="submit" onclick="loginUser(event)" value="Login"> <input type="submit" onclick="registerUser(event)" value="Register">`)
