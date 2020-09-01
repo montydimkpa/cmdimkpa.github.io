@@ -5,14 +5,15 @@
 // settings
 const QueueType = "Incoming";
 const throttlingFactor = 2;
-const interval = 5000;
-const expiryInterval = 3600000;
+const interval = 5000; // message pull interval
 const throttle = throttlingFactor * interval;
+const sessionTime = 3600000 // 1 hour session
+const pageSize = 3;
+var thisPage = 1;
+var all_messages = [];
 var lastMessage,
     moniker,
     avatar_b64;
-
-moniker = "salamander"
 
 var event_counter = 0;
 
@@ -27,26 +28,16 @@ const dbGateway = () => {
     return gateways[event_counter % gateways.length];
 }
 
-const fetchMessages = async (queue, user, expiredOnly = false) => {
+const fetchMessages = async () => {
     var constraints;
-    if (expiredOnly) {
-        // retrieve expired messages
-        constraints = {
-            __created_at__: [Date.now() - 2 * expiryInterval, Date.now() - expiryInterval]
-        }
-    } else {
-        // retrieve messages added in the last throttle
-        constraints = {
-            __created_at__: [Date.now() - throttle, Date.now()]
-        }
-    }
-    if (user) {
-        // include only this user's messages in Incoming mode
-        constraints["to"] = user;
+    // retrieve messages added in the last throttle
+    constraints = {
+        __created_at__: [Date.now() - throttle, Date.now()],
+        to : moniker
     }
     return await axios.post(`${dbGateway()}/fetch_records`,
         {
-            tablename: `PC${queue}MessageQueue`,
+            tablename: `PCIncomingMessageQueue`,
             constraints: constraints
         }).then(resp => {
             // return message array   
@@ -58,33 +49,40 @@ const fetchMessages = async (queue, user, expiredOnly = false) => {
         })
 }
 
-const process_message = async (message) => {
-    // this is a server function
- }
+let paginate = (array, pageSize, thisPage) => {
+  if (pageSize && thisPage) {
+    pageSize = parseInt(pageSize);
+    thisPage = parseInt(thisPage);
+    let pageStartIndex;
+    if (thisPage.toString().includes("-")) {
+      pageStartIndex = array.length - Math.abs(thisPage) * pageSize;
+    } else {
+      pageStartIndex = pageSize * (thisPage - 1);
+    }
+    return array.slice(pageStartIndex, pageStartIndex + pageSize);
+  } else { return array }
+}
 
 const processMessages = async () => {
-    // handle messages contextually
-    let user = QueueType === "Outgoing" ? null : moniker
-    let messages = await fetchMessages(QueueType, user);
-    if (!user) {
-        if (messages.length > 0) {
-            for (var i = 0; i < messages.length; i++) {
-                let message = messages[i];
-                if (lastMessage) {
-                    if (message.__created_at__ > lastMessage.__created_at__) {
-                        process_message(message);
-                    }
-                } else {
-                    process_message(message);
+    let messages = await fetchMessages();
+    let filtered = [];
+    if (messages.length > 0) {
+        for (var i = 0; i < messages.length; i++) {
+            let message = messages[i];
+            if (lastMessage) {
+                if (message.__created_at__ > lastMessage.__created_at__) {
+                    filtered.push(message);
                 }
+            } else {
+                filtered.push(message);
             }
-            lastMessage = messages[messages.length - 1];
-        } else {
-            console.log('no messages to process')
         }
-    } else {
-        // UI code to handle messages
-        UIMessageHandler(messages);
+        lastMessage = messages[messages.length - 1];
+        if (filtered) {
+            // UI code to handle messages
+            all_messages = [...filtered.reverse(),...all_messages]
+            UIMessageHandler(all_messages);
+        }
     }
 }
 
@@ -93,6 +91,33 @@ const UIMessageHandler = (messages) => {
     console.log(messages)
 }
 
+const checkUserAuthenticated = async () => {
+    var go;
+    moniker = window.localStorage.getItem('moniker');
+    let session_started = window.localStorage.getItem('session_started');
+    if (moniker && session_started){
+        let elapsed = Date.now() - session_started;
+        if (elapsed < sessionTime){
+            // Show message view
+            go = true;
+        }
+    }
+    return go;
+}
+
+const LoginRegisterForm = async () => {
+    console.log("login/register")
+}
+
 const globalUpdate = async () => {
-    processMessages()
+    checkUserAuthenticated()
+      .then(go => {
+          if (go){
+              // load message view
+              processMessages()
+          } else {
+              // user not authenticated
+              LoginRegisterForm()
+          }
+      })
 }
