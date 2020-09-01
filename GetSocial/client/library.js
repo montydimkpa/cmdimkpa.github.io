@@ -107,7 +107,7 @@ const checkUserAuthenticated = async () => {
 
 const LoginRegisterForm = async () => {
     // waitscreen
-    $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
+    $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div><p class="blink_me">Please login or register below</p>`)
 }
 
 const globalUpdate = async () => {
