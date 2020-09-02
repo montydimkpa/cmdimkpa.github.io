@@ -83,6 +83,10 @@
         margin-bottom: 15px;
         }
 
+        .success {
+            background-color: green;
+        }
+
         /* The close button */
         .closebtn {
         margin-left: 15px;
@@ -102,6 +106,7 @@
 
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js"></script>
     <script src="https://cmdimkpa.github.io/GetSocial/client/library.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@latest/dist/browser-image-compression.js"></script>
@@ -118,7 +123,7 @@
         </div>
         <div style="width:400px; float:right;">
             <p id="attention" class="blink_me"></p>
-            <div class="alert">
+            <div id="notice" class="alert">
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 <span id="userError"></span>
             </div>
@@ -132,7 +137,7 @@
     <script>
         $(document).ready(function () {
             // UI prep
-            $('.alert').hide()
+            $('#notice').hide()
             // global update 
             let update = setInterval(globalUpdate, interval);
         });
