@@ -220,9 +220,10 @@ const LoginRegisterForm = async () => {
 }
 
 const logout = async (event) => {
-    event.preventDefault()
+    event.preventDefault()/*
     window.localStorage.setItem("moniker", undefined);
-    window.localStorage.setItem("session_started", undefined);
+    window.localStorage.setItem("session_started", undefined);*/
+    alert("hey")
 }
 
 const LoadMessageView = async () => {
