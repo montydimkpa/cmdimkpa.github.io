@@ -226,7 +226,7 @@ const LoadMessageView = async () => {
             $('#notice').hide();
             $('#console').html(``);
             $('#attention').removeClass("blink_me");
-            $('#attention').text(`@${moniker}`);
+            $('#attention').html(`welcome, <b>@${moniker}</b>!`);
             $('#login_register_form').html(``);
         }
     )
