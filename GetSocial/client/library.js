@@ -239,7 +239,7 @@ const LoadMessageView = async () => {
             $('#attention').html(`welcome, <b>@${moniker}</b>!`);
             $('#logout').show();
             $('#login_register_form').html(``);
-            $('#console').html(currentPage.map(message => messageBox(message)).join(""));
+            currentPage.length > 0 ? $('#console').html(currentPage.map(message => messageBox(message)).join("")) : $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/nomail.jpg" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
         }
     )
 }
