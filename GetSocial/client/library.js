@@ -5,7 +5,7 @@
 // settings
 const QueueType = "Incoming";
 const throttlingFactor = 2;
-const interval = 5000; // message pull interval
+const interval = 3000; // message pull interval
 const throttle = throttlingFactor * interval;
 const sessionTime = 3600000 // 1 hour session
 const pageSize = 3;
@@ -17,6 +17,7 @@ var lastMessage,
 
 var event_counter = 0;
 var pwdFieldExposed = false;
+var formLoaded = false;
 
 const dbGateway = () => {
     // basic load balancer over multiple gateways
@@ -143,10 +144,13 @@ const toggleVisibility = (e) => {
 
 const LoginRegisterForm = async () => {
     // waitscreen
-    $('.alert').hide()
-    $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
-    $('#attention').text(`Please login or register below`)
-    $('#login_register_form').html(`<label for="moniker"><b>moniker  </b></label><input type="text" id="moniker" name="moniker" autofocus><br><br><label for="password"><b>password  </b></label><input type="password" id="password" name="password"><input id="toggle" type="submit" onclick="toggleVisibility(event)" value="show"><br><br><input type="submit" onclick="loginUser(event)" value="Login"> <input type="submit" onclick="registerUser(event)" value="Register">`)
+    if (!formLoaded){
+        $('.alert').hide()
+        $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
+        $('#attention').text(`Please login or register below`)
+        $('#login_register_form').html(`<label for="moniker"><b>moniker  </b></label><input type="text" id="moniker" name="moniker" autofocus><br><br><label for="password"><b>password  </b></label><input type="password" id="password" name="password"><input id="toggle" type="submit" onclick="toggleVisibility(event)" value="show"><br><br><input type="submit" onclick="loginUser(event)" value="Login"> <input type="submit" onclick="registerUser(event)" value="Register">`)
+        formLoaded = true;
+    }
 }
 
 const globalUpdate = async () => {
