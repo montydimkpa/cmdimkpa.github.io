@@ -5,7 +5,7 @@
 // settings
 const QueueType = "Incoming";
 const throttlingFactor = 3;
-const interval = 2000; // message pull interval
+const interval = 3000; // message pull interval
 const throttle = throttlingFactor * interval;
 const sessionTime = 3600000 // 1 hour session
 const pageSize = 3;
