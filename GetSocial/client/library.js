@@ -227,7 +227,7 @@ const logout = async (event) => {
 }
 
 const messageBox = (message) => {
-    return `<div class="container darker"><p><b>${message.from}: </b>${message.text}</p><span class="time-left">${message.timestamp}<span><img src="https://cmdimkpa.github.io/GetSocial/client/reply.gif" alt="reply" width="150"></span></span></div>`
+    return `<div class="container darker"><p><b>${message.from}: </b>${message.text}</p><span class="time-left">${message.timestamp}<span><img src="https://cmdimkpa.github.io/GetSocial/client/reply.gif" alt="reply" width="100%"></span></span></div>`
 }
 
 const LoadMessageView = async () => {
