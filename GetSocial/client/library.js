@@ -219,6 +219,11 @@ const LoginRegisterForm = async () => {
     }
 }
 
+const logout = async () => {
+    window.localStorage.removeItem("moniker");
+    window.localStorage.removeItem("session_started");
+}
+
 const LoadMessageView = async () => {
     // prepare view and load messages
     processMessages().then(
@@ -230,11 +235,6 @@ const LoadMessageView = async () => {
             $('#login_register_form').html(``);
         }
     )
-}
-
-const logout = () => {
-    window.localStorage.removeItem("moniker");
-    window.localStorage.removeItem("session_started");
 }
 
 const globalUpdate = async () => {
