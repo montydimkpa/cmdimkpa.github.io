@@ -208,6 +208,7 @@ const LoginRegisterForm = async () => {
     // waitscreen
     if (!formLoaded){
         $('#notice').hide()
+        $('#notice').removeClass("success")
         $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
         $('#attention').text(`Please login or register below`)
         $('#login_register_form').html(`<label for="moniker"><b>moniker  </b></label><input type="text" id="moniker" name="moniker" autofocus><br><br><label for="password"><b>password  </b></label><input type="password" id="password" name="password"><input id="toggle" type="submit" onclick="toggleVisibility(event)" value="show"><br><br><input type="submit" onclick="loginUser(event)" value="Login"> <input type="submit" onclick="registerUser(event)" value="Register">`)
@@ -215,12 +216,24 @@ const LoginRegisterForm = async () => {
     }
 }
 
+const LoadMessageView = async () => {
+    // prepare view and load messages
+    processMessages().then(
+        () => {
+            $('#notice').hide();
+            $('#console').html(``);
+            $('#attention').hide();
+            $('#login_register_form').html(``);
+        }
+    )
+}
+
 const globalUpdate = async () => {
     checkUserAuthenticated()
       .then(go => {
           if (go){
               // load message view
-              processMessages()
+              LoadMessageView()
           } else {
               // user not authenticated
               LoginRegisterForm()
