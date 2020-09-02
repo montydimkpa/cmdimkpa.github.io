@@ -125,6 +125,18 @@ const moniker_exists = async (try_moniker) => {
     return resp.length > 0
 }
 
+const user_exists = async (try_moniker, password_hash) => {
+    let resp = await axios.post(`${dbGateway()}/fetch_records`,
+        {
+            tablename: `GetSocialUser`,
+            constraints: { moniker: try_moniker, password_hash : password_hash },
+            strict: true
+        })
+        .then(resp => { return resp.data.data })
+        .catch(err => { return [] })
+    return resp.length > 0
+}
+
 const createNewUserAccount = async (moniker, password_hash) => {
     await axios.post(`${dbGateway()}/new_record`,
         {
@@ -156,6 +168,25 @@ const registerUser = async (event) => {
         } else {
             $('#userError').text("Password should be greater than 3 characters")
         }
+    }
+    $('#notice').show()
+    formLoaded = false;
+}
+
+const loginUser = async (event) => {
+    event.preventDefault()
+    let try_moniker = document.getElementById("moniker").value;
+    let password = document.getElementById("password").value;
+    if (await user_exists(try_moniker, get_hash(password))) {
+        // user exists - update local creds
+        moniker = try_moniker;
+        window.localStorage.setItem("moniker", moniker);
+        window.localStorage.setItem("session_started", Date.now());
+        $('#userError').text("User login successful")
+        $('#notice').addClass("success")
+    } else {
+        // no such user
+        $('#userError').text("Could not authenticate")
     }
     $('#notice').show()
     formLoaded = false;
