@@ -220,8 +220,8 @@ const LoginRegisterForm = async () => {
 }
 
 const logout = async () => {
-    window.localStorage.removeItem("moniker");
-    window.localStorage.removeItem("session_started");
+    window.localStorage.setItem("moniker", undefined);
+    window.localStorage.setItem("session_started", undefined);
 }
 
 const LoadMessageView = async () => {
