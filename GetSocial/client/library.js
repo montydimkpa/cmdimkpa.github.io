@@ -149,8 +149,8 @@ const registerUser = async (event) => {
             moniker = try_moniker;
             createNewUserAccount(moniker, password_hash)
             // store local creds
-            window.localStorage.setItem("moniker") = moniker;
-            window.localStorage.setItem("session_started") = Date.now()
+            window.localStorage.setItem("moniker", moniker);
+            window.localStorage.setItem("session_started", Date.now());
             $('#userError').text("User registration successful")
             $('#notice').addClass("success")
         } else {
