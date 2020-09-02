@@ -66,13 +66,40 @@
         }
         .blink_me {
             animation: blinker 2s linear infinite;
+            color: fuchsia;
         }
 
         @keyframes blinker {
             50% {
             opacity: 0;
+         }
         }
-}
+        
+        /* The alert message box */
+        .alert {
+        padding: 20px;
+        background-color: #f44336; /* Red */
+        color: white;
+        margin-bottom: 15px;
+        }
+
+        /* The close button */
+        .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+        }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+        color: black;
+        }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cmdimkpa.github.io/GetSocial/client/library.js"></script>
@@ -89,8 +116,13 @@
             <img src="https://cmdimkpa.github.io/GetSocial/client/logo.png" alt="GetSocial-logo" width="50">
             <h2><b>GetSocial</b></h2>
         </div>
-        <div style="width:300px; float:right;">
+        <div style="width:400px; float:right;">
             <p id="attention" class="blink_me"></p>
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span id="userError"></span>
+            </div>
+            <form id="login_register_form"></form>
         </div>
     </div>
     <div style="clear: both;"></div>
@@ -99,6 +131,8 @@
     </div>
     <script>
         $(document).ready(function () {
+            // UI prep
+            $('.alert').hide()
             // global update 
             let update = setInterval(globalUpdate, interval);
         });
