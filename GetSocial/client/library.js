@@ -93,6 +93,12 @@ const UIMessageHandler = (messages) => {
     console.log(messages)
 }
 
+const get_hash = (str) => {
+    var hash = sha256.create();
+    hash.update(str.toString());
+    return hash.hex();
+}
+
 const checkUserAuthenticated = async () => {
     var go;
     moniker = window.localStorage.getItem('moniker');
@@ -119,6 +125,16 @@ const moniker_exists = async (try_moniker) => {
     return resp.length > 0
 }
 
+const createNewUserAccount = async (moniker, password_hash) => {
+    await axios.post(`${dbGateway()}/new_record`,
+        {
+            tablename: `GetSocialUser`,
+            data: { moniker : moniker, password_hash : password_hash }
+        })
+        .then(resp => {  })
+        .catch(err => {  })
+}
+
 const registerUser = async (event) => {
     event.preventDefault()
     let try_moniker = document.getElementById("moniker").value;
@@ -126,8 +142,23 @@ const registerUser = async (event) => {
     if (await moniker_exists(try_moniker)){
         // moniker exists
         $('#userError').text("This moniker already exists")
-        $('.alert').show()
-    } else {}
+    } else {
+        if (password.length > 3){
+            // register new user
+            let password_hash = get_hash(password);
+            moniker = try_moniker;
+            createNewUserAccount(moniker, password_hash)
+            // store local creds
+            window.localStorage.setItem("moniker") = moniker;
+            window.localStorage.setItem("session_started") = Date.now()
+            $('#userError').text("User registration successful")
+            $('#notice').addClass("success")
+        } else {
+            $('#userError').text("Password should be greater than 3 characters")
+        }
+    }
+    $('#notice').show()
+    formLoaded = false;
 }
 
 const toggleVisibility = (e) => {
@@ -145,7 +176,7 @@ const toggleVisibility = (e) => {
 const LoginRegisterForm = async () => {
     // waitscreen
     if (!formLoaded){
-        $('.alert').hide()
+        $('#notice').hide()
         $('#console').html(`<img src="https://cmdimkpa.github.io/GetSocial/client/waitscreen.gif" alt="alien-detected" class="center"><div class="center"><h6 style="text-align: center;">© Monty Dimkpa</h6></div>`)
         $('#attention').text(`Please login or register below`)
         $('#login_register_form').html(`<label for="moniker"><b>moniker  </b></label><input type="text" id="moniker" name="moniker" autofocus><br><br><label for="password"><b>password  </b></label><input type="password" id="password" name="password"><input id="toggle" type="submit" onclick="toggleVisibility(event)" value="show"><br><br><input type="submit" onclick="loginUser(event)" value="Login"> <input type="submit" onclick="registerUser(event)" value="Register">`)
