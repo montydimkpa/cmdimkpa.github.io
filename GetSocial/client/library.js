@@ -72,7 +72,7 @@ const processMessages = async () => {
         for (var i = 0; i < messages.length; i++) {
             let message = messages[i];
             if (lastMessage) {
-                if (message.__created_at__ >= lastMessage.__created_at__) {
+                if (message.__created_at__ > lastMessage.__created_at__) {
                     filtered.push(message);
                 }
             } else {
