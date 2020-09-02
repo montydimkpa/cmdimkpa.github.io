@@ -80,7 +80,8 @@ const processMessages = async () => {
             }
         }
         lastMessage = messages[messages.length - 1];
-        if (filtered) {
+        filtered = [...new Set(filtered)];
+        if (filtered.length > 0) {
             // UI code to handle messages
             all_messages = [...filtered.reverse(),...all_messages]
             UIMessageHandler(all_messages);
@@ -89,8 +90,9 @@ const processMessages = async () => {
 }
 
 const UIMessageHandler = (messages) => {
-    // handle new incoming messages
-    console.log(messages)
+    // display current page of incoming messages
+    let currentPage = paginate(messages, pageSize, thisPage);
+    console.log(currentPage)
 }
 
 const get_hash = (str) => {
