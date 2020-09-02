@@ -223,6 +223,7 @@ const logout = async (event) => {
     event.preventDefault()
     window.localStorage.setItem("moniker", undefined);
     window.localStorage.setItem("session_started", undefined);
+    window.location.reload()
 }
 
 const messageBox = (message) => {
