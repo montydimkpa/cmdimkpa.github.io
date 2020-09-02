@@ -122,7 +122,7 @@
             <h2><b>GetSocial</b></h2>
         </div>
         <div style="width:400px; float:right;">
-            <p id="attention" class="blink_me"></p>
+            <p id="attention" class="blink_me"><button id="logout" onlick="logout()">logout</button></p>
             <div id="notice" class="alert">
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 <span id="userError"></span>
@@ -138,6 +138,7 @@
         $(document).ready(function () {
             // UI prep
             $('#notice').hide()
+            $('#logout').hide()
             // global update 
             let update = setInterval(globalUpdate, interval);
         });
