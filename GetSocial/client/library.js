@@ -157,7 +157,7 @@ const registerUser = async (event) => {
         // moniker exists
         $('#userError').text("This moniker already exists")
     } else {
-        if (password.length > 3){
+        if (try_moniker.length > 3 && password.length > 3){
             // register new user
             let password_hash = get_hash(password);
             moniker = try_moniker;
@@ -168,7 +168,7 @@ const registerUser = async (event) => {
             $('#userError').text("User registration successful")
             $('#notice').addClass("success")
         } else {
-            $('#userError').text("Password should be greater than 3 characters")
+            $('#userError').text("Moniker and Password should both be greater than 3 characters")
         }
     }
     $('#notice').show()
