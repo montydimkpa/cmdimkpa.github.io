@@ -232,6 +232,11 @@ const LoadMessageView = async () => {
     )
 }
 
+const logout = () => {
+    window.localStorage.removeItem("moniker");
+    window.localStorage.removeItem("session_started");
+}
+
 const globalUpdate = async () => {
     checkUserAuthenticated()
       .then(go => {
