@@ -14,10 +14,10 @@ var all_messages = [];
 var lastMessage,
     moniker,
     avatar_b64;
-
 var event_counter = 0;
 var pwdFieldExposed = false;
 var formLoaded = false;
+var currentPage = [];
 
 const dbGateway = () => {
     // basic load balancer over multiple gateways
@@ -84,15 +84,14 @@ const processMessages = async () => {
         if (filtered.length > 0) {
             // UI code to handle messages
             all_messages = [...filtered.reverse(),...all_messages]
-            UIMessageHandler(all_messages);
+            setCurrentPage(all_messages);
         }
     }
 }
 
-const UIMessageHandler = (messages) => {
-    // display current page of incoming messages
-    let currentPage = paginate(messages, pageSize, thisPage);
-    console.log(currentPage)
+const setCurrentPage = async (messages) => {
+    // set current page of message stream
+    currentPage = paginate(messages, pageSize, thisPage);
 }
 
 const get_hash = (str) => {
@@ -226,16 +225,20 @@ const logout = async (event) => {
     window.localStorage.setItem("session_started", undefined);
 }
 
+const messageBox = (message) => {
+    return `<div class="container darker"><p><b>${message.from}: </b>${message.text}</p><span class="time-left">${message.timestamp}</span></div>`
+}
+
 const LoadMessageView = async () => {
     // prepare view and load messages
     processMessages().then(
         () => {
             $('#notice').hide();
-            $('#console').html(``);
             $('#attention').removeClass("blink_me");
             $('#attention').html(`welcome, <b>@${moniker}</b>!`);
             $('#logout').show();
             $('#login_register_form').html(``);
+            $('#console').html(currentPage.map(message => messageBox(message)).join(""));
         }
     )
 }
