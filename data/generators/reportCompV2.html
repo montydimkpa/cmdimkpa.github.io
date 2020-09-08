@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Reporting Performance Comparison Tool">
+    <title>Reporting Performance Comparison Tool
+    </title>
+    <link rel="stylesheet" href="https://cmdimkpa.github.io/data/generators/main.css">
+    <style media="screen">
+      #customers {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+          }
+
+          #customers td, #customers th {
+          border: 1px solid #ddd;
+          padding: 8px;
+          }
+
+          #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+          #customers tr:hover {background-color: #ddd;}
+
+          #customers th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: left;
+          background-color: #4CAF50;
+          color: white;
+          }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
+    <script src="https://cmdimkpa.github.io/MACModel2/GUI/assets/js/Chart.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="header">
+        <h2><a href="#">Reporting Performance Comparison Tool</a></h2>
+    </div>
+    <div id="body">
+        <ul style="color: green;">
+            <li>
+                Microsoft SQL Server is widely used by our clients, and any demonstrable advantage in terms of
+                <b>reducing
+                    man-hours spent</b> on spooling reports creates opportunities to add value. This cloud application
+                evaluates <b>Presto</b>
+                as a potential time-saving solution for our clients.
+            </li>
+        </ul>
+        <script>
+          const flush = async() => {
+            await axios.get("https://ods-gateway.herokuapp.com/ods/flush_table/PrestoDBTest-Incoming").then((s) => {}).catch((s) => {});
+            await axios.get("https://ods-gateway.herokuapp.com/ods/flush_table/PrestoDBTest-Outgoing").then((s) => {}).catch((s) => {});
+          };
+          flush();
+          var query_started;
+          var message;
+          var elapsed;
+          var query_lasted = 0;
+          var events = 0;
+          var pulse = 5;
+          var use_presto = false;
+          var query_in_progress = false;
+          var tableLoaded = false;
+          var conventional_times = [];
+          var presto_times = [];
+          var sql,
+              sql_index;
+          var report_sql = {
+              top10c : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM transactions GROUP BY customer_id) SELECT customer_sales.user_id, users.username, users.age, customer_sales.sales FROM customer_sales, users WHERE customer_sales.user_id = users.user_id ORDER BY customer_sales.sales DESC",
+              top10p : "WITH product_movement as (SELECT DISTINCT(product_id) as product_id, COUNT(*) as movement FROM transactions GROUP BY product_id) SELECT product_movement.product_id, products.productname, product_movement.movement FROM product_movement, products WHERE product_movement.product_id = products.product_id ORDER BY product_movement.movement DESC",
+              tsy : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, users WHERE customer_sales.user_id = users.user_id AND users.age < 40",
+              tsm : "WITH customer_sales as (SELECT DISTINCT(customer_id) as user_id, SUM(price) as sales FROM transactions GROUP BY customer_id) SELECT SUM(customer_sales.sales) FROM customer_sales, users WHERE customer_sales.user_id = users.user_id AND users.age BETWEEN 40 and 50"
+            };
+            var report_headers = {
+                top10c : ["S/N", "UserID", "User Name", "User Age", "Customer Sales"],
+                top10p : ["S/N", "ProductID", "Product Name", "Product Movement"],
+                tsy : ["S/N", "Total Sales"],
+                tsm : ["S/N", "Total Sales"]
+              };
+        </script>
+        <div id="main">
+            <h3>
+                Microsoft SQL Server running on a Virtual Machine (Google Cloud)
+            </h3>
+            <div class="input">
+                <div class="option-block">
+                    <label for="input-type">Select Report Type</label>
+                    <select id="report-type" onchange="querySelected()">
+                        <option value="info1">Click to Select</option>
+                        <option value="top10c">Top Customers</option>
+                        <option value="top10p">Top Products</option>
+                        <option value="tsy">Total Sales (Youth Segment)</option>
+                        <option value="tsm">Total Sales (Middle Age Segment)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input">
+                <div class="option-block">
+                    <label for="input-type">Select ETL Type</label>
+                    <select id="etl-type" onchange="setETLMethod()">
+                        <option value="Conventional">Conventional</option>
+                        <option value="presto">Presto</option>
+                    </select>
+                </div>
+            </div>
+            <div class="submit">
+                <span>
+                    <input style="background-color: green; color: yellow;" id="execute" type="button"
+                        value="Generate Report Table" class="btn btn-default" onclick="transmit()">
+                    <input id="reset" type="button" value="Reset Chart" class="btn btn-default" onclick="reset_chart()">
+                </span>
+            </div>
+            <p><b>VM query lasted: </b><span id="runtime">Idle</span></p>
+            <div class="center" id="report">
+            </div>
+        </div>
+        <div id="sidebar">
+            <div>
+                <h3>Speed Comparison Chart</h3>
+                <canvas id="line-chart" width="100%" height="100%"></canvas>
+                <p><b>Presto Performance Gain: </b><span id="gain"></span></p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div id="footer">&copy; 2020 Monty Dimkpa</div>
+</body>
+<script>
+    const setETLMethod = async () => {
+              use_presto = document.getElementById("etl-type").value == 'presto'
+          }
+
+    const querySelected = async () => {
+          sql_index = document.getElementById("report-type").value;
+          sql = report_sql[sql_index];
+      }
+    const transmit = async () => {
+        // notify
+        query_in_progress = true;
+        query_started = Date.now()
+        // send SQL query to Virtual Machine
+        axios.post(`https://ods-gateway.herokuapp.com/ods/new_record`, {
+            tablename: 'PrestoDBTest-Incoming',
+            data: {
+                use_presto : use_presto,
+                sql_query : sql
+            }
+        }).then(resp => {}).catch(err => {})
+    }
+    const num_labels = (num, prefix=null) => {
+        let labels = []
+        for (var i=0;i<num;i++){
+            labels.push(`${prefix ? prefix : ''}${i}`)
+        }
+        return labels
+    }
+
+    const arrAvg = (array) => {
+      return array.reduce((total, element) => {
+        return total + element;
+      }, 0) / array.length;
+    };
+
+    const update_chart = async () => {
+      let limit = Math.min(conventional_times.length, presto_times.length);
+      let gain = `${(100 * (1 - arrAvg(presto_times.slice(0, limit)) / arrAvg(conventional_times.slice(0, limit)))).toFixed(2)}%`;
+      new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: num_labels(limit, 'run'),
+                datasets: [
+                    {
+                        data: conventional_times.slice(0, limit),
+                        label: "Conventional (ms)",
+                        borderColor: "#3e95cd",
+                        fill: false
+                    },
+                    {
+                        data: presto_times.slice(0, limit),
+                        label: "Presto (ms)",
+                        borderColor: "#8e5ea2",
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: `ETL Times`
+                }
+            }
+        });
+        document.getElementById("gain").innerHTML = gain;
+    }
+    const reset_chart = async () => {
+        events = 0
+        conventional_times = []
+        presto_times = []
+        update_chart()
+    }
+
+    const loader = () => {
+      return '<img src="https://cmdimkpa.github.io/loading1.gif" />'
+    }
+
+    const wrap_tag = (tag, el, attribs=null) => {
+      return `<${tag}${attribs ? ` ${attribs}` : ""}>${el}</${tag}>`
+    }
+
+    const table = async () => {
+      if (message && !tableLoaded){
+        var rows;
+        if (use_presto){
+          rows = message.result.map(s => {
+            n = ""
+            s.split("").forEach(el => {
+              if (el === "("){ el = "[" }
+              if (el === ")"){ el = "]" }
+              if (el === `'`){ el = `"` }
+              if (message.result.length === 1){ if (el === ","){ el = "" } }
+              if (el !== "u"){
+                n += el;
+              }
+            })
+            return JSON.parse(n)
+          })
+        } else {
+          rows = message.result
+        }
+        rows = rows.slice(0,20);
+        let headers = report_headers[sql_index];
+        let myTableHeader = wrap_tag("tr", headers.map(header => wrap_tag("th", header)).join(""))
+        let myTableInner = ""
+        for(var i=0;i<rows.length;i++){
+          let row = rows[i];
+          row.unshift(i+1)
+          myTableInner += wrap_tag("tr", row.map(el => wrap_tag("td", el)).join(""));
+        }
+        document.getElementById("report").innerHTML = wrap_tag("table", `${myTableHeader}${myTableInner}`, `id = "customers"`);
+        query_lasted = Date.now() - query_started
+        document.getElementById('runtime').innerHTML = `${query_lasted} ms`;
+        // add to chart data
+        if (use_presto) {
+            presto_times.push(query_lasted)
+        } else {
+            conventional_times.push(query_lasted)
+        }
+      }
+      tableLoaded = true;
+    }
+
+    const globalUpdate = async () => {
+        events++
+        if (query_in_progress){
+          document.getElementById('report').innerHTML = loader()
+          document.getElementById('runtime').innerHTML = 'waiting for report...'
+        }
+        if (events % pulse === 0){
+            update_chart()
+        }
+        // fetch PrestoDBTest-Outgoing messages
+        let interval = 1000;
+        var lastMessage;
+        const fetchMessages = async () => {
+            return await axios.post(`https://ods-gateway.herokuapp.com/ods/fetch_records`, {
+                tablename: 'PrestoDBTest-Outgoing',
+                constraints: {
+                    __created_at__: [Date.now() - 2 * interval, Date.now()]
+                },
+                restrict : ["result", "elapsed"]
+            }).then(resp => {
+                return resp.data.data
+            }).catch(err => {
+                return []
+            })
+        }
+
+        const process = async () => {
+            // write to output
+            table()
+        }
+
+        const processMessages = async () => {
+            let messages = await fetchMessages();
+            if (messages.length > 0) {
+                for (var i = 0; i < messages.length; i++) {
+                    message = messages[i];
+                    if (lastMessage) {
+                        if (message.__created_at__ > lastMessage.__created_at__) {
+                            process();
+                        }
+                    } else {
+                        process();
+                    }
+                }
+                query_in_progress = false;
+                lastMessage = messages[messages.length - 1];
+                tableLoaded = false;
+            }
+        }
+        processMessages()
+    }
+    $(document).ready(() => {
+        let updater = setInterval(globalUpdate, 1000);
+    })
+</script>
+
+</html>
