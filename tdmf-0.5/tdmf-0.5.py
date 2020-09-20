@@ -30,6 +30,11 @@ class MutableState:
 
 flags = MutableState()
 
+class fetch_flag_inline:
+	def __init__(self, item):
+		self.item = item
+		self.output = flags.get(self.item)
+
 def now():
     # get the current time
     return datetime.datetime.today()
