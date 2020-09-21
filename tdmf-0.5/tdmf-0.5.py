@@ -57,11 +57,6 @@ def sample_component(package):
     except Exception as error:
         print("ComponentError: the component [{}] experienced an error: {}".format(func_name, str(error)))
     return output
-    
-class Print:
-    def __init__(self, to_print):
-        self.output = to_print
-        print(self.output)
 
 ''',
 
@@ -80,7 +75,7 @@ flags.set('c_value', 0)
 
 sample_pipeline = Pipeline([
     ("sample_component", [3,4]),  # the origin, or first element, of a pipeline is always a tuple with the input data and the function to call
-    "Print"
+    "times_two"
 ])
 
 sample_pipeline.build()  # build and run your pipeline
@@ -97,8 +92,8 @@ sample_pipeline.build()  # build and run your pipeline
 sample_workflow = Workflow([
     "sample_pipeline",
     context_switch([
-        (flags.get('c_value') == 15, "sample_pipeline"),
-    ], "Print")
+        (flags.get('c_value') % 2 == 0, "sample_pipeline"),
+    ], "sample_pipeline2")
 ])
 
 looper_workflow = Workflow([
