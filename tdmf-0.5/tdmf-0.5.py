@@ -6,8 +6,101 @@
 # Version: 0.5
 
 import datetime
+import os
 
-global flags, testEngine
+global flags, testEngine, tdmf_templates
+
+tdmf_templates = [
+
+'''
+
+#    Project: {}
+#    ** {} **
+#    Project Version: {}
+#
+#   
+
+
+ProjectVersion = {}
+
+
+# Import required libraries
+
+from tdmf import *
+
+
+
+
+''',
+
+'''
+
+# This section is for your project components (functions and classes). Components should be atomic
+# and do exactly one thing. Write your tests in the Pipelines section and use flags to manage mutable
+# state and message passing between your components. Components must always receive an array package
+# and return an array.
+
+def sample_component(package):
+""" 
+    A sample component
+"""
+func_name = "sample_component"
+output = []
+try:
+    a, b = package
+    c = a + b
+    output.append(c)
+    # save variable 'c' to mutable state 'c_value'
+    flags.set('c_value', c)
+except Exception as error:
+    print("ComponentError: the component [{}] experienced an error: {}".format(func_name, str(error)))
+return output
+
+''',
+
+'''
+
+# The Pipelines section. Pipelines group related components together by piping the output
+# of one component into the input of another. This is a good place to write your
+# package / unit tests as well as initialize your flags. Package tests check that the input
+# received by a component is of the right specification and unit tests check that expected
+# inputs into a component produce the expected output.
+
+testEngine.add_test("package", "sample_component", "real_only") # check that the sample_component package is always real numbers
+testEngine.add_test("unit", "sample_component", ("test1", [1,2], [3])) # example unit test for sample_component
+
+flags.set('c_value', 0)
+
+sample_pipeline = Pipeline([
+    ("sample_component", [3,4]),  # the origin, or first element, of a pipeline is always a tuple with the input data and the function to call
+    "print"
+])
+
+sample_pipeline.build()  # build and run your pipeline
+
+''',
+
+'''
+
+# Workflows allow you to compose complete applications by grouping related pipelines together.
+# The output of one pipeline flows into the next, and through context switching you can redirect
+# application flow based on boolean flags. Workflows can also be looped to run for a definite
+# number of cycles.
+
+sample_workflow = Workflow([
+    "sample_pipeline",
+    context_switch([
+        (flags.get('c_value') == 15, "sample_pipeline"),
+    ], "print")
+])
+
+looper_workflow = Workflow([
+    "sample_workflow" for i in range(10)
+])
+
+'''
+
+]
 
 class MutableState:
     '''
@@ -31,9 +124,9 @@ class MutableState:
 flags = MutableState()
 
 class fetch_flag_inline:
-	def __init__(self, item):
-		self.item = item
-		self.output = flags.get(self.item)
+    def __init__(self, item):
+        self.item = item
+        self.output = flags.get(self.item)
 
 def now():
     # get the current time
@@ -321,6 +414,66 @@ def context_switch(conditionals, default):
         return selected
     else:
         return default
+
+def CreateTDMFApp():
+    '''
+        Create TDMF Projects quicker with this interactive prompt
+    '''
+    try:
+        questions = [
+            "App Name",
+            "App Description",
+            "App Version",
+            "App Directory",
+        ]
+        app_info = { question : input(question + " ? ") for question in questions }
+        print("Please review your responses:", app_info)
+        proceed = -1
+        while proceed == -1:
+            feedback = input("Proceed [Y/n] ? ")
+            feedback = feedback.lower()
+            if feedback in ["y", "n"]:
+                if feedback == "y":
+                    proceed = 1
+                else:
+                    proceed = 0
+        if proceed == 0:
+            print("exiting.")
+        else:
+            # prepare project directory
+            appdir = app_info["App Directory"]
+            if "\\" in appdir:
+                slash = "\\"
+            else:
+                slash = "/"
+            if appdir[-1] != slash:
+                appdir += slash
+            try:
+                os.mkdir(appdir)
+            except Exception as error:
+                print("CreateAppError: could not create new directory - {}".format(str(error)))
+            # create project files
+            appname = app_info["App Name"]
+            appname = appname.lower()
+            for el in [" ", ",", ":", ".", "'", '"', ";"]:
+                appname = appname.replace(el, "_")
+            projectfile = "{}.py".format(appname)
+            files = [projectfile, "tdmf_components.py", "tdmf_pipelines.py", "tdmf_workflows.py"]
+            index = -1
+            for file in files:
+                index += 1
+                template = tdmf_templates[index]
+                try:
+                    with open(appdir + file, "wb") as handle:
+                        if index == 0:
+                            template = template.format(appname, app_info["App Description"], app_info["App Version"], app_info["App Version"])
+                        handle.write(template.encode())
+                        handle.close()
+                except Exception as e:
+                    print("CreateAppError: error writing file - {} - {}".format(file, str(e)))
+            print("CreateAppSuccess: your TDMF project was successfully created at - {}".format(appdir))
+    except Exception as error:
+        print("CreateAppError: there was an error creating this app - {}".format(str(error)))
 
 # ----------------------------- WORKSPACE -----------------------------------
 
