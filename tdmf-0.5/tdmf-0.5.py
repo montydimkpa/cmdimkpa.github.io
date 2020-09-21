@@ -16,9 +16,10 @@ tdmf_templates = [
 
 #    Project: {}
 #    ** {} **
+#    Project Author: {}
 #    Project Version: {}
+#    Generated: {}
 #
-#   
 
 
 ProjectVersion = {}
@@ -41,7 +42,7 @@ from tdmf import *
 # and return an array.
 
 def sample_component(package):
-    """ 
+    """
         A sample component
     """
     func_name = "sample_component"
@@ -423,6 +424,7 @@ def CreateTDMFApp():
         questions = [
             "App Name",
             "App Description",
+            "App Author",
             "App Version",
             "App Directory",
         ]
@@ -466,7 +468,7 @@ def CreateTDMFApp():
                 try:
                     with open(appdir + file, "wb") as handle:
                         if index == 0:
-                            template = template.format(appname, app_info["App Description"], app_info["App Version"], app_info["App Version"])
+                            template = template.format(appname, app_info["App Description"], app_info["App Author"], app_info["App Version"], str(now()), app_info["App Version"])
                         handle.write(template.encode())
                         handle.close()
                 except Exception as e:
