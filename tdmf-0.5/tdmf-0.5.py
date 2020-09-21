@@ -41,20 +41,20 @@ from tdmf import *
 # and return an array.
 
 def sample_component(package):
-""" 
-    A sample component
-"""
-func_name = "sample_component"
-output = []
-try:
-    a, b = package
-    c = a + b
-    output.append(c)
-    # save variable 'c' to mutable state 'c_value'
-    flags.set('c_value', c)
-except Exception as error:
-    print("ComponentError: the component [{}] experienced an error: {}".format(func_name, str(error)))
-return output
+    """ 
+        A sample component
+    """
+    func_name = "sample_component"
+    output = []
+    try:
+        a, b = package
+        c = a + b
+        output.append(c)
+        # save variable 'c' to mutable state 'c_value'
+        flags.set('c_value', c)
+    except Exception as error:
+        print("ComponentError: the component [{}] experienced an error: {}".format(func_name, str(error)))
+    return output
 
 ''',
 
