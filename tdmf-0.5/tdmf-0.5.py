@@ -204,6 +204,7 @@ class TestModule(TestRegister):
         super().__init__()
         self.test_status = {}
         self.last_test_output = None
+        self.options = { "verbose" : True  }
 
     def report(self, function):
         template = '''
@@ -224,17 +225,18 @@ class TestModule(TestRegister):
         duration: {} secs.
 
         '''
-        print(template.format(
-                function, len(self.test_status[function]["package"]["passed"]), \
-                len(self.test_status[function]["package"]["failed"]), self.test_status[function]["package"]["failed"],\
-                len(self.test_status[function]["package"]["not_found"]), self.test_status[function]["package"]["not_found"],\
-                self.test_status[function]["package"]["runtime"],\
-                len(self.test_status[function]["unit"]["passed"]), \
-                len(self.test_status[function]["unit"]["failed"]), self.test_status[function]["unit"]["failed"],\
-                len(self.test_status[function]["unit"]["not_found"]), self.test_status[function]["unit"]["not_found"],\
-                self.test_status[function]["unit"]["runtime"]
+        if testEngine.options["verbose"]:
+            print(template.format(
+                    function, len(self.test_status[function]["package"]["passed"]), \
+                    len(self.test_status[function]["package"]["failed"]), self.test_status[function]["package"]["failed"],\
+                    len(self.test_status[function]["package"]["not_found"]), self.test_status[function]["package"]["not_found"],\
+                    self.test_status[function]["package"]["runtime"],\
+                    len(self.test_status[function]["unit"]["passed"]), \
+                    len(self.test_status[function]["unit"]["failed"]), self.test_status[function]["unit"]["failed"],\
+                    len(self.test_status[function]["unit"]["not_found"]), self.test_status[function]["unit"]["not_found"],\
+                    self.test_status[function]["unit"]["runtime"]
+                )
             )
-        )
 
     def run_tests(self, function, package):
         self.test_status[function] = {
