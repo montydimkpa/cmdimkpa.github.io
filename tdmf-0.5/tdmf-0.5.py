@@ -312,6 +312,7 @@ class Pipeline:
         self.started = None
         self.output = None
         self.can_run = False
+        self.options = { "debug" : False }
     def build(self):
         self.started = now()
         try:
@@ -333,7 +334,9 @@ class Pipeline:
             if not failed:
                 self.can_run = True
                 self.run()
-        except:
+        except Exception as err:
+            if self.options["debug"]:
+                print(str(err))
             print("BuildError: pipeline not properly constructed. Duration: {} secs.".format(elapsed_secs(self.started)))
     def run(self):
         self.started = now()
