@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Transformer Project</title>
+    <style media="screen">
+              * {
+          margin: 0px;
+          padding: 0px;
+          box-sizing: border-box;
+        }
+        body {
+          height: 100vh;
+          display: flex;
+        }
+        .code-area {
+          display: flex;
+          flex-direction:column;
+          width: 50%;
+          border-right:1px solid #555;
+        }
+        .code-area textarea {
+          resize: none;
+          outline: none;
+          width: 100%;
+          height: 50%;
+          font-size: 18px;
+          padding: 10px;
+        }
+        .preview-area {
+          width: 50%;
+        }
+        .preview-area iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+    </style>
+  </head>
+  <body onload="fetchHomeData()">
+    <div class="code-area">
+      <textarea id="layout" placeholder='
+      Write New App Layout Configuration (JSON) e.g.
+
+      {
+        "app_name" : [
+          {
+            "panel1" : [
+              { "component1" : 0.5 }, // width ratio
+              { "component2" : 0.5 }
+            ]
+          },
+          {
+            "panel2" : [
+              { "component1" : 0.3 },
+              { "component2" : 0.2 },
+              { "component3" : 0.5 }
+            ]
+          }
+        ]
+      }
+
+      '
+      ></textarea>
+      <div>
+        <button type="button" name="button" onclick="postNewLayout()">Post New App Layout</button>
+      </div>
+      <textarea id="code" placeholder="New Component Code"
+                oninput="showPreview()"></textarea>
+    </div>
+    <div class="preview-area">
+      <iframe id="preview-window"></iframe>
+    </div>
+    <script src="https://cmdimkpa.github.io/axios.min.js" charset="utf-8"></script>
+    <script src="https://cmdimkpa.github.io/jquery-3.5.1.slim.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+
+          const testLayout = (layout) => {
+            try {
+              // object test
+              layout = JSON.parse(layout)
+              if (typeof(layout) === 'object'){
+                // change single key (app name) on outer layer
+                let keys = Object.keys(layout)
+                if (keys.length > 1){ return ["Too many keys on outer layer (should be 1)", false] }
+                let [appname] = keys;
+                var report = [null, true],
+                    machineReadable = [ appname ]
+
+                for (var i=0;i<layout[appname].length;i++){
+                  let panel = layout[appname][i]
+                  machineReadable.push([])
+                  // check keys in panel object
+                  keys = Object.keys(panel)
+                  if (keys.length > 1){ report = [`Too many keys on panel: ${i+1} (should be 1)`, false]; break }
+                  let [panelname] = keys;
+                  let dimensions_arr = panel[panelname]
+                  // array test
+                  try {
+                    if (typeof(dimensions_arr) === 'object' && dimensions_arr.length){
+                      let sum_width = 0;
+                      for (var j=0;j<dimensions_arr.length; j++){
+                        let component = dimensions_arr[j];
+                        // component must be an object with single key
+                        try{
+                          keys = Object.keys(component)
+                          if (keys.length > 1){ report = [`Too many keys on component: ${j+1} (should be 1)`, false]; break } else {
+                            let [componentname] = keys;
+                            // value must be number less than 1
+                            let value = component[componentname]
+                            if (typeof(value) === 'number' && value < 1){
+                              sum_width += value
+                              if (sum_width > 1){
+                                report = [`Panel: ${panelname} has exceeded the maximum width`, false]
+                                break
+                              } else {
+                                // update machineReadable
+                                machineReadable[i+1].push([`${panelname}_${componentname}`, value])
+                              }
+                            } else {
+                              report = [`Component: ${componentname} not assigned a proper width`, false]
+                              break
+                            }
+                          }
+                        } catch(err){
+                          report = [`Component: ${j+1} not an Object`, false]
+                          break
+                        }
+                      }
+                    }
+                  } catch(err){
+                    report = [`No dimensions array in panel: ${panelname}`, false]
+                    break
+                  }
+                };
+                // handle positive case
+                if (machineReadable.length === layout[appname].length + 1){
+                  if (report[1]){ report[0] = machineReadable }
+                  return report
+                } else {
+                  return ["Layout not complete", false]
+                }
+              } else {
+                return ["Layout not Object", false]
+              }
+            } catch(err){
+              return ["Can't parse layout", false]
+            }
+          }
+
+          const postNewLayout = async () => {
+            let layout = $('#layout').val()
+            let [message, canPost] = testLayout(layout)
+            if (canPost){
+              $('#layout').val("Posting layout...")
+              // post layout to db
+              let [appname, ...layout] = message
+
+              // update localstorage
+              let appLayouts = window.localstorage.get('appLayouts');
+              if (appLayouts){
+                // update and reload
+
+              } else {
+                // nothing saved before
+              }
+            } else {
+              $('#layout').val(`Layout Error: ${message}`)
+              setTimeout((() => $('#layout').val(layout)), 3000)
+            }
+          }
+
+          const grabCode = async ( projectName ) => {
+             let [result] = await axios.post('http://localhost:3000/ods/fetch_records', {
+               tablename : 'TransformerProject',
+               constraints : { projectName : projectName },
+               restrict : [ 'projectCode' ]
+             })
+             .then((resp) => { return resp.data.data })
+             .catch((err) => { console.log(err); return null })
+             console.log(result)
+             return result.projectCode
+          }
+
+          const showPreview = async ( projectName ) => {
+            var projectCode = await grabCode( projectName );
+            var frame = document.getElementById("preview-window").contentWindow.document;
+            frame.open();
+            frame.write(projectCode);
+            frame.close();
+        }
+
+
+    </script>
+  </body>
+</html>
