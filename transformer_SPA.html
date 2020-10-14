@@ -86,7 +86,7 @@
             window.localStorage.setItem('cachedComponents', JSON.stringify(cachedComponents));
             // post update to db
             $('#code').val(`Updating: ${componentSelected} ...`)
-            await axios.post('http://ods3-test.herokuapp.com/ods/update_records', {
+            await axios.post('https://ods3-test.herokuapp.com/ods/update_records', {
               tablename : 'TransformerProject',
               constraints : { projectName : layoutSelected },
               data : { projectComponent : cachedComponents }
@@ -288,7 +288,7 @@
               window.localStorage.setItem('cachedCode', code) // cache current code project
               reloadSelectors()
               // post layout to db
-              await axios.post('http://ods3-test.herokuapp.com/ods/new_record', {
+              await axios.post('https://ods3-test.herokuapp.com/ods/new_record', {
                 tablename : 'TransformerProject',
                 data : {
                   projectName : appname,
@@ -309,7 +309,7 @@
           }
 
           const grabCode = async () => {
-             let [result] = await axios.post('http://ods3-test.herokuapp.com/ods/fetch_records', {
+             let [result] = await axios.post('https://ods3-test.herokuapp.com/ods/fetch_records', {
                tablename : 'TransformerProject',
                constraints : { projectName : window.localStorage.getItem('layoutSelected') },
                restrict : [ 'projectCode', 'projectComponent' ]
