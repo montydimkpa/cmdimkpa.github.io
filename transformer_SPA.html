@@ -109,7 +109,9 @@
           const component_trigger = async (selected) => {
             window.localStorage.setItem('componentSelected', selected)
             let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents'))
-            $('#code').val(cachedComponents[selected])
+            if (cachedComponents){
+              $('#code').val(cachedComponents[selected])
+            }
             await showPreview() // this will load both the review pane and the component code
           }
 
