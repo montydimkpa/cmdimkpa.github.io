@@ -334,13 +334,12 @@
               let code = window.localStorage.getItem('cachedCode')
               let comps = JSON.parse(window.localStorage.getItem('cachedComponents'))
               let keys = Object.keys(comps)
-              let active_comp = window.localStorage.getItem('componentSelected')
               for (var i=0;i<keys.length;i++){
                 let comp = keys[i];
                 let comp_code = comps[comp]
                 code = code.replace(comp, comp_code)
                 let text = $('#code').val();
-                if (comp === active_comp){
+                if (comp === window.localStorage.getItem('componentSelected')){
                   // write to code box
                   if (! text > ""){
                     $('#code').val(comp)
