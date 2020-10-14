@@ -106,7 +106,8 @@
 
           const component_trigger = async (selected) => {
             window.localStorage.setItem('componentSelected', selected)
-            $('#code').val(selected)
+            let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents'))
+            $('#code').val(cachedComponents[selected])
             await showPreview() // this will load both the review pane and the component code
           }
 
@@ -338,12 +339,9 @@
                 let comp = keys[i];
                 let comp_code = comps[comp]
                 code = code.replace(comp, comp_code)
-                let text = $('#code').val();
                 if (comp === window.localStorage.getItem('componentSelected')){
                   // write to code box
-                  if (! text > ""){
-                    $('#code').val(comp)
-                  } else {
+                  if (! $('#code').val() > ""){
                     $('#code').val(comp_code)
                   }
                 }
