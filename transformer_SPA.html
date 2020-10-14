@@ -37,7 +37,7 @@
         }
     </style>
   </head>
-  <body onload="fetchHomeData()">
+  <body onload="reloadSelectors()">
     <div class="code-area">
       <textarea id="layout" placeholder='
       Write New App Layout Configuration (JSON) e.g.
@@ -59,13 +59,15 @@
           }
         ]
       }
-
       '
       ></textarea>
       <div>
-        <button type="button" name="button" onclick="postNewLayout()">Post New App Layout</button>
+        <button style="color:white; background-color:orange; height:30px" type="button" name="button" onclick="postNewLayout()">Post New App Layout</button>
+        <select id="appLayouts" onchange="layoutSelected(event)"></select>
+        <select id="appComponents" onchange="componentSelected(event)"></select>
+        <button style="color:white; background-color:orange; height:30px" type="button" name="button" onclick="updateComponent()">Update Component</button>
       </div>
-      <textarea id="code" placeholder="New Component Code"
+      <textarea id="code" placeholder="Contribute Code to this Component"
                 oninput="showPreview()"></textarea>
     </div>
     <div class="preview-area">
@@ -74,6 +76,119 @@
     <script src="https://cmdimkpa.github.io/axios.min.js" charset="utf-8"></script>
     <script src="https://cmdimkpa.github.io/jquery-3.5.1.slim.min.js" charset="utf-8"></script>
     <script type="text/javascript">
+
+          const updateComponent = async () => {
+            // update component in app Model
+            let layoutSelected = window.localStorage.getItem('layoutSelected')
+            let componentSelected = window.localStorage.getItem('componentSelected')
+            let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents'))
+            cachedComponents[componentSelected] = $('#code').val();
+            window.localStorage.setItem('cachedComponents', JSON.stringify(cachedComponents));
+            // post update to db
+            $('#code').val(`Updating: ${componentSelected} ...`)
+            await axios.post('http://ods3-test.herokuapp.com/ods/update_records', {
+              tablename : 'TransformerProject',
+              constraints : { projectName : layoutSelected },
+              data : { projectComponent : cachedComponents }
+            })
+            .then((resp) => { console.log(resp.data.data) })
+            .catch((err) => { console.log(err) })
+            $('#code').val("")
+            await showPreview()
+          }
+
+          const layout_trigger = async (selected) => {
+            window.localStorage.setItem('layoutSelected', selected)
+            let components = JSON.parse(window.localStorage.getItem('appLayouts'))[selected]
+            $("#appComponents").html(components.map((component) => `<option value="${component}">${component}</option>`).join(''))
+            await component_trigger(components[0])
+          }
+
+          const component_trigger = async (selected) => {
+            window.localStorage.setItem('componentSelected', selected)
+            await showPreview() // this will load both the review pane and the component code
+          }
+
+          const layoutSelected = async (event) => {
+            // select a layout
+            event.preventDefault()
+            let selected = event.target[event.target.selectedIndex].value
+            await layout_trigger(selected)
+          }
+
+          const componentSelected = async (event) => {
+            // select a component
+            event.preventDefault()
+            let selected = event.target[event.target.selectedIndex].value
+            await component_trigger(selected)
+          }
+
+          const reloadSelectors = async () => {
+            // reload all selectors
+            appLayouts = JSON.parse(window.localStorage.getItem('appLayouts'))
+            layouts = Object.keys(appLayouts)
+            $("#appLayouts").html(layouts.map((layout) => `<option value="${layout}">${layout}</option>`).join(''))
+            $("#appComponents").html(appLayouts[layouts[0]].map((component) => `<option value="${component}">${component}</option>`).join(''))
+            await layout_trigger(layouts[0])
+          }
+
+          const AutoGrid = (layout) => {
+            let baseHTML = `
+            <!DOCTYPE html>
+              <html>
+                <head>
+                  <style>
+                      __GRID_STYLE__
+                      .grid-item {
+                        background-color: rgba(255, 255, 255, 0.8);
+                        border: 1px solid rgba(0, 0, 0, 0);
+                        padding: 20px;
+                        font-size: 30px;
+                        text-align: center;
+                      }
+                  </style>
+                </head>
+                <body>
+                    __GRID_BODY__
+                </body>
+              </html>
+            `
+            var GRID_STYLE = "",
+                GRID_BODY = ""
+            for (var i=0;i<layout.length;i++){
+              // select panel
+              let panel = layout[i];
+              let widths = [];
+              let names = [];
+              // select components
+              for (var j=0;j<panel.length;j++){
+                let [componentname, componentwidth] = panel[j];
+                widths.push(`${Math.floor(100*componentwidth)}%`);
+                names.push(componentname)
+              }
+              // add grid elements
+              GRID_STYLE += `
+                .grid-container${i+1} {
+                  display: grid;
+                  grid-template-columns: ${widths.join(" ")};
+                  background-color: rgba(250, 190, 88, 1);
+                  padding: 10px;
+                }
+              `
+              let insert = ""
+              names.forEach((name) => insert += `<div class="grid-item">${name}</div>`)
+
+              GRID_BODY += `
+                <div class="grid-container${i+1}">
+                  ${insert}
+                </div>
+              `
+            }
+            // insert grid items
+            baseHTML = baseHTML.replace('__GRID_STYLE__', GRID_STYLE);
+            baseHTML = baseHTML.replace('__GRID_BODY__', GRID_BODY);
+            return baseHTML
+          }
 
           const testLayout = (layout) => {
             try {
@@ -133,7 +248,7 @@
                     break
                   }
                 };
-                // handle positive case
+                // handle clean exit case
                 if (machineReadable.length === layout[appname].length + 1){
                   if (report[1]){ report[0] = machineReadable }
                   return report
@@ -152,42 +267,85 @@
             let layout = $('#layout').val()
             let [message, canPost] = testLayout(layout)
             if (canPost){
-              $('#layout').val("Posting layout...")
-              // post layout to db
+              $('#layout').val("Posting layout to DB...")
+              // get items to post
               let [appname, ...layout] = message
-
-              // update localstorage
-              let appLayouts = window.localstorage.get('appLayouts');
-              if (appLayouts){
-                // update and reload
-
-              } else {
-                // nothing saved before
+              let code = AutoGrid(layout);
+              // update window.localStorage and reload selectors
+              let appLayouts = JSON.parse(window.localStorage.getItem('appLayouts'));
+              var componentStore = { }
+              if (!appLayouts){
+                appLayouts = {  }
               }
+              appLayouts[appname] = [ ]
+              layout.forEach((panel) => {
+                panel.forEach((component) => {
+                  appLayouts[appname].push(component[0])
+                  componentStore[ component[0] ] = component[0]
+                })
+              })
+              window.localStorage.setItem('appLayouts', JSON.stringify(appLayouts))
+              window.localStorage.setItem('cachedCode', code) // cache current code project
+              reloadSelectors()
+              // post layout to db
+              await axios.post('http://ods3-test.herokuapp.com/ods/new_record', {
+                tablename : 'TransformerProject',
+                data : {
+                  projectName : appname,
+                  projectLayout : layout,
+                  projectCode : code,
+                  projectComponent : componentStore
+                }
+              })
+              .then((resp) => { console.log(resp.data.data) })
+              .catch((err) => { console.log(err) })
+              // display notification
+              $('#layout').val(`Post successful, continue working on: ${appname}`)
+              setTimeout((() => $('#layout').val("")), 3000)
             } else {
               $('#layout').val(`Layout Error: ${message}`)
               setTimeout((() => $('#layout').val(layout)), 3000)
             }
           }
 
-          const grabCode = async ( projectName ) => {
-             let [result] = await axios.post('http://localhost:3000/ods/fetch_records', {
+          const grabCode = async () => {
+             let [result] = await axios.post('http://ods3-test.herokuapp.com/ods/fetch_records', {
                tablename : 'TransformerProject',
-               constraints : { projectName : projectName },
-               restrict : [ 'projectCode' ]
+               constraints : { projectName : window.localStorage.getItem('layoutSelected') },
+               restrict : [ 'projectCode', 'projectComponent' ]
              })
              .then((resp) => { return resp.data.data })
              .catch((err) => { console.log(err); return null })
-             console.log(result)
-             return result.projectCode
+             return result
           }
 
-          const showPreview = async ( projectName ) => {
-            var projectCode = await grabCode( projectName );
+          const showPreview = async () => {
             var frame = document.getElementById("preview-window").contentWindow.document;
             frame.open();
-            frame.write(projectCode);
-            frame.close();
+            try {
+              var { projectCode : liveCode, projectComponent : liveComponents } = await grabCode();
+              // update localStorage
+              window.localStorage.setItem('cachedCode', liveCode)
+              window.localStorage.setItem('cachedComponents', JSON.stringify(liveComponents))
+            } catch(err){}
+            // write from cache
+            try {
+              let code = window.localStorage.getItem('cachedCode')
+              let comps = JSON.parse(window.localStorage.getItem('cachedComponents'))
+              let keys = Object.keys(comps)
+              let active_comp = window.localStorage.getItem('componentSelected')
+              for (var i=0;i<keys.length;i++){
+                let comp = keys[i];
+                let comp_code = comps[comp]
+                code = code.replace(comp, comp_code)
+                if (comp === active_comp && ! $('#code').val() > ""){
+                  // write to code box
+                  $('#code').val(comp_code)
+                }
+              }
+              frame.write(code);
+              frame.close();
+            } catch(err){}
         }
 
 
