@@ -340,9 +340,13 @@
                 let comp_code = comps[comp]
                 code = code.replace(comp, comp_code)
                 let text = $('#code').val();
-                if (comp === active_comp && Boolean(! text > "" || text !== comp)){
+                if (comp === active_comp){
                   // write to code box
-                  $('#code').val(comp_code)
+                  if (! text > ""){
+                    $('#code').val(comp)
+                  } else {
+                    $('#code').val(comp_code)
+                  }
                 }
               }
               frame.write(code);
