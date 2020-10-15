@@ -115,7 +115,13 @@
             let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents')) || {}
             if (cachedComponents[layoutSelected]){
               if (cachedComponents[layoutSelected][selected]){
-                $('#code').val(cachedComponents[layoutSelected][selected])
+                if (selected === '/* CSS */' && cachedComponents[layoutSelected][selected] === selected){
+                  $('#code').val(`/* ${layoutSelected.toUpperCase()} CSS Library */`)
+                } else if (selected === '// JAVASCRIPT' && cachedComponents[layoutSelected][selected] === selected){
+                  $('#code').val(`// ${layoutSelected.toUpperCase()} JavaScript Library`)
+                } else {
+                  $('#code').val(cachedComponents[layoutSelected][selected])
+                }
               }
             }
             await showPreview() // this will load both the review pane and the component code
@@ -147,11 +153,11 @@
           }
 
           const AutoGrid = (layout) => {
-            let baseHTML = `
-            <!DOCTYPE html>
+            let baseHTML = `<!DOCTYPE html>
               <html>
                 <head>
                   <style>
+                      /* CSS */
                       __GRID_STYLE__
                       .grid-item {
                         background-color: rgba(255, 255, 255, 0.8);
@@ -163,10 +169,13 @@
                   </style>
                 </head>
                 <body>
-                    __GRID_BODY__
+                __GRID_BODY__
+                <s0 src="https://cmdimkpa.github.io/axios.min.js" charset="utf-8"></s0>
+                <s0 src="https://cmdimkpa.github.io/jquery-3.5.1.slim.min.js" charset="utf-8"></s0>
+                // JAVASCRIPT
                 </body>
-              </html>
-            `
+              </html>`
+
             var GRID_STYLE = "",
                 GRID_BODY = ""
             for (var i=0;i<layout.length;i++){
@@ -298,6 +307,11 @@
                   componentStore[ component[0] ] = component[0]
                 })
               })
+              // add CSS and JAVASCRIPT containers
+              appLayouts[appname].push('/* CSS */')
+              componentStore['/* CSS */'] = '/* CSS */'
+              appLayouts[appname].push('// JAVASCRIPT')
+              componentStore['// JAVASCRIPT'] = '// JAVASCRIPT'
               window.localStorage.setItem('appLayouts', JSON.stringify(appLayouts))
               window.localStorage.setItem('cachedCode', code) // cache current code project
               // post layout to db
@@ -354,20 +368,36 @@
               for (var i=0;i<keys.length;i++){
                 let comp = keys[i];
                 let comp_code = comps[comp]
+                if (comp === '// JAVASCRIPT'){
+                  comp_code = `
+                  <s0 type="text/javascript">
+                    ${comp_code}
+                  </s0>
+                  `
+                }
                 code = code.replace(comp, comp_code)
                 if (comp === window.localStorage.getItem('componentSelected')){
                   // write to code box
                   if (! $('#code').val() > ""){
-                    $('#code').val(comp_code)
+                    if (comp_code === '// JAVASCRIPT'){
+                      $('#code').val(`// ${layoutSelected.toUpperCase()} JavaScript Library`)
+                    } else if (comp_code === '/* CSS */'){
+                      $('#code').val(`/* ${layoutSelected.toUpperCase()} CSS Library */`)
+                    } else {
+                      $('#code').val(comp_code)
+                    }
                   }
                 }
               }
+              while (code.indexOf('s0') !== -1){
+                code = code.replace('s0', 'script')
+              }
+              // store rendered code
+              window.localStorage.setItem('render', code)
               frame.write(code);
               frame.close();
             } catch(err){}
         }
-
-
     </script>
   </body>
 </html>
