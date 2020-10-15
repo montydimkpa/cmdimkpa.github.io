@@ -83,15 +83,18 @@
             // update component in app Model
             let layoutSelected = window.localStorage.getItem('layoutSelected')
             let componentSelected = window.localStorage.getItem('componentSelected')
-            let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents'))
-            cachedComponents[componentSelected] = $('#code').val();
+            let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents')) || {}
+            if (!cachedComponents[layoutSelected]){
+              cachedComponents[layoutSelected] = { }
+            }
+            cachedComponents[layoutSelected][componentSelected] = $('#code').val();
             window.localStorage.setItem('cachedComponents', JSON.stringify(cachedComponents));
             // post update to db
             $('#code').val(`Updating: ${componentSelected} ...`)
             await axios.post('https://ods3-test.herokuapp.com/ods/update_records', {
               tablename : 'TransformerProject',
               constraints : { projectName : layoutSelected },
-              data : { projectComponent : cachedComponents }
+              data : { projectComponent : cachedComponents[layoutSelected] }
             })
             .then((resp) => { console.log(resp.data.data) })
             .catch((err) => { console.log(err) })
@@ -108,9 +111,12 @@
 
           const component_trigger = async (selected) => {
             window.localStorage.setItem('componentSelected', selected)
-            let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents'))
-            if (cachedComponents){
-              $('#code').val(cachedComponents[selected])
+            let layoutSelected = window.localStorage.getItem('layoutSelected')
+            let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents')) || {}
+            if (cachedComponents[layoutSelected]){
+              if (cachedComponents[layoutSelected][selected]){
+                $('#code').val(cachedComponents[layoutSelected][selected])
+              }
             }
             await showPreview() // this will load both the review pane and the component code
           }
@@ -132,10 +138,12 @@
           const reloadSelectors = async () => {
             // reload all selectors
             appLayouts = JSON.parse(window.localStorage.getItem('appLayouts'))
-            layouts = Object.keys(appLayouts)
-            $("#appLayouts").html(layouts.map((layout) => `<option value="${layout}">${layout}</option>`).join(''))
-            $("#appComponents").html(appLayouts[layouts[0]].map((component) => `<option value="${component}">${component}</option>`).join(''))
-            await layout_trigger(layouts[0])
+            if (appLayouts){
+              layouts = Object.keys(appLayouts)
+              $("#appLayouts").html(layouts.map((layout) => `<option value="${layout}">${layout}</option>`).join(''))
+              $("#appComponents").html(appLayouts[layouts[0]].map((component) => `<option value="${component}">${component}</option>`).join(''))
+              await layout_trigger(layouts[0])
+            }
           }
 
           const AutoGrid = (layout) => {
@@ -292,7 +300,6 @@
               })
               window.localStorage.setItem('appLayouts', JSON.stringify(appLayouts))
               window.localStorage.setItem('cachedCode', code) // cache current code project
-              reloadSelectors()
               // post layout to db
               await axios.post('https://ods3-test.herokuapp.com/ods/new_record', {
                 tablename : 'TransformerProject',
@@ -308,6 +315,7 @@
               // display notification
               $('#layout').val(`Post successful, continue working on: ${appname}`)
               setTimeout((() => $('#layout').val("")), 3000)
+              reloadSelectors()
             } else {
               $('#layout').val(`Layout Error: ${message}`)
               setTimeout((() => $('#layout').val(layout)), 3000)
@@ -326,18 +334,22 @@
           }
 
           const showPreview = async () => {
+            let layoutSelected = window.localStorage.getItem('layoutSelected')
             var frame = document.getElementById("preview-window").contentWindow.document;
             frame.open();
             try {
               var { projectCode : liveCode, projectComponent : liveComponents } = await grabCode();
               // update localStorage
+              let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents')) || {}
+              cachedComponents[layoutSelected] = liveComponents;
               window.localStorage.setItem('cachedCode', liveCode)
-              window.localStorage.setItem('cachedComponents', JSON.stringify(liveComponents))
+              window.localStorage.setItem('cachedComponents', JSON.stringify(cachedComponents))
             } catch(err){}
             // write from cache
             try {
               let code = window.localStorage.getItem('cachedCode')
-              let comps = JSON.parse(window.localStorage.getItem('cachedComponents'))
+              let cachedComponents = JSON.parse(window.localStorage.getItem('cachedComponents'))
+              let comps = cachedComponents[layoutSelected]
               let keys = Object.keys(comps)
               for (var i=0;i<keys.length;i++){
                 let comp = keys[i];
