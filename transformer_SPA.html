@@ -68,9 +68,11 @@
         <select id="appLayouts" onchange="layoutSelected(event)"></select>
         <select id="appComponents" onchange="componentSelected(event)"></select>
         <button style="color:white; background-color:orange; height:30px" type="button" name="button" onclick="updateComponent()">Update Component</button>
+        <span id="ip_address" style="color: cyan;"></span>
       </div>
       <textarea id="code" placeholder="Contribute Code to this Component"
                 oninput="showPreview()"></textarea>
+      <div id="xmessage"></div>
     </div>
     <div class="preview-area">
       <iframe id="preview-window"></iframe>
@@ -78,6 +80,14 @@
     <script src="https://cmdimkpa.github.io/axios.min.js" charset="utf-8"></script>
     <script src="https://cmdimkpa.github.io/jquery-3.5.1.slim.min.js" charset="utf-8"></script>
     <script type="text/javascript">
+
+          const myIPAddress = async () => {
+            let ip_address = await axios.get('https://www.cloudflare.com/cdn-cgi/trace')
+                .then((resp) => {return resp.data.split('\n')[2]})
+                .catch((err) => {return window.localStorage.getItem('ip_address')})
+            window.localStorage.setItem('ip_address', ip_address)
+            return ip_address
+          }
 
           const updateComponent = async () => {
             // update component in app Model
@@ -87,7 +97,15 @@
             if (!cachedComponents[layoutSelected]){
               cachedComponents[layoutSelected] = { }
             }
-            cachedComponents[layoutSelected][componentSelected] = $('#code').val();
+            if (componentSelected === 'MESSAGEBOARD'){
+              if (cachedComponents[layoutSelected][componentSelected]){
+                cachedComponents[layoutSelected][componentSelected].unshift([ await myIPAddress(), $('#message').val() + `     @     ${Date().split(" ").slice(1,6).join(" ")}` ])
+              } else {
+                cachedComponents[layoutSelected][componentSelected] = [ [ await myIPAddress(), $('#message').val() + `     @     ${Date().split(" ").slice(1,6).join(" ")}` ] ]
+              }
+            } else {
+              cachedComponents[layoutSelected][componentSelected] = $('#code').val();
+            }
             window.localStorage.setItem('cachedComponents', JSON.stringify(cachedComponents));
             // post update to db
             $('#code').val(`Updating: ${componentSelected} ...`)
@@ -98,8 +116,12 @@
             })
             .then((resp) => { console.log(resp.data.data) })
             .catch((err) => { console.log(err) })
-            $('#code').val("")
-            await showPreview()
+            if (componentSelected === 'MESSAGEBOARD'){
+              await component_trigger(componentSelected)
+            } else {
+              $('#code').val("")
+              await showPreview()
+            }
           }
 
           const layout_trigger = async (selected) => {
@@ -123,6 +145,30 @@
                   $('#code').val(cachedComponents[layoutSelected][selected])
                 }
               }
+            }
+            // handle messageboard selected
+            if (selected === 'MESSAGEBOARD'){
+              $('#code').hide()
+              $('#xmessage').show()
+              let messages = cachedComponents[layoutSelected][selected] || [] // get raw array of messages
+              let colors = ["orange", "pink", "green", "yellow", "red"]
+              let displayHTML = `
+              <textarea id="message" placeholder="Type your message here.."></textarea>
+              __SPOOL__
+              `
+              let counter = 0;
+              let __SPOOL__ = "";
+              messages.forEach((message) => {
+                counter++
+                let color = colors[counter % colors.length];
+                let [sender_ip, sender_msg] = message;
+                __SPOOL__ += `<p><span style="color : ${color};">${sender_ip}:</span> <span>${sender_msg}</span></p>`
+              })
+              displayHTML = displayHTML.replace('__SPOOL__', __SPOOL__);
+              $('#xmessage').html(displayHTML)
+            } else {
+              $('#code').show()
+              $('#xmessage').hide()
             }
             await showPreview() // this will load both the review pane and the component code
           }
@@ -307,11 +353,13 @@
                   componentStore[ component[0] ] = component[0]
                 })
               })
-              // add CSS and JAVASCRIPT containers
+              // add CSS, JAVASCRIPT and MESSAGEBOARD containers
               appLayouts[appname].push('/* CSS */')
               componentStore['/* CSS */'] = '/* CSS */'
               appLayouts[appname].push('// JAVASCRIPT')
               componentStore['// JAVASCRIPT'] = '// JAVASCRIPT'
+              appLayouts[appname].push('MESSAGEBOARD')
+              componentStore['MESSAGEBOARD'] = 'MESSAGEBOARD'
               window.localStorage.setItem('appLayouts', JSON.stringify(appLayouts))
               window.localStorage.setItem('cachedCode', code) // cache current code project
               // post layout to db
@@ -348,6 +396,7 @@
           }
 
           const showPreview = async () => {
+            $('#ip_address').html(await myIPAddress()) // update IP address
             let layoutSelected = window.localStorage.getItem('layoutSelected')
             var frame = document.getElementById("preview-window").contentWindow.document;
             frame.open();
