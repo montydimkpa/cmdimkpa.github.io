@@ -312,7 +312,7 @@ class Pipeline:
         self.started = None
         self.output = None
         self.can_run = False
-        self.options = { "debug" : False }
+        self.options = { "debug" : False, "run_tests" : True }
     def build(self):
         self.started = now()
         try:
@@ -324,51 +324,27 @@ class Pipeline:
             functions = [primer] + self.process[1:]
             failed = False
             for function in functions:
-                testEngine.run_tests(function, curr_package)
-                if testEngine.test_status[function]["approved"]:
-                    curr_package = testEngine.last_test_output
+                if self.options["run_tests"]:
+                    testEngine.run_tests(function, curr_package)
+                    if testEngine.test_status[function]["approved"]:
+                        curr_package = testEngine.last_test_output
+                    else:
+                        failed = True
+                        print("BuildError: pipeline build failed at function: {}. Duration: {} secs.".format(function, elapsed_secs(self.started)))
+                        break
                 else:
-                    failed = True
-                    print("BuildError: pipeline build failed at function: {}. Duration: {} secs.".format(function, elapsed_secs(self.started)))
-                    break
+                    curr_package = eval(function)(curr_package)
             if not failed:
-                self.can_run = True
-                self.run()
-        except Exception as err:
-            if self.options["debug"]:
-                print(str(err))
-            print("BuildError: pipeline not properly constructed. Duration: {} secs.".format(elapsed_secs(self.started)))
-    def run(self):
-        self.started = now()
-        if self.can_run:
-            curr_package = None
-            function = None
-            no_errors = True
-            index = 0
-            for step in self.process:
-                index += 1
-                if index == 1:
-                    function, curr_package = step
-                    try:
-                        curr_package = eval(curr_package).output
-                    except:
-                        pass
-                else:
-                    function = step
-                curr_package = eval(function)(curr_package)
-                if not curr_package:
-                    no_errors = False
-                    break
-            if no_errors:
                 self.output = curr_package
                 self.executed = True
                 self.can_run = False
                 print("Pipeline executed successfully (check trace for function-specific errors). Duration: {} secs.".format(elapsed_secs(self.started)))
             else:
                 print("Pipeline failed at step {} of {} [function: {}]. Duration: {} secs.".format(index, len(self.process), function, elapsed_secs(self.started)))
-        else:
-            print("RuntimeError: please build this pipeline first. Duration: {} secs.".format(elapsed_secs(self.started)))
-
+        except Exception as err:
+            if self.options["debug"]:
+                print(str(err))
+            print("BuildError: pipeline not properly constructed. Duration: {} secs.".format(elapsed_secs(self.started)))
 
 class Workflow:
     '''
