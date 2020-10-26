@@ -313,6 +313,10 @@ class Pipeline:
         self.output = None
         self.can_run = False
         self.options = { "debug" : False, "run_tests" : True }
+    def set_options(self, changeset = { }):
+        common = [ key for key in self.options.keys() if key in changeset ]
+        for key in common:
+            self.options[key] = changeset[key]
     def build(self):
         self.started = now()
         try:
