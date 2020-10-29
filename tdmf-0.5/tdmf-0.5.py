@@ -393,7 +393,11 @@ def context_switch(conditionals, default):
     '''
     selected = None
     for conditional in conditionals:
-        flag_boolean, object_name = conditional
+        flag_boolean_expr, object_name = conditional
+        try:
+            flag_boolean = eval(flag_boolean_expr)
+        except:
+            flag_boolean = flag_boolean_expr
         if flag_boolean:
             selected = object_name
             break
