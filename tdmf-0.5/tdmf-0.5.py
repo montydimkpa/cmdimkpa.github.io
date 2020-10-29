@@ -328,6 +328,8 @@ class Pipeline:
             functions = [primer] + self.process[1:]
             failed = False
             for function in functions:
+                if "context_switch(" in function:
+                    function = eval(function)
                 if self.options["run_tests"]:
                     testEngine.run_tests(function, curr_package)
                     if testEngine.test_status[function]["approved"]:
