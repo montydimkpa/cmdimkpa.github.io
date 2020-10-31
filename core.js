@@ -31,7 +31,7 @@ const s3 = new AWS.S3({
 
 // bodyParser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // file upload
 app.use(fileUpload());
@@ -1352,8 +1352,12 @@ const getSessionInfo = async (ip) => {
 app.post('/utils/upload/profile_objects/:context/:user_id', cors(),  async (req, res) => {
   let user_id = req.params.user_id;
   let context = req.params.context;
-  let is_public = req.body.is_public || false;
-  let video_info = req.body.video_info || {};
+  var is_public;
+  let video_info = {};
+  is_public = req.body.is_public || false;
+  video_info['title'] = req.body.title || 'untitled';
+  video_info['about'] = req.body.about || 'untitled';
+  video_info['location'] = req.body.location || 'untitled';
   let allowed_types = ["mp4", "mov", "wmv", "flv", "avi", "avchd", "webm", "mkv"];
   let file_size_limit = 100000000;
   let info = await userInfo({ "user_id" : user_id });
