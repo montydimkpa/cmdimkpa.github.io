@@ -996,6 +996,7 @@ app.put('/utils/notifications/read', cors(),  async (req, res) => {
 app.post('/public/gallery', cors(),  async (req, res) => {
   let constraints = req.body.constraints || {  }
   let strict_search = req.body.strict_search || false
+  let track = req.body.track
   let pageSize = req.query.pageSize
   let thisPage = req.query.thisPage
   let gallery = await axios.post(`${dbGateway()}/ods/fetch_records`, {
@@ -1003,12 +1004,18 @@ app.post('/public/gallery', cors(),  async (req, res) => {
     constraints : constraints,
     strict : strict_search
   }).then(resp => { return resp.data.data }).catch(err=>{})
-  // public videos only
+  // publish public videos
   public = []
   gallery.forEach((folder) => {
     folder.videos = local_search(folder.videos, "is_public", true)
-    public.unshift(folder)
+    folder.videos.forEach((video) => {
+      public.unshift(video)
+    })
   })
+  // sort videos by popularity
+  if (track === 'popular'){
+    public = public.sort(function(a,b){ return b.video_info.views - a.video_info.views })
+  }
   res.status(200)
   res.json({
     code : 200,
@@ -1185,12 +1192,23 @@ const update_user_gallery = async (username, gallery) => {
   return null
 }
 
+const safely_evaluate = (prop) => {
+  if (prop === undefined){
+    return 'undefined'
+  } else {
+    return prop
+  }
+}
+
 app.put('/utils/videos/change-scope/:username/:user_id', cors(),  async (req, res) => {
   let username = req.params.username;
   let user_id = req.params.user_id;
   let links = req.body.links;
-  let is_public = req.body.is_public;
-  let reason = req.body.reason || 'Contact site administrator';
+  let upvotes = req.body.upvotes || 0;
+  let downvotes = req.body.downvotes || 0;
+  let views = req.body.views || 0;
+  let is_public = safely_evaluate(req.body.is_public);
+  let reason = req.body.reason || 'untitled';
   if (user_id && username){
     // fetch userdata
     let info = await userInfo({ "user_id" : user_id }) || await token_patch(username, user_id, true)
@@ -1200,15 +1218,30 @@ app.put('/utils/videos/change-scope/:username/:user_id', cors(),  async (req, re
       // change video settings in profile and on the gallery
       for (var i=0; i<links.length; i++){
         let link = links[i];
-        // extract video object; update change scope reason
+        // extract video object; update change scope reason and metrics
         let [ video ] = local_search(info.userdata.uploads_videos, "link", link);
-        video.video_info['change_scope_reason'] = reason
+        video.video_info.change_scope_history.unshift({ reason : reason, timestamp : Date(), utc : Date.now() })
+        video.video_info.views += parseInt(views)
+        video.video_info.upvotes += parseInt(upvotes)
+        video.video_info.downvotes += parseInt(downvotes)
+        let rubric = { video_info : video.video_info }
+        if (is_public !== 'undefined'){
+          rubric['is_public'] = is_public
+        }
+        /*
+          business logic for making video private based on downvotes:
+             there should be at least 100 views of the video and downvotes should be at least 20% more than upvotes
+             e.g. 100 views - 60 downvotes, 40 upvotes
+        */
+        if (video.video_info.views > 100 && (video.video_info.downvotes / video.video_info.upvotes - 1) > 0.2){
+          rubric["is_public"] = false
+        }
         // update video register
-        info.userdata.uploads_videos = local_multi_update(info.userdata.uploads_videos, { link : link }, { is_public : is_public, video_info : video.video_info })
+        info.userdata.uploads_videos = local_multi_update(info.userdata.uploads_videos, { link : link }, rubric)
         // search user's gallery videos to make updates
         for (var j=0; j<gallery.length; j++){
           // update video register (gallery)
-          gallery[j].videos = local_multi_update(gallery[j].videos, { link : link }, { is_public : is_public, video_info : video.video_info })
+          gallery[j].videos = local_multi_update(gallery[j].videos, { link : link }, rubric)
         }
       }
       await update_user_gallery(info.username, gallery) // update public gallery
@@ -1332,6 +1365,14 @@ app.post('/utils/upload/profile_objects/:context/:user_id', cors(),  async (req,
       // create and post upload session
       let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       let sessionInfo = await getSessionInfo(ip);
+      // initialize video metrics
+      video_info['change_scope_history'] = []
+      video_info['upvotes'] = 0
+      video_info['downvotes'] = 0
+      video_info['views'] = 0
+      sessionInfo['title'] = video_info.title;
+      sessionInfo['about'] = video_info.about;
+      sessionInfo['location'] = video_info.location;
       sessionInfo['device'] = req.header('User-Agent')
       sessionInfo['username'] = info.username
       sessionInfo['videos'] = []
