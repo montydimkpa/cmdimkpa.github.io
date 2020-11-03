@@ -14,6 +14,9 @@ const AWS = require('aws-sdk');
 const fileUpload = require('express-fileupload');
 const { accessKeyId, secretAccessKey, region } = require('./s3config.json')
 const sleep = require('util').promisify(setTimeout);
+const fs = require('fs')
+const { env, flags } = require('tdmf')
+env.options.debug = false
 
 // App Settings
 const app = express();
@@ -1349,15 +1352,31 @@ const getSessionInfo = async (ip) => {
   }
 }
 
+const uploadActions = async (sessionInfo, user_id, userdata) => {
+  // post video session
+  postSessionInfo(sessionInfo).then((sessionReference) => {
+    env.update('sessionReference', sessionReference)
+    // synchronize profile
+    updateUserdata(user_id, userdata).then((dbResponse) => {
+      dbResponse['session'] = env.fetch('sessionReference')
+      // send to metadata service
+      metadataService(env.fetch('sessionReference')).then((metadataServiceResponse) => {
+        dbResponse['meta'] = metadataServiceResponse
+        env.update('dbResponse', dbResponse)
+      })
+    })
+  })
+}
+
 app.post('/utils/upload/profile_objects/:context/:user_id', cors(),  async (req, res) => {
   let user_id = req.params.user_id;
   let context = req.params.context;
   var is_public;
   let video_info = {};
   is_public = req.body.is_public || false;
-  video_info['title'] = req.body.title || 'untitled';
-  video_info['about'] = req.body.about || 'untitled';
-  video_info['location'] = req.body.location || 'untitled';
+  video_info['title'] = req.body.title || req.query.title || 'untitled';
+  video_info['about'] = req.body.about || req.query.about || 'untitled';
+  video_info['location'] = req.body.location || req.query.location || 'untitled';
   let allowed_types = ["mp4", "mov", "wmv", "flv", "avi", "avchd", "webm", "mkv"];
   let file_size_limit = 100000000;
   let info = await userInfo({ "user_id" : user_id });
@@ -1386,13 +1405,9 @@ app.post('/utils/upload/profile_objects/:context/:user_id', cors(),  async (req,
         userdata[`uploads_${context}`].unshift(videodata)
         sessionInfo['videos'].unshift(videodata)
       })
-      let sessionReference = await postSessionInfo(sessionInfo)
-      // synchronize profile
-      dbResponse = await updateUserdata(user_id, userdata);
-      dbResponse['session'] = sessionReference
-      // Send to Metadata Service
-      let metadataServiceResponse = await metadataService(sessionReference)
-      dbResponse['meta'] = metadataServiceResponse
+      await uploadActions(sessionInfo, user_id, userdata)
+      dbResponse = env.fetch('dbResponse')
+      env.deleteAll()
     }
     res.status(200)
     res.json({
