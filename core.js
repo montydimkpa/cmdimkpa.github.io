@@ -210,7 +210,7 @@ const dbGateway = () => {
     event_counter++
     if (event_counter > 100000){ event_counter = 0 }
     gateways = [
-        "http://167.71.99.31:3099"
+        "http://198.211.98.212:3099"
     ]
     return gateways[event_counter % gateways.length]
 }
